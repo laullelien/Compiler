@@ -7,8 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 
 /**
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl38
+ * @date 01/01/2024
  */
 public class UnaryMinus extends AbstractUnaryExpr {
 

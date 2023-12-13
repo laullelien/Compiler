@@ -5,8 +5,8 @@ import fr.ensimag.deca.tree.Location;
 /**
  * Definition of a variable.
  *
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl38
+ * @date 01/01/2024
  */
 public class VariableDefinition extends ExpDefinition {
     public VariableDefinition(Type type, Location location) {

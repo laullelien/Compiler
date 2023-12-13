@@ -5,8 +5,8 @@ package fr.ensimag.deca.tree;
  * 
  * @see fr.ensimag.deca.tree.Tree#iter(TreeFunction)
  * 
- * @author @AUTHOR@
- * @date @DATE@
+ * @author gl38
+ * @date 01/01/2024
  */
 public interface TreeFunction {
     void apply(Tree t);
