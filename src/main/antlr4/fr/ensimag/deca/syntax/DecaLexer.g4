@@ -12,7 +12,14 @@ options {
 }
 
 // Deca lexer rules.
-DUMMY_TOKEN: .;
-/*OBRACE: '{'; // A FAIRE : Règle bidon qui reconnait tous les caractères.
+STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
+COMMENT: '//' .*? '\n' {skip();};
+SEMI: ';';
+PRINTLN: 'println';
+OBRACE: '{';
 CBRACE: '}';
-DEFAULT: . ;*/
+OPARENT: '(';
+CPARENT: ')';
+DEFAULT: . {skip();};
+STRING_CAR: ~('"' | '\\' | '\n');
+
