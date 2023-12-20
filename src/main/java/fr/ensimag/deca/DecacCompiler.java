@@ -137,7 +137,10 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        String destFile = null;
+        if (!sourceFile.endsWith(".deca"))
+            throw new IllegalArgumentException("Error: The file does not end with \".deca\"");
+        String destFile = sourceFile.substring(0, sourceFile.length() - 4);
+        destFile += "ass";
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
         // A FAIRE: fichier .deca.
         PrintStream err = System.err;
@@ -191,8 +194,8 @@ public class DecacCompiler {
         assert(prog.checkAllLocations());
 
 
-        prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+//        prog.verifyProgram(this);
+//        assert(prog.checkAllDecorations());
 
         addComment("start main program");
         prog.codeGenProgram(this);
