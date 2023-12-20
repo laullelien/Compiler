@@ -101,6 +101,7 @@ list_inst returns[ListInst tree]
 }
     : (inst {
         $tree.add($inst.tree);
+        setLocation($inst.tree, $inst.start);
         }
       )*
     ;
@@ -343,6 +344,7 @@ primary_expr returns[AbstractExpr tree]
     | literal {
             assert($literal.tree != null);
             $tree = $literal.tree;
+            setLocation($tree, $literal.start);
         }
     ;
 

@@ -12,6 +12,7 @@ options {
 }
 
 // Deca lexer rules.
+fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 COMMENT: '//' .*? '\n' {skip();};
 SEMI: ';';
@@ -21,5 +22,4 @@ CBRACE: '}';
 OPARENT: '(';
 CPARENT: ')';
 DEFAULT: . {skip();};
-STRING_CAR: ~('"' | '\\' | '\n');
 
