@@ -1,6 +1,9 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -123,11 +126,18 @@ public class DecacCompiler {
 
     /** The global environment for types (and the symbolTable) */
     public final EnvironmentType environmentType = new EnvironmentType(this);
+
+    public final EnvironmentExp environmentExp = new EnvironmentExp();
+
+    public ClassDefinition currentClass = null;
+
+    public Type returnType = environmentType.VOID;
+
     public final SymbolTable symbolTable = new SymbolTable();
 
     public Symbol createSymbol(String name) {
         return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
-        // return symbolTable.create(name);
+        //return symbolTable.create(name);
     }
 
     /**
@@ -194,7 +204,7 @@ public class DecacCompiler {
         assert(prog.checkAllLocations());
 
 
-//        prog.verifyProgram(this);
+        prog.verifyProgram(this);
 //        assert(prog.checkAllDecorations());
 
         addComment("start main program");
