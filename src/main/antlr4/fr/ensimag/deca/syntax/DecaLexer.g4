@@ -21,5 +21,10 @@ OBRACE: '{';
 CBRACE: '}';
 OPARENT: '(';
 CPARENT: ')';
-DEFAULT: . {skip();};
+COMMA: ',';
+TO_SKIP:
+        ('\n'
+        | '\t'
+        | ' '
+        ){skip();};
 
