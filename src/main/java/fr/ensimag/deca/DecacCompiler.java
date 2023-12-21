@@ -193,6 +193,11 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
+        if (this.compilerOptions.getParse()){
+            prog.decompile(out);
+            return false;
+        }
+
 
 //        prog.verifyProgram(this);
 //        assert(prog.checkAllDecorations());

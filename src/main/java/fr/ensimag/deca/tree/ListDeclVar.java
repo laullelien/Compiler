@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+import java.util.Iterator;
+
 /**
  * List of declarations (e.g. int x; float y,z).
  * 
@@ -16,8 +18,14 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Iterator<AbstractDeclVar> iterator = iterator();
+
+        while (iterator.hasNext()) {
+            AbstractDeclVar declaration = iterator.next();
+            declaration.decompile();
+        }
     }
+
 
     /**
      * Implements non-terminal "list_decl_var" of [SyntaxeContextuelle] in pass 3
