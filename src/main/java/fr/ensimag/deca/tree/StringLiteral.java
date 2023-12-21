@@ -44,7 +44,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        System.out.print(value);
+        s.print(value);
     }
 
     @Override

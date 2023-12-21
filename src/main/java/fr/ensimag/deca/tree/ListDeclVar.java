@@ -22,7 +22,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
         while (iterator.hasNext()) {
             AbstractDeclVar declaration = iterator.next();
-            declaration.decompile();
+            declaration.decompile(s);
         }
     }
 

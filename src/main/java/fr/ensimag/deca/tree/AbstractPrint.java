@@ -57,7 +57,7 @@ public abstract class AbstractPrint extends AbstractInst {
     public void decompile(IndentPrintStream s) {
         if (this.getSuffix().equals("ln")){
             s.print("println(");
-            arguments.decompile();
+            this.arguments.decompile(s);
             s.print(")");
             s.print(";");
 
