@@ -24,6 +24,7 @@ CPARENT: ')';
 COMMA: ',';
 TO_SKIP:
         ('\n'
+        | '\t'
         | ' '
         ){skip();};
 
