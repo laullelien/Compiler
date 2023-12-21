@@ -36,6 +36,8 @@ public class CompilerOptions {
         return parse;
     }
 
+    public boolean getVerification() {return verification;}
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }

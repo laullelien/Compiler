@@ -197,6 +197,9 @@ public class DecacCompiler {
             prog.decompile(out);
             return false;
         }
+        if (this.compilerOptions.getVerification()){
+            return false;
+        }
 
 
 //        prog.verifyProgram(this);
