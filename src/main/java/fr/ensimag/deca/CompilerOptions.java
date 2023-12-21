@@ -72,7 +72,7 @@ public class CompilerOptions {
                     throw new CLIException("Les options doivent être placé avant les fichiers .deca");
                 }
             }
-            if (s.equals("-b")) {
+            else if (s.equals("-b")) {
                 if (args.length == 1) {
                     this.printBanner = true;
                 } else {

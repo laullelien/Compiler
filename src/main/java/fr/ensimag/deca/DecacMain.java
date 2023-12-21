@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  */
 public class DecacMain {
     private static Logger LOG = Logger.getLogger(DecacMain.class);
-    
+
     public static void main(String[] args) {
         // example log4j message.
         LOG.info("Decac compiler started");
@@ -81,7 +81,6 @@ public class DecacMain {
                 DecacCompiler compiler = new DecacCompiler(options, source);
                 Callable<Boolean> compilationTask = compiler::compile;
                 futures.add(executor.submit(compilationTask));
-
             }
 
             for (Future<Boolean> future : futures) {
@@ -91,6 +90,7 @@ public class DecacMain {
                     }
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
+                    throw new RuntimeException("Une compilation a échoué");
                 }
             }
 
