@@ -114,3 +114,63 @@ else
     echo "Succes inattendu de decac -p"
     exit 1
 fi
+
+if decac -p -p src/test/deca/context/valid/provided/hello-world.deca 2>&1 | \
+    grep -q -e "-p est écrit 2 fois"
+then
+    echo "Echec attendu de decac -p -p hello-world.deca"
+else
+    echo "Succes inattendu de decac -p -p hello-world.deca"
+    exit 1
+fi
+
+if decac -r 8 8 src/test/deca/context/valid/provided/hello-world.deca 2>&1 | \
+    grep -q -e "Argument 8 non reconnu"
+then
+    echo "Echec attendu de decac -r 8 8 hello-world.deca"
+else
+    echo "Succes inattendu de decac -r 8 8 hello-world.deca"
+    exit 1
+fi
+
+if decac -r 8 src/test/deca/context/valid/provided/hello-world.deca | \
+    grep -i -e "erreur" -e "error"
+then
+    echo "ERREUR: La sortie de decac -r 8 hello-world.deca"
+    exit 1
+fi
+
+if decac -v src/test/deca/context/valid/provided/hello-world.deca | \
+    grep -i -e "erreur" -e "error"
+then
+    echo "ERREUR: La sortie de decac -v hello-world.deca"
+    exit 1
+fi
+
+if decac -P src/test/deca/context/valid/provided/hello-world.deca \
+    src/test/deca/syntax/valid/provided/hello.deca | \
+    grep -i -e "erreur" -e "error"
+then
+    echo "ERREUR: La sortie de decac -P hello-world.deca hello.deca"
+    exit 1
+fi
+
+decac -p src/test/deca/context/valid/provided/hello-world.deca > src/test/deca/context/valid/provided/hello-world_p.deca
+decac -p src/test/deca/context/valid/provided/hello-world_p.deca > src/test/deca/context/valid/provided/hello-world_p2.deca
+if ! diff src/test/deca/context/valid/provided/hello-world_p.deca src/test/deca/context/valid/provided/hello-world_p2.deca
+then
+    echo "ERREUR: Le résultat de decac -p n'est pas idempotente"
+    exit 1
+fi
+
+rm src/test/deca/context/valid/provided/hello-world_p.deca src/test/deca/context/valid/provided/hello-world_p2.deca
+
+
+
+
+
+
+
+
+
+

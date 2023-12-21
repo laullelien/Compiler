@@ -1,9 +1,7 @@
 package fr.ensimag.deca;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -36,8 +34,10 @@ public class CompilerOptions {
         return parse;
     }
 
-    public List<File> getSourceFiles() {
-        return Collections.unmodifiableList(sourceFiles);
+    public boolean getVerification() {return verification;}
+
+    public NavigableSet<File> getSourceFiles() {
+        return Collections.unmodifiableNavigableSet(sourceFiles);
     }
 
     private int debug = 0;
@@ -55,50 +55,69 @@ public class CompilerOptions {
     // On choisit tous les registres par défault
     private int nbRegisters = 16;
 
-    private List<File> sourceFiles = new ArrayList<File>();
+    private NavigableSet<File> sourceFiles = new TreeSet<>();
 
     public void parseArgs(String[] args) throws CLIException {
 
+        boolean isRCount = false;
         boolean expectDeca = false;
-        for (int i = 0; i < args.length; i++) {
-            String s = args[i];
-
+        for (String s : args) {
             if (expectDeca) {
                 if (s.endsWith(".deca")) {
                     sourceFiles.add(new File(s));
                 } else {
                     throw new CLIException("Les options doivent être placé avant les fichiers .deca");
                 }
-            }
-            if (s.equals("-b")) {
+            } else if (s.equals("-b")) {
                 if (args.length == 1) {
                     this.printBanner = true;
                 } else {
                     throw new CLIException("-b doit être tout seul en tant d'argument");
                 }
             } else if (s.equals("-p")) {
-                this.parse = true;
+                if (!this.parse) {
+                    this.parse = true;
+                } else {
+                    throw new CLIException("-p est écrit 2 fois");
+                }
             } else if (s.equals("-v")) {
-                this.verification = true;
+                if (!this.verification) {
+                    this.verification = true;
+                } else {
+                    throw new CLIException("-v est écrit 2 fois");
+                }
             } else if (s.equals("-n")) {
-                this.noCheck = true;
+                if (!this.noCheck) {
+                    this.noCheck = true;
+                } else {
+                    throw new CLIException("-n est écrit 2 fois");
+                }
             } else if (s.equals("-r")) {
-                try {
+                if (!this.customRegister) {
                     this.customRegister = true;
-                    int nbRegisters = Integer.parseInt(args[i + 1]);
+                    isRCount = true;
+                } else {
+                    throw new CLIException("-r est écrit 2 fois");
+                }
+            } else if (isRCount) {
+                try {
+                    int nbRegisters = Integer.parseInt(s);
                     if (nbRegisters < 4 || nbRegisters > 16) {
                         throw new CLIException("Le nombre de registres n'est pas valide (entre 4 et 16)");
                     }
                     this.nbRegisters = nbRegisters;
-                } catch (NumberFormatException e) {
-                    throw new CLIException("Il faut renseigner un nombre de registres entre 4 et 16");
-                } catch (IndexOutOfBoundsException e) {
+                } catch (NumberFormatException | IndexOutOfBoundsException e) {
                     throw new CLIException("Il faut renseigner un nombre de registres entre 4 et 16");
                 }
+                isRCount = false;
             } else if (s.equals("-d")) {
                 this.debug += 1;
             } else if (s.equals("-P")) {
-                this.parallel = true;
+                if (!this.parallel) {
+                    this.parallel = true;
+                } else {
+                    throw new CLIException("-P est écrit 2 fois");
+                }
             } else {
                 if (s.endsWith(".deca")) {
                     expectDeca = true;
@@ -108,6 +127,9 @@ public class CompilerOptions {
                 }
             }
         }
+
+        if (isRCount)
+            throw new CLIException("Il faut renseigner un nombre de registres entre 4 et 16");
 
         if (this.parse && this.verification)
             throw new CLIException("Impossible de faire -p et -v en même temps, il faut choisir l'un ou l'autre");
