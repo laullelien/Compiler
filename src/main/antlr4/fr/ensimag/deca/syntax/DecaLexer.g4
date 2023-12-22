@@ -12,5 +12,19 @@ options {
 }
 
 // Deca lexer rules.
-DUMMY_TOKEN: .; // A FAIRE : Règle bidon qui reconnait tous les caractères.
-                // A FAIRE : Il faut la supprimer et la remplacer par les vraies règles.
+fragment STRING_CAR: ~('"' | '\\' | '\n');
+STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
+COMMENT: '//' .*? '\n' {skip();};
+SEMI: ';';
+PRINTLN: 'println';
+OBRACE: '{';
+CBRACE: '}';
+OPARENT: '(';
+CPARENT: ')';
+COMMA: ',';
+TO_SKIP:
+        ('\n'
+        | '\t'
+        | ' '
+        ){skip();};
+

@@ -39,12 +39,13 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new WSTR(new ImmediateString(value)));
+        String noQuote = value.substring(1, value.length() - 1);
+        compiler.addInstruction(new WSTR(new ImmediateString(noQuote)));
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(value);
     }
 
     @Override

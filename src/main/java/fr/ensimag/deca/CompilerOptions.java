@@ -1,10 +1,7 @@
 package fr.ensimag.deca;
 
 import java.io.File;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -17,9 +14,10 @@ import org.apache.log4j.Logger;
  */
 public class CompilerOptions {
     public static final int QUIET = 0;
-    public static final int INFO  = 1;
+    public static final int INFO = 1;
     public static final int DEBUG = 2;
     public static final int TRACE = 3;
+
     public int getDebug() {
         return debug;
     }
@@ -31,31 +29,132 @@ public class CompilerOptions {
     public boolean getPrintBanner() {
         return printBanner;
     }
-    
-    public List<File> getSourceFiles() {
-        return Collections.unmodifiableList(sourceFiles);
+
+    public boolean getParse() {
+        return parse;
+    }
+
+    public boolean getVerification() {return verification;}
+
+    public NavigableSet<File> getSourceFiles() {
+        return Collections.unmodifiableNavigableSet(sourceFiles);
     }
 
     private int debug = 0;
-    private boolean parallel = false;
-    private boolean printBanner = false;
-    private List<File> sourceFiles = new ArrayList<File>();
 
-    
+    private boolean noCheck = false;
+    private boolean parallel = false;
+
+    private boolean verification = false;
+    private boolean printBanner = false;
+
+    private boolean parse = false;
+
+    private boolean customRegister = false;
+
+    // On choisit tous les registres par défault
+    private int nbRegisters = 16;
+
+    private NavigableSet<File> sourceFiles = new TreeSet<>();
+
     public void parseArgs(String[] args) throws CLIException {
-        // A FAIRE : parcourir args pour positionner les options correctement.
+
+        boolean isRCount = false;
+        boolean expectDeca = false;
+        for (String s : args) {
+            if (expectDeca) {
+                if (s.endsWith(".deca")) {
+                    sourceFiles.add(new File(s));
+                } else {
+                    throw new CLIException("Les options doivent être placé avant les fichiers .deca");
+                }
+            } else if (s.equals("-b")) {
+                if (args.length == 1) {
+                    this.printBanner = true;
+                } else {
+                    throw new CLIException("-b doit être tout seul en tant d'argument");
+                }
+            } else if (s.equals("-p")) {
+                if (!this.parse) {
+                    this.parse = true;
+                } else {
+                    throw new CLIException("-p est écrit 2 fois");
+                }
+            } else if (s.equals("-v")) {
+                if (!this.verification) {
+                    this.verification = true;
+                } else {
+                    throw new CLIException("-v est écrit 2 fois");
+                }
+            } else if (s.equals("-n")) {
+                if (!this.noCheck) {
+                    this.noCheck = true;
+                } else {
+                    throw new CLIException("-n est écrit 2 fois");
+                }
+            } else if (s.equals("-r")) {
+                if (!this.customRegister) {
+                    this.customRegister = true;
+                    isRCount = true;
+                } else {
+                    throw new CLIException("-r est écrit 2 fois");
+                }
+            } else if (isRCount) {
+                try {
+                    int nbRegisters = Integer.parseInt(s);
+                    if (nbRegisters < 4 || nbRegisters > 16) {
+                        throw new CLIException("Le nombre de registres n'est pas valide (entre 4 et 16)");
+                    }
+                    this.nbRegisters = nbRegisters;
+                } catch (NumberFormatException | IndexOutOfBoundsException e) {
+                    throw new CLIException("Il faut renseigner un nombre de registres entre 4 et 16");
+                }
+                isRCount = false;
+            } else if (s.equals("-d")) {
+                this.debug += 1;
+            } else if (s.equals("-P")) {
+                if (!this.parallel) {
+                    this.parallel = true;
+                } else {
+                    throw new CLIException("-P est écrit 2 fois");
+                }
+            } else {
+                if (s.endsWith(".deca")) {
+                    expectDeca = true;
+                    sourceFiles.add(new File(s));
+                } else {
+                    throw new CLIException("Argument " + s + " non reconnu");
+                }
+            }
+        }
+
+        if (isRCount)
+            throw new CLIException("Il faut renseigner un nombre de registres entre 4 et 16");
+
+        if (this.parse && this.verification)
+            throw new CLIException("Impossible de faire -p et -v en même temps, il faut choisir l'un ou l'autre");
+
+        if ((this.parse | this.verification | this.noCheck | this.customRegister | this.debug > 0 | this.parallel)
+                && !expectDeca)
+            throw new CLIException("Fichier(s) source(s) manquant(s)");
+
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
-        case QUIET: break; // keep default
-        case INFO:
-            logger.setLevel(Level.INFO); break;
-        case DEBUG:
-            logger.setLevel(Level.DEBUG); break;
-        case TRACE:
-            logger.setLevel(Level.TRACE); break;
-        default:
-            logger.setLevel(Level.ALL); break;
+            case QUIET:
+                break; // keep default
+            case INFO:
+                logger.setLevel(Level.INFO);
+                break;
+            case DEBUG:
+                logger.setLevel(Level.DEBUG);
+                break;
+            case TRACE:
+                logger.setLevel(Level.TRACE);
+                break;
+            default:
+                logger.setLevel(Level.ALL);
+                break;
         }
         logger.info("Application-wide trace level set to " + logger.getLevel());
 
@@ -66,11 +165,9 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
-
-        throw new UnsupportedOperationException("not yet implemented");
     }
 
     protected void displayUsage() {
-        throw new UnsupportedOperationException("not yet implemented");
+        System.out.println("Usage: decac [[-p | -v] [-n] [-r X] [-d]* [-P] [-w] <fichier deca>...] | [-b]");
     }
 }
