@@ -8,6 +8,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
+import java.util.List;
+
 /**
  * 
  * @author gl38
@@ -25,9 +27,10 @@ public class ListInst extends TreeList<AbstractInst> {
      *          corresponds to "return" attribute (void in the main bloc).
      */    
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
-            throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+            ClassDefinition currentClass, Type returnType)throws ContextualError {
+            for (AbstractInst inst : this.getList()){
+                inst.verifyInst(compiler, compiler.environmentExp, currentClass, returnType);
+            }
     }
 
     public void codeGenListInst(DecacCompiler compiler) {
@@ -42,5 +45,10 @@ public class ListInst extends TreeList<AbstractInst> {
             i.decompileInst(s);
             s.println();
         }
+    }
+
+    @Override
+    public List<AbstractInst> getList() {
+        return super.getList();
     }
 }

@@ -1,6 +1,7 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import org.mockito.internal.matchers.Null;
 
 /**
  * Dictionary associating identifier's ExpDefinition to their names.
@@ -28,6 +29,10 @@ public class EnvironmentExp {
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
+    }
+
+    public EnvironmentExp() {
+        this.parentEnvironment = null;
     }
 
     public static class DoubleDefException extends Exception {
