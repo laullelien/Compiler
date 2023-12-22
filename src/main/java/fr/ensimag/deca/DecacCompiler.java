@@ -126,8 +126,10 @@ public class DecacCompiler {
      */
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
+    /** Dictionnaire qui associe à chaque identificateur sa définition */
     public final EnvironmentExp environmentExp = new EnvironmentExp();
 
+    // TODO remplacer par la spec (0?)
     public ClassDefinition currentClass = null;
 
     public Type returnType = environmentType.VOID;
@@ -146,8 +148,6 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        if (!sourceFile.endsWith(".deca"))
-            throw new IllegalArgumentException("Error: The file does not end with \".deca\"");
         String destFile = sourceFile.substring(0, sourceFile.length() - 4);
         destFile += "ass";
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
@@ -209,9 +209,9 @@ public class DecacCompiler {
             return false;
         }
 
-
         prog.verifyProgram(this);
-//        assert(prog.checkAllDecorations());
+        // TODO a décommenter une fois qu'on applique le défensive programming
+        // assert(prog.checkAllDecorations());
 
         addComment("start main program");
         prog.codeGenProgram(this);

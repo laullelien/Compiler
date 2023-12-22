@@ -1,7 +1,6 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import org.mockito.internal.matchers.Null;
 
 /**
  * Dictionary associating identifier's ExpDefinition to their names.

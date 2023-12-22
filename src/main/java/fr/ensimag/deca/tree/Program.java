@@ -35,11 +35,12 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        classes.verifyListClass(compiler);
-        classes.verifyListClassMembers(compiler);
-        classes.verifyListClassBody(compiler);
-        main.verifyMain(compiler);
-        // LOG.debug("verify program: end");
+        // TODO décommenter une fois qu'on implémente Deca "objet"
+        // classes.verifyListClass(compiler); // Etape B, passe 1
+        // classes.verifyListClassMembers(compiler); // Etape B, passe 2
+        // classes.verifyListClassBody(compiler); // Etape B, passe 3 pour les classes
+        main.verifyMain(compiler); // Etape B, passe 3 pour le programme principal
+        LOG.debug("verify program: end");
     }
 
     @Override
