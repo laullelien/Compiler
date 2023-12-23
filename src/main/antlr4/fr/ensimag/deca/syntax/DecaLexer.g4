@@ -11,7 +11,7 @@ options {
 @members {
 }
 
-// Deca lexer rules.
+// Deca lexer rules for strings & println.
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 COMMENT: '//' .*? '\n' {skip();};
@@ -27,4 +27,11 @@ TO_SKIP:
         | '\t'
         | ' '
         ){skip();};
+
+// rules for int
+fragment DIGIT: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+fragment POSITIVE_DIGIT: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+INT: '0' | POSITIVE_DIGIT DIGIT*;
+
+
 
