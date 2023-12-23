@@ -12,10 +12,10 @@ if [ ! -f ./src/test/deca/codegen/valid/"$FILENAME".ass ]; then
 fi
 
 resultat=$(ima ./src/test/deca/codegen/valid/"$FILENAME".ass) || exit 1
-rm -f ./src/test/deca/codegen/valid/"$FILENAME".ass
 
 # On code en dur la valeur attendue.
-attendu='43'
+attendu='43
+several expr'
 
 if [ "$resultat" = "$attendu" ]; then
     echo "Résultat attendu de ima:"

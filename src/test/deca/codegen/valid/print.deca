@@ -10,5 +10,8 @@
 //    cree le 01/01/2024
 
 {
-        println(43);
+    //int
+    println(43);
+    //several expr
+    println("several"," expr");
 }
