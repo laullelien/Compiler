@@ -44,6 +44,7 @@ public class IntLiteral extends AbstractExpr {
         return "Int (" + getValue() + ")";
     }
 
+    @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.R1));
                 compiler.addInstruction(new WINT());

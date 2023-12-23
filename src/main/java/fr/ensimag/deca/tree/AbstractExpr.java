@@ -123,15 +123,13 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        this.codeGenPrint(compiler);
-        }
-
-
-        @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        ;
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
