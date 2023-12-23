@@ -33,7 +33,9 @@ public class IntLiteral extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        return compiler.environmentType.INT;
+        // regle (3.44)
+        setType(compiler.environmentType.INT);
+        return getType();
     }
 
 

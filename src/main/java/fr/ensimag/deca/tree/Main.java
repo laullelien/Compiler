@@ -30,6 +30,9 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
+        // regle (3.18)
+        // TODO decommenter lors de l'implementation des variables de type
+        // declVariables.verifyListDeclVariable(compiler, compiler.environmentExp, compiler.currentClass);
         insts.verifyListInst(compiler, compiler.environmentExp, compiler.currentClass, compiler.returnType);
         LOG.debug("verify Main: end");
     }

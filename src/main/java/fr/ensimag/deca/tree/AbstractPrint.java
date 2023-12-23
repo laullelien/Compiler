@@ -39,6 +39,7 @@ public abstract class AbstractPrint extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        // regle (3.21)
         arguments.verifyListExpr(compiler, localEnv, currentClass);
     }
 
