@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -40,6 +39,9 @@ public class ListExpr extends TreeList<AbstractExpr> {
         while (iterator.hasNext()) {
             AbstractExpr expr = iterator.next();
             expr.decompile(s);
+            if (iterator.hasNext()) {
+                s.print(',');
+            }
         }
     }
 }
