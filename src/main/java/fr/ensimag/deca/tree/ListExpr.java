@@ -20,12 +20,15 @@ public class ListExpr extends TreeList<AbstractExpr> {
     public void verifyListExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                                ClassDefinition currentClass)
             throws ContextualError {
+        // regle (3.30)
         for (AbstractExpr e : this.getList()) {
-            Type typeExpr = e.verifyExpr(compiler, localEnv, currentClass);
-            if (!(typeExpr.equals(compiler.environmentType.STRING)
-                    || typeExpr.equals(compiler.environmentType.INT)
-                    || typeExpr.equals(compiler.environmentType.FLOAT))) {
-                throw new ContextualError("L'argument du print n'est ni un float, ni un int, ni un string", this.getLocation());
+            // regle (3.32)
+            e.verifyExpr(compiler, localEnv, currentClass);
+            // regle (3.31)
+            if (!(e.getType().equals(compiler.environmentType.STRING)
+                    || e.getType().equals(compiler.environmentType.INT)
+                    || e.getType().equals(compiler.environmentType.FLOAT))) {
+                throw new ContextualError("Argument " + e.prettyPrintNode() + " invalide (regle 3.31)", this.getLocation());
             }
         }
     }
