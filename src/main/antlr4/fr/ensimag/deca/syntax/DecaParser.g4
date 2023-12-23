@@ -361,11 +361,20 @@ type returns[AbstractIdentifier tree]
 
 literal returns[AbstractExpr tree]
     : INT {
-        $tree = new IntLiteral(Integer.parseInt($INT.text));
-        }
+            try{
+                $tree = new IntLiteral(Integer.parseInt($INT.text));
+             } catch (NumberFormatException e) {
+                $tree = null;
+             }
+        } {$tree != null}?
     | fd=FLOAT {
-        $tree = new FloatLiteral(Float.parseFloat($fd.text));
-        }
+            try{
+                $tree = new FloatLiteral(Float.parseFloat($fd.text));
+                }catch (NumberFormatException e) {
+                        $tree = null;
+                }
+          } {$tree != null}?
+
     | STRING {
         $tree = new StringLiteral($STRING.text);
         }

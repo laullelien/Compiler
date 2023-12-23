@@ -29,12 +29,11 @@ TO_SKIP:
         ){skip();};
 
 // rules for int
-fragment DIGIT: '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
-fragment POSITIVE_DIGIT: '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9';
+fragment DIGIT: '0' .. '9';
+fragment POSITIVE_DIGIT: '1' .. '9';
 INT: '0' | POSITIVE_DIGIT DIGIT*;
 
-
-
+// rules for float
 fragment NUM: DIGIT+;
 fragment SIGN: '+' | '-' | ;
 fragment EXP: ('E' | 'e') SIGN NUM;
