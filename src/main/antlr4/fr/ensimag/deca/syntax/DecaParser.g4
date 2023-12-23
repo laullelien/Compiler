@@ -356,6 +356,7 @@ type returns[AbstractIdentifier tree]
 
 literal returns[AbstractExpr tree]
     : INT {
+        $tree = new IntLiteral(Integer.parseInt($INT.text));
         }
     | fd=FLOAT {
         }
