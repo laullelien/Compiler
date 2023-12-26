@@ -35,20 +35,22 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 
 // grammar for float
 fragment NUM: DIGIT+;
-fragment SIGN: '+' | '-' | ;
-fragment EXP: ('E' | 'e') SIGN NUM;
+fragment SIGN: '+' | '-' ;
+fragment SIGN_OR_EMPTY: SIGN | ;
+fragment EXP: ('E' | 'e') SIGN_OR_EMPTY NUM;
 fragment DEC: NUM '.' NUM;
 fragment FLOATDEC: (DEC | DEC EXP) ('F' | 'f' | ) ;
 fragment DIGITHEX: [0-9A-Fa-f]+;
 fragment NUMHEX: DIGITHEX+;
-fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN? NUM ('F' | 'f' | ) ;
+fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
  FLOAT: FLOATDEC | FLOATHEX;
 
- // grammar for bool
+// grammar for bool
 
 TRUE: 'true';
 FALSE: 'false';
 
+// grammar
 
-
-
+PLUS : '+' ;
+MINUS : '-' ;
