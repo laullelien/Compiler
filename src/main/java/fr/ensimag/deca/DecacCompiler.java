@@ -127,7 +127,7 @@ public class DecacCompiler {
     /** The global environment for types (and the symbolTable) */
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
-    /** Dictionnaire qui associe à chaque identificateur sa définition */
+    /** Dictionnaire qui associe à chaque identificateur (Symbol) sa définition (Type) */
     public final EnvironmentExp environmentExp = new EnvironmentExp();
 
     // TODO remplacer par la spec (0?)
