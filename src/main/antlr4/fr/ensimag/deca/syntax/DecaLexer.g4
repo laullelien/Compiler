@@ -57,3 +57,8 @@ FALSE: 'false';
 
 PLUS : '+' ;
 MINUS : '-' ;
+
+// grammar for variables declaration
+
+LETTER: 'a' .. 'z' + 'A' .. 'Z' ;
+IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
