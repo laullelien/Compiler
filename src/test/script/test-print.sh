@@ -15,6 +15,9 @@ resultat=$(ima ./src/test/deca/codegen/valid/"$FILENAME".ass) || exit 1
 
 # On code en dur la valeur attendue.
 attendu='43
+-2
+1.5
+-6.2
 several expr'
 
 if [ "$resultat" = "$attendu" ]; then
