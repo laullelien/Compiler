@@ -128,12 +128,6 @@ public class DecacCompiler {
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
     /** Dictionnaire qui associe à chaque identificateur (Symbol) sa définition (Type) */
-    public final EnvironmentExp environmentExp = new EnvironmentExp();
-
-    // TODO remplacer par la spec (0?)
-    public ClassDefinition currentClass = null;
-
-    public Type returnType = environmentType.VOID;
 
     public final SymbolTable symbolTable = new SymbolTable();
 
