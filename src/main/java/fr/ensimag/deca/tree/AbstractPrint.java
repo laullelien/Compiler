@@ -9,7 +9,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -22,7 +24,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
-    
+
     abstract String getSuffix();
 
     public AbstractPrint(boolean printHex, ListExpr arguments) {
@@ -37,7 +39,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
+                              ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // regle (3.21)
         arguments.verifyListExpr(compiler, localEnv, currentClass);
@@ -46,7 +48,11 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            if (printHex && a instanceof FloatLiteral) {
+                ((FloatLiteral) a).codeGenPrintX(compiler);
+            } else {
+                a.codeGenPrint(compiler);
+            }
         }
     }
 
@@ -56,26 +62,23 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if (getPrintHex()) {
-            if (this.getSuffix().equals("lnx")) {
+        switch (this.getSuffix() + (printHex ? "x" : "")) {
+            case "lnx":
                 s.print("printlnx(");
-            } else {
-                s.print("printx(");
-            }
-
-        } else {
-            if (this.getSuffix().equals("ln")) {
+                break;
+            case "ln":
                 s.print("println(");
-
-            } else {
-                s.print("print");
-            }
+                break;
+            case "x":
+                s.print("printx(");
+                break;
+            case "":
+                s.print("print(");
+                break;
         }
         this.arguments.decompile(s);
         s.print(")");
         s.print(";");
-
-
     }
 
     @Override

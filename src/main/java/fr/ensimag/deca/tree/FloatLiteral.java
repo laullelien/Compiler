@@ -13,7 +13,7 @@ import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -52,6 +52,10 @@ public class FloatLiteral extends AbstractExpr {
         compiler.addInstruction(new WFLOAT());
     }
 
+    protected void codeGenPrintX(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R1));
+        compiler.addInstruction(new WFLOATX());
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
