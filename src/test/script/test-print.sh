@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH="$(pwd)"/src/test/script/launchers:"$(pwd)"/src/main/bin:"$PATH"
-FILENAME='print'
+FILENAME='print-opArith'
 
 rm -f src/test/deca/codegen/valid/"$FILENAME".ass 2>/dev/null
 decac src/test/deca/codegen/valid/"$FILENAME".deca || exit 1
@@ -21,10 +21,10 @@ attendu='43
 several expr'
 
 if [ "$resultat" = "$attendu" ]; then
-    echo "Résultat attendu de ima:"
+    echo "Résultat de ima:"
     echo "$resultat"
 else
-    echo "Résultat inattendu de ima:"
+    echo "Résultat de ima:"
     echo "$resultat"
     exit 1
 fi
