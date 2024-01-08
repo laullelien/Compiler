@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -32,8 +33,7 @@ public class Main extends AbstractMain {
         // (mais ce n'est à priori pas nécessaire).
         // regle (3.18)
         // TODO decommenter lors de l'implementation des variables de type
-        // declVariables.verifyListDeclVariable(compiler, compiler.environmentExp, compiler.currentClass);
-        insts.verifyListInst(compiler, compiler.environmentExp, compiler.currentClass, compiler.returnType);
+        insts.verifyListInst(compiler, new EnvironmentExp(), null, compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
     }
 

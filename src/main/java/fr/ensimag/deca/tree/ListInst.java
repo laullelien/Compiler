@@ -28,7 +28,7 @@ public class ListInst extends TreeList<AbstractInst> {
             ClassDefinition currentClass, Type returnType) throws ContextualError {
         // regle (3.19)
         for (AbstractInst inst : this.getList()) {
-            inst.verifyInst(compiler, compiler.environmentExp, currentClass, returnType);
+            inst.verifyInst(compiler, localEnv, currentClass, returnType);
         }
     }
 
