@@ -21,7 +21,6 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         this.operand = operand;
     }
 
-
     protected abstract String getOperatorName();
   
     @Override

@@ -24,7 +24,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        return this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt()){
+            return compiler.environmentType.INT;
+        }
+        if((this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt())
+            || (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat())
+            || (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat())){
+            return compiler.environmentType.FLOAT;
+        }
+        throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
     }
 
     protected void addOperands(AbstractExpr expr, DecacCompiler compiler) {
