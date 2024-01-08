@@ -40,11 +40,13 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
-    public DVal getDval(){
+    public DVal getDval() {
         return new ImmediateInteger(value);
     }
 
-
+    public DVal getNegativeDval() {
+        return new ImmediateInteger(-value);
+    }
 
 
     @Override

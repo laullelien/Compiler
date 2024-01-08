@@ -12,6 +12,9 @@ import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -48,8 +51,11 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
+            if (a.getDval() != null) {
+                compiler.addInstruction(new LOAD(a.getDval(), Register.R1));
+            }
             if (printHex && a.getType().isFloat()) {
-                ((FloatLiteral) a).codeGenPrintX(compiler);
+                compiler.addInstruction(new WFLOATX());
             } else {
                 a.codeGenPrint(compiler);
             }

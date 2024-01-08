@@ -44,9 +44,14 @@ public abstract class AbstractExpr extends AbstractInst {
     }
     private Type type;
     private DVal dval ;
+    private DVal negDval;
 
     public DVal getDval() {
         return dval;
+    }
+
+    public DVal getNegativeDval() {
+        return negDval;
     }
 
     @Override

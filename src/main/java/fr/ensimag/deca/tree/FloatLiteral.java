@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
@@ -39,6 +40,16 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
+    public DVal getDval(){
+        return new ImmediateFloat(value);
+    }
+
+    @Override
+    public DVal getNegativeDval() {
+        return new ImmediateFloat(-value);
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         // regle (3.45)
@@ -48,14 +59,11 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R1));
+
         compiler.addInstruction(new WFLOAT());
     }
 
-    protected void codeGenPrintX(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R1));
-        compiler.addInstruction(new WFLOATX());
-    }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
