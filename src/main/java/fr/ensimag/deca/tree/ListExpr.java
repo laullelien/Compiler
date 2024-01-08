@@ -22,13 +22,13 @@ public class ListExpr extends TreeList<AbstractExpr> {
         // regle (3.30)
         for (AbstractExpr e : this.getList()) {
             // regle (3.32)
-            e.verifyExpr(compiler, localEnv, currentClass);
+            //e.verifyExpr(compiler, localEnv, currentClass);
             // regle (3.31)
-            if (!(e.getType().equals(compiler.environmentType.STRING)
-                    || e.getType().equals(compiler.environmentType.INT)
-                    || e.getType().equals(compiler.environmentType.FLOAT))) {
-                throw new ContextualError("Argument " + e.prettyPrintNode() + " invalide (regle 3.31)", this.getLocation());
-            }
+            //if (!(e.getType().equals(compiler.environmentType.STRING)
+            //        || e.getType().equals(compiler.environmentType.INT)
+            //        || e.getType().equals(compiler.environmentType.FLOAT))) {
+            //    throw new ContextualError("Argument " + e.prettyPrintNode() + " invalide (regle 3.31)", this.getLocation());
+            //}
         }
     }
 
