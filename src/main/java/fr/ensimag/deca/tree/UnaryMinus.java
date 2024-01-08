@@ -31,8 +31,8 @@ public class UnaryMinus extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateInteger(getOperand().), Register.R1));
-        compiler.addInstruction(new WINT());
+        //compiler.addInstruction(new LOAD(new ImmediateInteger(getOperand().), Register.R1));
+        //compiler.addInstruction(new WINT());
     }
 
 

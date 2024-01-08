@@ -1,0 +1,12 @@
+{
+    printlnx(3);
+    printlnx(2.56);
+    printlnx("Hello world");
+    printlnx("Hello", "an other word");
+    printx(3);
+    printx(2.56);
+    printx("Hello world");
+    printx("Hello", "an other word");
+    print(2.56);
+}
+
