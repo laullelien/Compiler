@@ -1,0 +1,6 @@
+{
+    printlnx("Bonjour",55,3.14);
+    println("Hello",66,2.7);
+    printx("Mot",77,0.0);
+    print("Print",88,8.8);
+}

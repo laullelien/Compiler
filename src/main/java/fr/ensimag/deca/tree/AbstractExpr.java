@@ -7,8 +7,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -26,6 +29,8 @@ public abstract class AbstractExpr extends AbstractInst {
         return false;
     }
 
+
+
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
@@ -38,6 +43,16 @@ public abstract class AbstractExpr extends AbstractInst {
         this.type = type;
     }
     private Type type;
+    private DVal dval ;
+    private DVal negDval;
+
+    public DVal getDval() {
+        return dval;
+    }
+
+    public DVal getNegativeDval() {
+        return negDval;
+    }
 
     @Override
     protected void checkDecoration() {
@@ -121,7 +136,6 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

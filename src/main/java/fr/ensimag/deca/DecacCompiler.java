@@ -1,6 +1,9 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -123,11 +126,14 @@ public class DecacCompiler {
 
     /** The global environment for types (and the symbolTable) */
     public final EnvironmentType environmentType = new EnvironmentType(this);
+
+    /** Dictionnaire qui associe à chaque identificateur (Symbol) sa définition (Type) */
+
     public final SymbolTable symbolTable = new SymbolTable();
 
     public Symbol createSymbol(String name) {
         return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
-        // return symbolTable.create(name);
+        //return symbolTable.create(name);
     }
 
     /**
@@ -137,8 +143,6 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        if (!sourceFile.endsWith(".deca"))
-            throw new IllegalArgumentException("Error: The file does not end with \".deca\"");
         String destFile = sourceFile.substring(0, sourceFile.length() - 4);
         destFile += "ass";
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
@@ -201,9 +205,9 @@ public class DecacCompiler {
             return false;
         }
 
-
-//        prog.verifyProgram(this);
-//        assert(prog.checkAllDecorations());
+        prog.verifyProgram(this);
+        // TODO a décommenter une fois qu'on applique le défensive programming
+        // assert(prog.checkAllDecorations());
 
         addComment("start main program");
         prog.codeGenProgram(this);

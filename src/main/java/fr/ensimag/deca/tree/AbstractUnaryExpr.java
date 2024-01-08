@@ -21,12 +21,12 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         this.operand = operand;
     }
 
-
     protected abstract String getOperatorName();
   
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print(getOperatorName());
+        operand.decompile(s);
     }
 
     @Override

@@ -30,6 +30,10 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
     }
 
+    public EnvironmentExp() {
+        this.parentEnvironment = null;
+    }
+
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }

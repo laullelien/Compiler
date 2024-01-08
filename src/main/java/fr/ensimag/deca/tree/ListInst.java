@@ -23,11 +23,13 @@ public class ListInst extends TreeList<AbstractInst> {
      *          corresponds to "class" attribute (null in the main bloc).
      * @param returnType
      *          corresponds to "return" attribute (void in the main bloc).
-     */    
+     */
     public void verifyListInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
-            throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+            ClassDefinition currentClass, Type returnType) throws ContextualError {
+        // regle (3.19)
+        for (AbstractInst inst : this.getList()) {
+            inst.verifyInst(compiler, localEnv, currentClass, returnType);
+        }
     }
 
     public void codeGenListInst(DecacCompiler compiler) {

@@ -1,0 +1,27 @@
+// Description:
+//    Programme minimaliste utilisant print, println, printx, printlnx.
+//    A compléter au fur et à mesure de l'implémentation des fonctionnalités
+//    de ces fonctions d'affichage.
+//
+// Resultats:
+//    43
+//    -2
+//    1.5
+//    -6.2
+//    several expr
+//
+// Historique:
+//    cree le 01/01/2024
+
+{
+    //int
+    println(43);
+    //negative int
+    println(-2);
+    //float
+    println(1.5);
+    //negative float
+    //println(-6.2); // ne marche pas pour l'instant, a fix
+    //several expr
+    println("several"," expr");
+}
