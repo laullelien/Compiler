@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.PrintStream;
@@ -42,6 +43,11 @@ public abstract class AbstractExpr extends AbstractInst {
         this.type = type;
     }
     private Type type;
+    private DVal dval ;
+
+    public DVal getDval() {
+        return dval;
+    }
 
     @Override
     protected void checkDecoration() {

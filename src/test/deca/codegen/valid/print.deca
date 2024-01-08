@@ -15,14 +15,13 @@
 
 {
     //int
-    //println(43);
+    println(43);
     //negative int
-    //println(-2);
+    println(-2);
     //float
-    //println(1.5);
+    println(1.5);
     //negative float
-    //println(-6.2);
+    //println(-6.2); // ne marche pas pour l'instant, a fix
     //several expr
-    //println("several"," expr");
-    print(3);
+    println("several"," expr");
 }
