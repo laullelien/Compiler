@@ -9,7 +9,9 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -22,7 +24,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
-    
+
     abstract String getSuffix();
 
     public AbstractPrint(boolean printHex, ListExpr arguments) {
@@ -37,7 +39,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
+                              ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // regle (3.21)
         arguments.verifyListExpr(compiler, localEnv, currentClass);
@@ -46,7 +48,11 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            if (printHex && a instanceof FloatLiteral) {
+                ((FloatLiteral) a).codeGenPrintX(compiler);
+            } else {
+                a.codeGenPrint(compiler);
+            }
         }
     }
 
@@ -56,7 +62,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if (this.getSuffix().equals("ln")){
+        if (this.getSuffix().equals("ln")) {
             s.print("println(");
             this.arguments.decompile(s);
             s.print(")");
