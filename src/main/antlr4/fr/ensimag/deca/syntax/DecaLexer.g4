@@ -58,7 +58,7 @@ FALSE: 'false';
 PLUS : '+' ;
 MINUS : '-' ;
 
-// grammer if if branch
+// grammer for if branch
 IF: 'if';
 ELSE: 'else';
 

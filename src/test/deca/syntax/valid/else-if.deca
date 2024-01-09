@@ -1,0 +1,14 @@
+{
+	if(false) {
+		println("hello");
+	} else if(false) {
+			println("bye");
+	} else if(true) {
+		println("NOOOO");
+	} else if(false) {
+		println("VVUUUIII");
+	} else {
+		println("FFFIIINN");
+    }
+}
+
