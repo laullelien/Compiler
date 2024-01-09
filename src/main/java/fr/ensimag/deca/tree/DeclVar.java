@@ -32,9 +32,21 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        if (type.getName().getName().equals("int")){
+            type.setType(compiler.environmentType.INT);
+        }
+        if (type.getName().getName().equals("float")){
+            type.setType(compiler.environmentType.FLOAT);
+        }
+        if (type.getName().getName().equals("void")){
+            type.setType(compiler.environmentType.VOID);
+        }
+        if (type.getName().getName().equals("boolean")){
+            type.setType(compiler.environmentType.BOOLEAN);
+        }
         type.verifyType(compiler);
-        // Pas sur de quoi faire dans verifyInitialization
-        initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
+        // Pas sûr de quoi faire dans verifyInitialization
+        // initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
         if (localEnv.getEnvironment().containsKey(this.varName.getName())){
             throw new ContextualError("Le symbole existe déjà : la règle (3.17) n'est pas respectée", this.getLocation());
         }
