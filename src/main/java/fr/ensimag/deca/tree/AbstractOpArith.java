@@ -24,17 +24,13 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-
-        Type leftOperandType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        Type rightOperandType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-
-        if (leftOperandType.isInt() && rightOperandType.isInt()){
+        if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt()){
             setType(compiler.environmentType.INT);
             return getType();
         }
-        if((leftOperandType.isFloat() && rightOperandType.isInt())
-                || (leftOperandType.isInt() && rightOperandType.isFloat())
-                || (leftOperandType.isFloat() && rightOperandType.isFloat())){
+        if((this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt())
+            || (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat())
+            || (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat())){
             setType(compiler.environmentType.FLOAT);
             return getType();
         }

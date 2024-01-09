@@ -31,12 +31,12 @@ TO_SKIP:
         | ' '
         ){skip();};
 
-// grammar for int
+// Grammaire des Int
 fragment DIGIT: '0' .. '9';
 fragment POSITIVE_DIGIT: '1' .. '9';
 INT: '0' | POSITIVE_DIGIT DIGIT*;
 
-// grammar for float
+// Grammaire des Floats
 fragment NUM: DIGIT+;
 fragment SIGN: '+' | '-' ;
 fragment SIGN_OR_EMPTY: SIGN | ;
@@ -48,12 +48,13 @@ fragment NUMHEX: DIGITHEX+;
 fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
  FLOAT: FLOATDEC | FLOATHEX;
 
-// grammar for bool
+// Grammaire des booléens
 
 TRUE: 'true';
 FALSE: 'false';
 
-// grammar
+// Grammaire des opérations
 
 PLUS : '+' ;
 MINUS : '-' ;
+TIMES : '*' ;

@@ -3,10 +3,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.ADD;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl38
@@ -26,12 +23,20 @@ public class Plus extends AbstractOpArith {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
+        if (this.getType().isFloat()) {
 
-        compiler.addInstruction(new LOAD(0, Register.R1));
-        addOperands(this.getLeftOperand(), compiler);
-        addOperands(this.getRightOperand(), compiler);
+            compiler.addInstruction(new LOAD(0.0F, Register.R1));
+            addOperands(this.getLeftOperand(), compiler);
+            addOperands(this.getRightOperand(), compiler);
+            compiler.addInstruction(new WFLOAT());
+        }
+        else if (this.getType().isInt()) {
 
-        compiler.addInstruction(new WINT());
+            compiler.addInstruction(new LOAD(0, Register.R1));
+            addOperands(this.getLeftOperand(), compiler);
+            addOperands(this.getRightOperand(), compiler);
+            compiler.addInstruction(new WINT());
+        }
     }
 
 }
