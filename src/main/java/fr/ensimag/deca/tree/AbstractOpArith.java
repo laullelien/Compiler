@@ -5,6 +5,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.SUB;
 
 /**
  * Arithmetic binary operations (+, -, /, ...)
@@ -25,14 +28,60 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type leftOperandType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightOperandType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
-        if (leftOperandType.isInt() && rightOperandType.isInt()){
+        if (leftOperandType.isInt() && rightOperandType.isInt()) {
             return compiler.environmentType.INT;
         }
         if((leftOperandType.isFloat() && rightOperandType.isInt())
                 || (leftOperandType.isInt() && rightOperandType.isFloat())
-                || (leftOperandType.isFloat() && rightOperandType.isFloat())){
+                || (leftOperandType.isFloat() && rightOperandType.isFloat())) {
             return compiler.environmentType.FLOAT;
         }
         throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
+    }
+
+    protected void addOperands(AbstractExpr expr, DecacCompiler compiler) {
+        if (expr != null && expr.getDval() != null) {
+            compiler.addInstruction(new ADD(expr.getDval(), Register.R1));
+        }
+
+
+        if (expr instanceof Plus) {
+            Plus plusExpr = (Plus) expr;
+            addOperands(plusExpr.getLeftOperand(), compiler);
+            addOperands(plusExpr.getRightOperand(), compiler);
+        }
+        if (expr instanceof Minus) {
+            Minus minusExpr = (Minus) expr;
+            addOperands(minusExpr.getLeftOperand(),compiler);
+            subOperands(minusExpr.getRightOperand(), compiler);
+        }
+
+        if (expr instanceof UnaryMinus) {
+            UnaryMinus unaryMinusExpr = (UnaryMinus) expr;
+            subOperands(unaryMinusExpr.getOperand(), compiler);
+        }
+    }
+
+    protected void subOperands(AbstractExpr expr, DecacCompiler compiler) {
+        if (expr != null && expr.getDval() != null) {
+            compiler.addInstruction(new SUB(expr.getDval(), Register.R1));
+        }
+
+        if (expr instanceof Minus) {
+            Minus minusExpr = (Minus) expr;
+            addOperands(minusExpr.getLeftOperand(),compiler);
+            subOperands(minusExpr.getRightOperand(), compiler);
+        }
+
+        if (expr instanceof Plus) {
+            Plus plusExpr = (Plus) expr;
+            addOperands(plusExpr.getLeftOperand(), compiler);
+            addOperands(plusExpr.getRightOperand(), compiler);
+        }
+
+        if (expr instanceof UnaryMinus) {
+            UnaryMinus unaryMinusExpr = (UnaryMinus) expr;
+            addOperands(unaryMinusExpr.getOperand(), compiler);
+        }
     }
 }

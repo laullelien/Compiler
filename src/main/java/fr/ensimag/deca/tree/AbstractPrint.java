@@ -9,7 +9,12 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -22,7 +27,7 @@ public abstract class AbstractPrint extends AbstractInst {
 
     private boolean printHex;
     private ListExpr arguments = new ListExpr();
-    
+
     abstract String getSuffix();
 
     public AbstractPrint(boolean printHex, ListExpr arguments) {
@@ -37,15 +42,23 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
+                              ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // regle (3.21)
+        arguments.verifyListExpr(compiler, localEnv, currentClass);
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            a.codeGenPrint(compiler);
+            if (a.getDval() != null) {
+                compiler.addInstruction(new LOAD(a.getDval(), Register.R1));
+            }
+            if (printHex && a.getType().isFloat()) {
+                compiler.addInstruction(new WFLOATX());
+            } else {
+                a.codeGenPrint(compiler);
+            }
         }
     }
 
@@ -55,15 +68,23 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if (this.getSuffix().equals("ln")){
-            s.print("println(");
-            this.arguments.decompile(s);
-            s.print(")");
-            s.print(";");
-
+        switch (this.getSuffix() + (printHex ? "x" : "")) {
+            case "lnx":
+                s.print("printlnx(");
+                break;
+            case "ln":
+                s.print("println(");
+                break;
+            case "x":
+                s.print("printx(");
+                break;
+            case "":
+                s.print("print(");
+                break;
         }
-
-
+        this.arguments.decompile(s);
+        s.print(")");
+        s.print(";");
     }
 
     @Override

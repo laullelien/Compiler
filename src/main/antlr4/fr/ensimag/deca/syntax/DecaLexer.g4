@@ -11,12 +11,15 @@ options {
 @members {
 }
 
-// Deca lexer rules.
+// Deca lexer rules for strings & println.
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 COMMENT: '//' .*? '\n' {skip();};
 SEMI: ';';
+PRINTX: 'printx';
+PRINTLNX: 'printlnx';
 PRINTLN: 'println';
+PRINT: 'print';
 OBRACE: '{';
 CBRACE: '}';
 OPARENT: '(';
@@ -28,3 +31,29 @@ TO_SKIP:
         | ' '
         ){skip();};
 
+// grammar for int
+fragment DIGIT: '0' .. '9';
+fragment POSITIVE_DIGIT: '1' .. '9';
+INT: '0' | POSITIVE_DIGIT DIGIT*;
+
+// grammar for float
+fragment NUM: DIGIT+;
+fragment SIGN: '+' | '-' ;
+fragment SIGN_OR_EMPTY: SIGN | ;
+fragment EXP: ('E' | 'e') SIGN_OR_EMPTY NUM;
+fragment DEC: NUM '.' NUM;
+fragment FLOATDEC: (DEC | DEC EXP) ('F' | 'f' | ) ;
+fragment DIGITHEX: [0-9A-Fa-f]+;
+fragment NUMHEX: DIGITHEX+;
+fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
+ FLOAT: FLOATDEC | FLOATHEX;
+
+// grammar for bool
+
+TRUE: 'true';
+FALSE: 'false';
+
+// grammar
+
+PLUS : '+' ;
+MINUS : '-' ;
