@@ -201,11 +201,13 @@ public class DecacCompiler {
             prog.decompile(out);
             return false;
         }
+
+        prog.verifyProgram(this);
+
         if (this.compilerOptions.getVerification()){
             return false;
         }
 
-        prog.verifyProgram(this);
         // TODO a décommenter une fois qu'on applique le défensive programming
         // assert(prog.checkAllDecorations());
 
