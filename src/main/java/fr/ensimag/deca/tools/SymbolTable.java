@@ -29,7 +29,7 @@ public class SymbolTable {
             return map.get(name);
         }
         else {
-            Symbol newSymbol = create(name);
+            Symbol newSymbol = new Symbol(name);
             map.put(name, newSymbol);
             return newSymbol;
         }

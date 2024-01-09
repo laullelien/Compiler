@@ -1,6 +1,10 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.deca.tree.Identifier;
+
+import java.util.HashMap;
 
 /**
  * Dictionary associating identifier's ExpDefinition to their names.
@@ -23,6 +27,7 @@ public class EnvironmentExp {
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
+    private HashMap<Symbol, ExpDefinition> environment = new HashMap<>();
 
     EnvironmentExp parentEnvironment;
     
@@ -32,6 +37,10 @@ public class EnvironmentExp {
 
     public EnvironmentExp() {
         this.parentEnvironment = null;
+    }
+
+    public HashMap<Symbol, ExpDefinition> getEnvironment(){
+        return this.environment;
     }
 
     public static class DoubleDefException extends Exception {

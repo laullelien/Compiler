@@ -176,7 +176,9 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (!(this.getType().isVoid())) {
+            return this.getType();
+        } throw new ContextualError("Le type ne respecte pas la règle 3.17", this.getLocation());
     }
     
     

@@ -11,30 +11,39 @@ options {
 @members {
 }
 
+// grammar for print instructions
+
+PRINTX: 'printx';
+PRINTLNX: 'printlnx';
+PRINTLN: 'println';
+PRINT: 'print';
+
+// grammar for int
+fragment DIGIT: '0' .. '9';
+fragment POSITIVE_DIGIT: '1' .. '9';
+INT: '0' | POSITIVE_DIGIT DIGIT*;
+
+// grammar for variables declaration
+
+fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
+IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
+
 // Deca lexer rules for strings & println.
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 COMMENT: '//' .*? '\n' {skip();};
 SEMI: ';';
-PRINTX: 'printx';
-PRINTLNX: 'printlnx';
-PRINTLN: 'println';
-PRINT: 'print';
 OBRACE: '{';
 CBRACE: '}';
 OPARENT: '(';
 CPARENT: ')';
+EQUALS: '=';
 COMMA: ',';
 TO_SKIP:
         ('\n'
         | '\t'
         | ' '
         ){skip();};
-
-// grammar for int
-fragment DIGIT: '0' .. '9';
-fragment POSITIVE_DIGIT: '1' .. '9';
-INT: '0' | POSITIVE_DIGIT DIGIT*;
 
 // grammar for float
 fragment NUM: DIGIT+;
@@ -58,7 +67,4 @@ FALSE: 'false';
 PLUS : '+' ;
 MINUS : '-' ;
 
-// grammar for variables declaration
 
-LETTER: 'a' .. 'z' + 'A' .. 'Z' ;
-IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;

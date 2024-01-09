@@ -24,8 +24,10 @@ options {
 
 // which packages should be imported?
 @header {
+    import fr.ensimag.deca.tools.*;
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+
 }
 
 @members {
@@ -69,7 +71,9 @@ list_decl returns[ListDeclVar tree]
 @init   {
             $tree = new ListDeclVar();
         }
-    : decl_var_set[$tree]*
+    : decl_var_set[$tree]* {
+           setLocation($tree, $decl_var_set.start);
+    }
     ;
 
 decl_var_set[ListDeclVar l]
@@ -88,8 +92,11 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
         }
     : i=ident {
+            $tree = new DeclVar(t, $i.tree, new NoInitialization());
+            setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
+            $tree = new DeclVar(t, $i.tree, new Initialization($e.tree));
         }
       )? {
         }
@@ -183,10 +190,13 @@ assign_expr returns[AbstractExpr tree]
         EQUALS e2=assign_expr {
             assert($e.tree != null);
             assert($e2.tree != null);
+            $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
+            setLocation($tree, $e.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
       )
     ;
@@ -195,6 +205,7 @@ or_expr returns[AbstractExpr tree]
     : e=and_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
     | e1=or_expr OR e2=and_expr {
             assert($e1.tree != null);
@@ -206,6 +217,7 @@ and_expr returns[AbstractExpr tree]
     : e=eq_neq_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
     |  e1=and_expr AND e2=eq_neq_expr {
             assert($e1.tree != null);                         
@@ -217,6 +229,7 @@ eq_neq_expr returns[AbstractExpr tree]
     : e=inequality_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
     | e1=eq_neq_expr EQEQ e2=inequality_expr {
             assert($e1.tree != null);
@@ -357,6 +370,7 @@ type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     ;
 
@@ -393,7 +407,7 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-        $tree = new Identifier(new SymbolTable.create($IDENT.text));
+        $tree = new Identifier((new SymbolTable()).create($IDENT.text));
         }
     ;
 

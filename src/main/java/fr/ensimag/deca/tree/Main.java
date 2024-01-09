@@ -14,7 +14,6 @@ import org.apache.log4j.Logger;
  */
 public class Main extends AbstractMain {
     private static final Logger LOG = Logger.getLogger(Main.class);
-    
     private ListDeclVar declVariables;
     private ListInst insts;
     public Main(ListDeclVar declVariables,
@@ -32,7 +31,7 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         // regle (3.18)
-        // TODO decommenter lors de l'implementation des variables de type
+        declVariables.verifyListDeclVariable(compiler, new EnvironmentExp(), null);
         insts.verifyListInst(compiler, new EnvironmentExp(), null, compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
     }

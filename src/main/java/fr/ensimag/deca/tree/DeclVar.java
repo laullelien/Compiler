@@ -1,12 +1,11 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.deca.tools.SymbolTable;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -33,6 +32,13 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        type.verifyType(compiler);
+        // Pas sur de quoi faire dans verifyInitialization
+        initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
+        if (localEnv.getEnvironment().containsKey(this.varName.getName())){
+            throw new ContextualError("Le symbole existe déjà : la règle (3.17) n'est pas respectée", this.getLocation());
+        }
+        localEnv.getEnvironment().put(this.varName.getName(), new VariableDefinition(this.type.getType(), this.getLocation()));
     }
 
     
