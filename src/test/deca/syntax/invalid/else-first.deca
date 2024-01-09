@@ -1,0 +1,12 @@
+// Description:
+//    Inversion de else et if
+//
+// Resultats:
+//    Erreur du parser ligne 10, au niveau du else
+//
+// Historique:
+//    Cree le 09/01/2024
+
+{
+    else{} if(true) {}
+}
