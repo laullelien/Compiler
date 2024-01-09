@@ -28,13 +28,15 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         Type leftOperandType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type rightOperandType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
 
-        if (leftOperandType.isInt() && rightOperandType.isInt()) {
-            return compiler.environmentType.INT;
+        if (leftOperandType.isInt() && rightOperandType.isInt()){
+            setType(compiler.environmentType.INT);
+            return getType();
         }
         if((leftOperandType.isFloat() && rightOperandType.isInt())
                 || (leftOperandType.isInt() && rightOperandType.isFloat())
-                || (leftOperandType.isFloat() && rightOperandType.isFloat())) {
-            return compiler.environmentType.FLOAT;
+                || (leftOperandType.isFloat() && rightOperandType.isFloat())){
+            setType(compiler.environmentType.FLOAT);
+            return getType();
         }
         throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
     }
