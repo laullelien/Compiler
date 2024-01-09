@@ -1,9 +1,6 @@
 package fr.ensimag.deca;
 
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -216,7 +213,7 @@ public class DecacCompiler {
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
-        FileOutputStream fstream = null;
+        FileOutputStream fstream;
         try {
             fstream = new FileOutputStream(destName);
         } catch (FileNotFoundException e) {
@@ -240,7 +237,7 @@ public class DecacCompiler {
      * @throws DecacFatalError When an error prevented opening the source file
      * @throws DecacInternalError When an inconsistency was detected in the
      * compiler.
-     * @throws LocationException When a compilation error (incorrect program)
+     * @throws  LocationException When a compilation error (incorrect program)
      * occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
@@ -263,7 +260,7 @@ public class DecacCompiler {
      */
     private int labelId = 0;
 
-    public int getLebalId() {
+    public int getLabelId() {
         return labelId;
     }
 

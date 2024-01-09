@@ -1,7 +1,10 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -10,7 +13,6 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -53,7 +55,7 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        String labelString = "label_" + compiler.getLebalId();
+        String labelString = "label_" + compiler.getLabelId();
         compiler.incrementLabelId();
         Label elseLabel = new Label(labelString + "_else");
         Label endLabel = new Label(labelString + "_fin");
