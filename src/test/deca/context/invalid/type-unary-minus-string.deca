@@ -1,0 +1,12 @@
+// Description:
+//    Négation d'une chaîne de caractère
+//
+// Resultats:
+//    Ligne 11: Le type ne respecte pas la règle 3.37.
+//
+// Historique:
+//    cree le 01/01/2024
+
+{
+    print(-"hello");
+}

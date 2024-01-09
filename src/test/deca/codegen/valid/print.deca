@@ -9,19 +9,42 @@
 //    1.5
 //    -6.2
 //    several expr
+//    3
+//    0x1.47ae14p+1
+//    Hello world
+//    Helloan other word
+//    30x1.47ae14p+1Hello worldHelloan other word2.56000e+00
 //
 // Historique:
 //    cree le 01/01/2024
 
 {
-    //int
+    // int
     println(43);
-    //negative int
+    // negative int
     println(-2);
-    //float
+    // float
     println(1.5);
-    //negative float
+    // negative float
     //println(-6.2); // ne marche pas pour l'instant, a fix
-    //several expr
+    // several expr
     println("several"," expr");
+    // int in decimal
+    printlnx(3);
+    // float in hex
+    printlnx(2.56);
+    // string
+    printlnx("Hello world");
+    // multiple string
+    printlnx("Hello", "an other word");
+    // int inline
+    printx(3);
+    // float in hex inline
+    printx(2.56);
+    // string inline
+    printx("Hello world");
+    // multiple string inline
+    printx("Hello", "an other word");
+    // float inline
+    print(2.56);
 }
