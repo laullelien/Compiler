@@ -1,3 +1,9 @@
+// Description:
+//  String contenant un caractère interdit
+//
+// Resultats:
+//  Erreur du lexer ligne 11, au niveau du \n
+
 {
     println("\n");
 }
