@@ -41,7 +41,7 @@ public class DeclVar extends AbstractDeclVar {
             throw new ContextualError("Une variable de type void est invalide : la règle (3.17) n'est pas respectée", this.getLocation());
         }
         // Pas sûr de quoi faire dans verifyInitialization
-        initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
+        initialization.verifyInitialization(compiler, this.type.getType(), localEnv.stackEnvironment(localEnv, localEnv.getParentEnvironment()), currentClass);
         try {
             localEnv.declare(this.varName.getName(), new VariableDefinition(typeVariable, this.getLocation()));
         } catch (EnvironmentExp.DoubleDefException e) {

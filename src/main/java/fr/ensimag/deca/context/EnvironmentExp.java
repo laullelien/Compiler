@@ -3,6 +3,7 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.deca.tree.Identifier;
+import jdk.javadoc.internal.doclint.Env;
 
 import java.util.HashMap;
 
@@ -30,6 +31,10 @@ public class EnvironmentExp {
     private HashMap<Symbol, ExpDefinition> environment = new HashMap<>();
 
     EnvironmentExp parentEnvironment;
+
+    public EnvironmentExp getParentEnvironment() {
+        return parentEnvironment;
+    }
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
@@ -71,6 +76,15 @@ public class EnvironmentExp {
             throw new DoubleDefException();
         }
         this.environment.put(name, def);
+    }
+
+    public EnvironmentExp stackEnvironment(EnvironmentExp env1, EnvironmentExp env2) {
+        EnvironmentExp res = new EnvironmentExp(null);
+        res.environment.putAll(env2.environment);
+        for (Symbol name : env1.environment.keySet()) {
+            res.environment.put(name, env1.environment.get(name));
+        }
+        return res;
     }
 
 }
