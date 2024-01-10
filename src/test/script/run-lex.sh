@@ -5,32 +5,45 @@
 
 # Script de test de la lexicographie pour les sources dans syntax
 
-
 # On se place dans le répertoire du projet (quel que soit le
 # répertoire d'où est lancé le script) :
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
 
-# /!\ test valide lexicalement, mais invalide pour l'étape A.
-if test_lex src/test/deca/syntax/invalid/provided/simple_lex.deca 2>&1 \
-    | head -n 1 | grep -q 'simple_lex.deca:[0-9]'
-then
-    echo "Echec inattendu de test_lex"
-    exit 1
-else
-    echo "OK"
-fi
-
-# Ligne 10 codée en dur. Il faudrait stocker ça quelque part ...
-if test_lex src/test/deca/syntax/invalid/provided/chaine_incomplete.deca 2>&1 \
-    | grep -q -e 'chaine_incomplete.deca:10:'
-then
-    echo "Echec attendu pour test_lex"
-else
-    echo "Erreur non detectee par test_lex pour chaine_incomplete.deca"
-    exit 1
-fi
-
-for file in src/test/deca/syntax/
-
+echo "Début tests lexer"
+for source in src/test/deca/syntax/invalid/*.deca
+do
+    source_lex="${source%.deca}.lex"
+    source_lis="${source%.deca}.lis"
+    filename="$(basename "$source")"
+    if [ ! -f "$source_lex" ]
+    then
+        echo "[WARNING] $source ne possède pas de tests de lexer"
+    else
+        res_lex=$(test_lex "$source" 2>&1)
+        if [ -f "$source_lis" ]
+        then
+            if echo "$res_lex" | head -n 1 | grep -q "$filename:[0-9]"
+            then
+                echo "[ERREUR] Echec inattendu de test_lex pour $filename"
+                echo "[DEBUG] Sortie de test_lex:"
+                echo "$res_lex"
+                exit 1
+            else
+                echo "[OK] Succès attendu pour $filename"
+            fi
+        else
+            if echo "$res_lex" | grep -q -e "$(cat "$source_lex")"
+            then
+                echo "[OK] Echec attendu pour $filename"
+            else
+                echo "[ERREUR] Erreur non détectée par test_lex pour $filename"
+                echo "[DEBUG] Sortie de test_lex:"
+                echo "$res_lex"
+                exit 1
+            fi
+        fi
+    fi
+done
+echo "Fin tests lexer"
