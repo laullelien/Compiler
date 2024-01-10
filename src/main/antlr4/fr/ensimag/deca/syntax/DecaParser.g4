@@ -72,7 +72,6 @@ list_decl returns[ListDeclVar tree]
             $tree = new ListDeclVar();
         }
     : decl_var_set[$tree]* {
-           setLocation($tree, $decl_var_set.start);
     }
     ;
 
@@ -97,7 +96,10 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
             setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
-            $tree = new DeclVar(t, $i.tree, new Initialization($e.tree));
+            Initialization init = new Initialization($e.tree);
+            setLocation(init, $e.start);
+            $tree = new DeclVar(t, $i.tree, init);
+            setLocation($tree, $e.start);
         }
       )? {
         }
@@ -409,6 +411,7 @@ literal returns[AbstractExpr tree]
 ident returns[AbstractIdentifier tree]
     : IDENT {
         $tree = new Identifier(getDecacCompiler().createSymbol($IDENT.text));
+        setLocation($tree, $IDENT);
         }
     ;
 

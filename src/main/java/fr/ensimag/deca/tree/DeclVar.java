@@ -48,19 +48,6 @@ public class DeclVar extends AbstractDeclVar {
         }
     }
 
-    /*public void codeGenDeclVar(DecacCompiler compiler, int i) {
-        if (this.type.getType().isInt()) {
-
-        }
-        if (this.type.getType().isFloat()) {
-
-        }
-        if (this.type.getType().isBoolean()) {
-
-        }
-        compiler.addInstruction(new LOAD(new ImmediateFloat(this.), Register.R1));
-    }*/
-
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");

@@ -98,7 +98,6 @@ public class DecacMain {
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
-                System.out.println(compiler.symbolTable == null);
                 if (compiler.compile()) {
                     error = true;
                 }
