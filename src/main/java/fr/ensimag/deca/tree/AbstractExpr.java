@@ -115,7 +115,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        
+        Type returnType = this.verifyExpr(compiler, localEnv, currentClass);
+        if(!returnType.isBoolean()) {
+            throw new ContextualError("Le paramètre de l'instruction n'est pas de type boolean : règle (3.29)", this.getLocation());
+        }
     }
 
     /**
