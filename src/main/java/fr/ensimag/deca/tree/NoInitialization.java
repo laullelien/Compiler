@@ -48,4 +48,8 @@ public class NoInitialization extends AbstractInitialization {
         // leaf node => nothing to do
     }
 
+    @Override
+    public void codeGenInst(DecacCompiler compiler) {
+        // nothing to do
+    }
 }

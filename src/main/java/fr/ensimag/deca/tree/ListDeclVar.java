@@ -5,6 +5,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 
 import java.util.Iterator;
 
@@ -27,11 +32,18 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         }
     }
 
-    public void codeGenListDeclVar(DecacCompiler compiler){
-        int i = 1;
+    public void setOperand(DecacCompiler compiler) {
         for (AbstractDeclVar declVar : this.getList()) {
-            //declVar.codeGenDeclVar(compiler, i);
-            i++;
+            declVar.setOperand(compiler);
+        }
+    }
+
+    public void codeGenListDeclVar(DecacCompiler compiler){
+        compiler.addInstruction(new TSTO(compiler.getNbDeclVar()));
+        compiler.addInstruction(new BOV(new Label("stack_full")));
+        compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
+        for (AbstractDeclVar declVar : this.getList()) {
+            declVar.codeGenDeclVar(compiler);
         }
     }
 

@@ -5,6 +5,12 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -40,6 +46,7 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
         compiler.addComment("Beginning of main instructions:");
+        declVariables.setOperand(compiler);
         declVariables.codeGenListDeclVar(compiler);
         insts.codeGenListInst(compiler);
     }

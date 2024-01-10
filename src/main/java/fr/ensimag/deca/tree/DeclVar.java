@@ -9,7 +9,9 @@ import java.io.PrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -37,6 +39,7 @@ public class DeclVar extends AbstractDeclVar {
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type typeVariable = type.verifyType(compiler);
+        varName.setDefinition(new VariableDefinition(typeVariable, this.getLocation()));
         if (typeVariable.isVoid()) {
             throw new ContextualError("Une variable de type void est invalide : la règle (3.17) n'est pas respectée", this.getLocation());
         }
@@ -65,5 +68,17 @@ public class DeclVar extends AbstractDeclVar {
         type.prettyPrint(s, prefix, false);
         varName.prettyPrint(s, prefix, false);
         initialization.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    public void setOperand(DecacCompiler compiler) {
+        int offset = compiler.generateDeclVarOffset();
+        varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.GB));
+    }
+
+    @Override
+    public void codeGenDeclVar(DecacCompiler compiler) {
+        initialization.codeGenInst(compiler);
+        compiler.addInstruction(new STORE(Register.R0, varName.getVariableDefinition().getOperand()));
     }
 }
