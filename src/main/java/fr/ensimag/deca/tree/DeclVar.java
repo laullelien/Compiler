@@ -3,9 +3,13 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
 import java.io.PrintStream;
 
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -14,7 +18,7 @@ import org.apache.commons.lang.Validate;
  */
 public class DeclVar extends AbstractDeclVar {
 
-    
+
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
@@ -30,43 +34,46 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
+                                 EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        if (type.getName().getName().equals("int")){
-            type.setType(compiler.environmentType.INT);
+        Type typeVariable = type.verifyType(compiler);
+        if (typeVariable.isVoid()) {
+            throw new ContextualError("Une variable de type void est invalide : la règle (3.17) n'est pas respectée", this.getLocation());
         }
-        if (type.getName().getName().equals("float")){
-            type.setType(compiler.environmentType.FLOAT);
-        }
-        if (type.getName().getName().equals("void")){
-            type.setType(compiler.environmentType.VOID);
-        }
-        if (type.getName().getName().equals("boolean")){
-            type.setType(compiler.environmentType.BOOLEAN);
-        }
-        type.verifyType(compiler);
         // Pas sûr de quoi faire dans verifyInitialization
-        // initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
-        if (localEnv.getEnvironment().containsKey(this.varName.getName())){
+        initialization.verifyInitialization(compiler, this.type.getType(), localEnv, currentClass);
+        try {
+            localEnv.declare(this.varName.getName(), new VariableDefinition(typeVariable, this.getLocation()));
+        } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Le symbole existe déjà : la règle (3.17) n'est pas respectée", this.getLocation());
         }
-        localEnv.getEnvironment().put(this.varName.getName(), new VariableDefinition(this.type.getType(), this.getLocation()));
     }
 
-    
+    /*public void codeGenDeclVar(DecacCompiler compiler, int i) {
+        if (this.type.getType().isInt()) {
+
+        }
+        if (this.type.getType().isFloat()) {
+
+        }
+        if (this.type.getType().isBoolean()) {
+
+        }
+        compiler.addInstruction(new LOAD(new ImmediateFloat(this.), Register.R1));
+    }*/
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    protected
-    void iterChildren(TreeFunction f) {
+    protected void iterChildren(TreeFunction f) {
         type.iter(f);
         varName.iter(f);
         initialization.iter(f);
     }
-    
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s, prefix, false);

@@ -86,7 +86,13 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type assignedType = this.verifyExpr(compiler, localEnv, currentClass);
+        // règle 3.28
+        if (!(compiler.environmentType.assignCompatible(expectedType, assignedType))) {
+            throw new ContextualError("La règle 3.28 n'est pas respectée : le type n'est pas compatible pour l'affectation", this.getLocation());
+        }
+        // ConvFloat à ajouter si besoin
+        return this;
     }
     
     

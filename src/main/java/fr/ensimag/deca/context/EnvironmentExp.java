@@ -39,10 +39,6 @@ public class EnvironmentExp {
         this.parentEnvironment = null;
     }
 
-    public HashMap<Symbol, ExpDefinition> getEnvironment(){
-        return this.environment;
-    }
-
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
     }
@@ -52,7 +48,7 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        throw new UnsupportedOperationException("not yet implemented");
+        return environment.get(key);
     }
 
     /**
@@ -71,7 +67,10 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (this.environment.containsKey(name)) {
+            throw new DoubleDefException();
+        }
+        this.environment.put(name, def);
     }
 
 }

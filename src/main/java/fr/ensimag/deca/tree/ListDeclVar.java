@@ -14,6 +14,7 @@ import java.util.Iterator;
  * @author gl38
  * @date 01/01/2024
  */
+
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
@@ -23,6 +24,14 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         while (iterator.hasNext()) {
             AbstractDeclVar declaration = iterator.next();
             declaration.decompile(s);
+        }
+    }
+
+    public void codeGenListDeclVar(DecacCompiler compiler){
+        int i = 1;
+        for (AbstractDeclVar declVar : this.getList()) {
+            //declVar.codeGenDeclVar(compiler, i);
+            i++;
         }
     }
 
