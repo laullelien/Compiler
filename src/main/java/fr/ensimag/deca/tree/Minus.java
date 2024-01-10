@@ -23,20 +23,51 @@ public class Minus extends AbstractOpArith {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        if (this.getType().isFloat()) {
+        operationDepth++;
+        if (this.getLeftOperand() instanceof IntLiteral) {
+            if (this.getRightOperand() instanceof IntLiteral) {
+                if (!isR1Init) {
+                    compiler.addInstruction(new LOAD(this.getRightOperand().getNegativeDval(), Register.R1));
+                    isR1Init = true;
+                }else {
+                    compiler.addInstruction(new LOAD(this.getRightOperand().getNegativeDval(), Register.R0));
+                    isR0Init = true;
+                }
 
-            compiler.addInstruction(new LOAD(0.0F, Register.R1));
-            addOperands(this.getLeftOperand(), compiler, true);
-            subOperands(this.getRightOperand(), compiler, true);
-            compiler.addInstruction(new WFLOAT());
+            }
+            else {
+                this.getRightOperand().codeGenPrint(compiler);
+                if (this.getRightOperand() instanceof Multiply && isR0Init) {
+                    compiler.addInstruction(new ADD(Register.R0, Register.R1));
+                    isR0Init = false;
+                }
+            }
+            compiler.addInstruction(new ADD(this.getLeftOperand().getDval(), Register.R1));
         }
-        else if (this.getType().isInt()) {
+        else {
+            this.getLeftOperand().codeGenPrint(compiler);
+            if (this.getLeftOperand() instanceof Multiply && isR0Init)
+                compiler.addInstruction(new ADD(Register.R0, Register.R1));
+            isR0Init = false;
+            if (this.getRightOperand() instanceof IntLiteral) {
+                compiler.addInstruction(new SUB(this.getRightOperand().getDval(), Register.R1));
+            }
+            else {
+                this.getRightOperand().codeGenPrint(compiler);
+                if (this.getRightOperand() instanceof Multiply)
+                    if (isR0Init) compiler.addInstruction(new SUB(Register.R0, Register.R1));
 
-            compiler.addInstruction(new LOAD(0, Register.R1));
-            addOperands(this.getLeftOperand(), compiler, false);
-            subOperands(this.getRightOperand(), compiler, false);
+            }
+        }
+        // on vérifie si on est à la racine
+        if (operationDepth == 1) {
+            // on remet isR1Init et isR0Init a leur valeur initiale pour la prochaine opération
+            isR1Init = false;
+            isR0Init = false;
             compiler.addInstruction(new WINT());
         }
+        else operationDepth--;
+
     }
 
 

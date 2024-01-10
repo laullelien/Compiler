@@ -3,9 +3,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.sql.Struct;
 
@@ -19,23 +17,39 @@ public class Divide extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
-
+    @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        if (this.getType().isFloat()) {
+        operationDepth++;
+        if (this.getRightOperand() instanceof IntLiteral) {
+            if (this.getLeftOperand() instanceof IntLiteral) {
+                if (!isR1Init) {
+                    compiler.addInstruction(new LOAD(this.getLeftOperand().getDval(), Register.R1));
+                    isR1Init = true;
+                } else {
+                    compiler.addInstruction(new LOAD(this.getLeftOperand().getDval(), Register.R0));
+                    isR0Init = true;
+                }
+            } else this.getRightOperand().codeGenPrint(compiler);
+            if (isR1Init && isR0Init)
+                compiler.addInstruction(new QUO(this.getRightOperand().getDval(), Register.R0));
+            else
 
-            compiler.addInstruction(new LOAD(0.0F, Register.R1));
-            addOperands(this.getLeftOperand(), compiler, true);
-            DivOperands(this.getRightOperand(), compiler, true);
-            compiler.addInstruction(new WFLOAT());
+                compiler.addInstruction(new QUO(this.getRightOperand().getDval(), Register.R1));
+        } else {
+            this.getRightOperand().codeGenPrint(compiler);
+            if (isR0Init) {
+                compiler.addInstruction(new QUO(this.getLeftOperand().getDval(), Register.R0));
+            } else compiler.addInstruction(new QUO(this.getLeftOperand().getDval(), Register.R1));
         }
-        else if (this.getType().isInt()) {
-
-            compiler.addInstruction(new LOAD(0, Register.R1));
-            addOperands(this.getLeftOperand(), compiler, false);
-            DivOperands(this.getRightOperand(), compiler, false);
+        // on vérifie si on est à la racine
+        if (operationDepth == 1) {
+            // on remet isR1Init et isR0Init a leur valeur initiale pour la prochaine opération
+            isR1Init = false;
+            isR0Init = false;
             compiler.addInstruction(new WINT());
-        }
+        } else operationDepth--;
     }
+
 
 
     @Override

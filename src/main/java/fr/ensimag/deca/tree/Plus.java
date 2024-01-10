@@ -26,25 +26,38 @@ public class Plus extends AbstractOpArith {
         operationDepth++;
         if (this.getLeftOperand() instanceof IntLiteral) {
             if (this.getRightOperand() instanceof IntLiteral) {
-                compiler.addInstruction(new LOAD(this.getRightOperand().getDval(), Register.R1));
+                if (!isR1Init) {
+                    compiler.addInstruction(new LOAD(this.getRightOperand().getDval(), Register.R1));
+                    isR1Init = true;
+                }else {
+                    compiler.addInstruction(new LOAD(this.getRightOperand().getDval(), Register.R0));
+                    isR0Init = true;
+                }
+
             }
             else {
                 this.getRightOperand().codeGenPrint(compiler);
-                if (this.getRightOperand() instanceof Multiply && isR0Init)
+                if (this.getRightOperand() instanceof Multiply && isR0Init){
                     compiler.addInstruction(new ADD(Register.R0, Register.R1));
+                    isR0Init = false;}
+
+
             }
             compiler.addInstruction(new ADD(this.getLeftOperand().getDval(), Register.R1));
         }
         else {
             this.getLeftOperand().codeGenPrint(compiler);
-            if (this.getLeftOperand() instanceof Multiply && isR0Init)
+            if ((this.getLeftOperand() instanceof Multiply && isR0Init) || (this.getRightOperand() instanceof Divide && isR0Init)){
                 compiler.addInstruction(new ADD(Register.R0, Register.R1));
+            isR0Init = false;}
             if (this.getRightOperand() instanceof IntLiteral)
                 compiler.addInstruction(new ADD(this.getRightOperand().getDval(), Register.R1));
             else {
                 this.getRightOperand().codeGenPrint(compiler);
-                if (this.getRightOperand() instanceof Multiply && isR0Init)
+                if ((this.getRightOperand() instanceof Multiply && isR0Init) || (this.getRightOperand() instanceof Divide && isR0Init)){
                     compiler.addInstruction(new ADD(Register.R0, Register.R1));
+                    isR0Init = false;}
+
             }
         }
         // on vérifie si on est à la racine

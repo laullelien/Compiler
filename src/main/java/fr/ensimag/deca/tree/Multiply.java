@@ -41,7 +41,10 @@ public class Multiply extends AbstractOpArith {
         }
         else {
             this.getLeftOperand().codeGenPrint(compiler);
-            compiler.addInstruction(new MUL(this.getRightOperand().getDval(), Register.R0));
+            if (isR0Init){
+                compiler.addInstruction(new MUL(this.getRightOperand().getDval(), Register.R0));
+            }
+            else compiler.addInstruction(new MUL(this.getRightOperand().getDval(), Register.R1));
         }
         // on vérifie si on est à la racine
         if (operationDepth == 1) {
