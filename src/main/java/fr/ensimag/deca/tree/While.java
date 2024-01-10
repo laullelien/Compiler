@@ -36,7 +36,12 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        
+        String labelString = "label_" + compiler.getLebalId();
+        compiler.incrementLabelId();
+        Label startWhileLabel = new Label(labelString + "_while");
+        Label endWhileLabel = new Label(labelString + "_endWhile");
+        condition.codeGenInst(compiler);
+
     }
 
     @Override
