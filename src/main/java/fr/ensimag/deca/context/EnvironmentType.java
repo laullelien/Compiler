@@ -49,7 +49,7 @@ public class EnvironmentType {
 
     public boolean assignCompatible(Type t1, Type t2) {
         // gestion des sous-classes à implémenter
-        if (t1.isFloat() && t2.isInt()) {
+        if (t1.isFloat() && t2.isInt() || t1 == t2) {
             return true;
         }
         return false;
