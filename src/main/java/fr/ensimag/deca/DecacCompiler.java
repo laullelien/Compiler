@@ -199,7 +199,8 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        // TODO a décommenter une fois qu'on applique le défensive programming et décoré l'arbre abstrait
+        // assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;

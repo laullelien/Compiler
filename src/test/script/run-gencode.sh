@@ -13,6 +13,7 @@ PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
 DIR=src/test/deca/codegen
 
 echo "Début tests codegen"
+
 source_path="$DIR/invalid"
 echo "Section $source_path"
 if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
@@ -20,23 +21,94 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
         echo "    [WARNING] Pas de fichier a tester"
     else
     for source in $source_path/*.deca
-rm -f ./src/test/deca/codegen/valid/provided/cond0.ass 2>/dev/null
-decac ./src/test/deca/codegen/valid/provided/cond0.deca || exit 1
-if [ ! -f ./src/test/deca/codegen/valid/provided/cond0.ass ]; then
-    echo "Fichier cond0.ass non généré."
-    exit 1
+    do
+        source_lis="${source%.deca}.lis"
+        filename="$(basename "$source")"
+        if [ ! -f "$source_lis" ]
+        then
+            echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester la compilation de $filename"
+        else
+            res_decac=$(decac "$source" 2>&1)
+            err_decac="$(cat "source_lis")"
+            if echo "$res_decac" | grep -q -e "$err_decac"
+            then
+                echo "    [OK] Echec attendu pour $filename"
+            else
+                echo "    [ERREUR] Succès inattendu ou erreur non détectée par test_context pour $filename"
+                echo "    [DEBUG] Erreur attendu: $err_decac"
+                echo "    [DEBUG] Sortie de test_lex:"
+                echo "$res_decac"
+                exit 1
+            fi
+        fi
+    done
+
+source_path="$DIR/valid"
+echo "Section $source_path"
+if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
+    then
+        echo "    [WARNING] Pas de fichier a tester"
+    else
+    for source in $source_path/*.deca
+    do
+        source_res="${source%.deca}.res"
+        source_ass="${source%.deca}.ass"
+        source_error="${source%.deca}.err"
+        filename="$(basename "$source")"
+        if [ ! -f "$source_res" ]
+        then
+            echo "    [WARNING] Fichier $source_res n'existe pas, impossible de tester la compilation de $filename"
+        else
+            rm -f "$source_ass" 2> /dev/null
+            decac "$source" 2> "$source_error"
+            # on vérifie si la taille de source.err est supérieur à 0
+            # celà signifie que decac a rencontré une erreur dans la compilation
+            if [ -s "$source_error" ]
+            then
+                echo "    [ERREUR] Echec inattendu de decac pour $filename"
+                echo "    [DEBUG] decac a reporté l'erreur suivant:"
+                cat "$source_error"
+                rm -f "$source_error"
+                exit 1
+            fi
+            if [ ! -f "$source_ass" ]
+            then
+                echo "    [ERREUR] Fichier $filename.ass non généré."
+                exit 1
+            fi
+            output_ima="${source%.deca}.out"
+            ima "$source_ass" > "$output_ima" 2> "$source_error"
+            rm -f "$source_ass"
+            # on vérifie si la taille de source.err est supérieur à 0
+            # celà signifie que ima a rencontré une erreur dans l'exécution
+            if [ -s "$source_error" ]
+            then
+                echo "    [ERREUR] Echec inattendu de ima pour $filename"
+                echo "    [DEBUG] ima a reporté l'erreur suivant:"
+                cat "$source_error"
+                rm -f "$output_ima"
+                rm -f "$source_error"
+                exit 1
+            fi
+            if diff "$output_ima" "$source_res" > /dev/null 2>&1
+            then
+                echo "    [OK] Résultat attendu de $filename"
+                rm -f "$output_ima"
+                rm -f "$source_error"
+            else
+                echo "    [ERREUR] Résultat inattendu pour $filename"
+                echo "    [DEBUG] Sortie attendu:"
+                cat "$source_res"
+                echo "    [DEBUG] Sortie de ima:"
+                cat "$output_ima"
+                # décommenter pour voir la différence entre les sorties
+                # echo "    [DEBUG] Différences constatées par diff:"
+                # diff "$output_ima" "$source_res"
+                rm -f "$output_ima"
+                rm -f "$source_error"
+                exit 1
+            fi
+        fi
+    done
 fi
 
-resultat=$(ima ./src/test/deca/codegen/valid/provided/cond0.ass) || exit 1
-rm -f ./src/test/deca/codegen/valid/provided/cond0.ass
-
-# On code en dur la valeur attendue.
-attendu=ok
-
-if [ "$resultat" = "$attendu" ]; then
-    echo "Tout va bien"
-else
-    echo "Résultat inattendu de ima:"
-    echo "$resultat"
-    exit 1
-fi

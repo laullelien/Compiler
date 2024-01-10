@@ -70,6 +70,9 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
                 cat "$source_lis"
                 echo "    [DEBUG] Sortie de decac -p:"
                 cat "$source_p"
+                # décommenter pour voir la différence entre les sorties
+                # echo "    [DEBUG] Différences constatées par diff:"
+                # diff "$source_p" "$source_lis"
                 rm "$source_p"
                 exit 1
             fi

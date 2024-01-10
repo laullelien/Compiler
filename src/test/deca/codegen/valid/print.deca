@@ -26,7 +26,7 @@
     // float
     println(1.5);
     // negative float
-    //println(-6.2); // ne marche pas pour l'instant, a fix
+    println(-6.2);
     // several expr
     println("several"," expr");
     // int in decimal
