@@ -1,0 +1,12 @@
+// Description:
+//    Déclaration de variables
+//
+// Résultats:
+//    Ligne 11: Nom de variable invalide
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+   int a@b = 42;
+}
