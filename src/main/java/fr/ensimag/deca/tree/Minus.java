@@ -23,18 +23,18 @@ public class Minus extends AbstractOpArith {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        if (this.getRightOperand().getType().isFloat()) {
+        if (this.getType().isFloat()) {
 
             compiler.addInstruction(new LOAD(0.0F, Register.R1));
-            addOperands(this.getLeftOperand(), compiler);
-            subOperands(this.getRightOperand(), compiler);
+            addOperands(this.getLeftOperand(), compiler, true);
+            subOperands(this.getRightOperand(), compiler, true);
             compiler.addInstruction(new WFLOAT());
         }
-        else if (this.getRightOperand().getType().isInt()) {
+        else if (this.getType().isInt()) {
 
             compiler.addInstruction(new LOAD(0, Register.R1));
-            addOperands(this.getLeftOperand(), compiler);
-            subOperands(this.getRightOperand(), compiler);
+            addOperands(this.getLeftOperand(), compiler, false);
+            subOperands(this.getRightOperand(), compiler, false);
             compiler.addInstruction(new WINT());
         }
     }

@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
@@ -24,17 +25,20 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
+    public DVal getDval() {
+        return getOperand().getNegativeDval();
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         //regle 3.37
         Type typeOperand = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
         if (typeOperand.isInt()){
-            setType(compiler.environmentType.INT);
-            return getType();
+            return compiler.environmentType.INT;
         }
         if (typeOperand.isFloat()){
-            setType(compiler.environmentType.FLOAT);
-            return getType();
+            return compiler.environmentType.FLOAT;
         }
         throw new ContextualError("Le type ne respecte pas la règle 3.37", this.getLocation());
     }

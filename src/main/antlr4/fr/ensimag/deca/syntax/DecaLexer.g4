@@ -58,3 +58,5 @@ FALSE: 'false';
 PLUS : '+' ;
 MINUS : '-' ;
 TIMES : '*' ;
+SLASH : '/' ;
+PERCENT : '%' ;

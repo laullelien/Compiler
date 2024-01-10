@@ -9,4 +9,6 @@ package fr.ensimag.ima.pseudocode;
 public abstract class Operand {
     @Override
     public abstract String toString();
+
+
 }
