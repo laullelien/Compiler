@@ -3,17 +3,23 @@
 # Auteur : gl38
 # Version initiale : 01/01/2024
 
-# Encore un test simpliste. On compile un fichier (cond0.deca), on
-# lance ima dessus, et on compare le résultat avec la valeur attendue.
+# Script de test de la génération de code pour ima pour les sources dans codegen
 
-# Ce genre d'approche est bien sûr généralisable, en conservant le
-# résultat attendu dans un fichier pour chaque fichier source.
+# On se place dans le répertoire du projet (quel que soit le
+# répertoire d'où est lancé le script) :
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
+DIR=src/test/deca/codegen
 
-# On ne teste qu'un fichier. Avec une boucle for appropriée, on
-# pourrait faire bien mieux ...
+echo "Début tests codegen"
+source_path="$DIR/invalid"
+echo "Section $source_path"
+if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
+    then
+        echo "    [WARNING] Pas de fichier a tester"
+    else
+    for source in $source_path/*.deca
 rm -f ./src/test/deca/codegen/valid/provided/cond0.ass 2>/dev/null
 decac ./src/test/deca/codegen/valid/provided/cond0.deca || exit 1
 if [ ! -f ./src/test/deca/codegen/valid/provided/cond0.ass ]; then
