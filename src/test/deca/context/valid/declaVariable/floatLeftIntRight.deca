@@ -1,8 +1,8 @@
 // Description:
-//    Déclaration de variables
+//    Un entier est un float pour les déclarations de variables
 //
 // Résultats:
-//    Ligne 11: Variable non déclarée
+//    Ligne 11: Pass
 //
 // Historique:
 //    Créé le 10/01/2024

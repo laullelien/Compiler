@@ -24,6 +24,11 @@ fragment DIGIT: '0' .. '9';
 fragment POSITIVE_DIGIT: '1' .. '9';
 INT: '0' | POSITIVE_DIGIT DIGIT*;
 
+// grammar for bool
+
+TRUE: 'true';
+FALSE: 'false';
+
 // grammar for identifiers
 
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
@@ -57,11 +62,6 @@ fragment DIGITHEX: [0-9A-Fa-f]+;
 fragment NUMHEX: DIGITHEX+;
 fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
  FLOAT: FLOATDEC | FLOATHEX;
-
-// grammar for bool
-
-TRUE: 'true';
-FALSE: 'false';
 
 // grammar
 
