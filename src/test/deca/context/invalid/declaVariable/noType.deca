@@ -1,0 +1,12 @@
+// Description:
+//    Déclaration de variables
+//
+// Résultats:
+//    Ligne 11: Type de variable manquant
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+   a = 5;
+}
