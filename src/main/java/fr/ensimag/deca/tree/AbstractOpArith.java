@@ -23,6 +23,10 @@ import javax.print.attribute.standard.MediaSize;
  */
 public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
+    protected static boolean isR0Init = false;
+    protected static boolean isR1Init = false;
+    protected static int operationDepth = 0;
+
     public AbstractOpArith(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
