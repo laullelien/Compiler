@@ -1,18 +1,14 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-
-import java.io.PrintStream;
-
-import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
+
+import java.io.PrintStream;
 
 /**
  * @author gl38
@@ -79,6 +75,8 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     public void codeGenDeclVar(DecacCompiler compiler) {
         initialization.codeGenInst(compiler);
-        compiler.addInstruction(new STORE(Register.R0, varName.getVariableDefinition().getOperand()));
+        if (initialization instanceof Initialization) {
+            compiler.addInstruction(new STORE(Register.R0, varName.getVariableDefinition().getOperand()));
+        }
     }
 }
