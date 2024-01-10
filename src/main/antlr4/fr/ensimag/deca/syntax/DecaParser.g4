@@ -408,7 +408,7 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-        $tree = new Identifier((new SymbolTable()).create($IDENT.text));
+        $tree = new Identifier(getDecacCompiler().createSymbol($IDENT.text));
         }
     ;
 
