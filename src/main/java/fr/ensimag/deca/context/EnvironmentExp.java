@@ -1,9 +1,6 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.deca.tree.AbstractIdentifier;
-import fr.ensimag.deca.tree.Identifier;
-import jdk.javadoc.internal.doclint.Env;
 
 import java.util.HashMap;
 
@@ -78,11 +75,25 @@ public class EnvironmentExp {
         this.environment.put(name, def);
     }
 
+    /**
+     * Stack two environment with env1 having the priority.
+     * If env2 is null, an environment with the definitions from env1 is returned.
+     *
+     * @param env1
+     *          the environment stacked on env2
+     * @param env2
+     *          the environment with env1 stacked onto it
+     *
+    */
     public EnvironmentExp stackEnvironment(EnvironmentExp env1, EnvironmentExp env2) {
         EnvironmentExp res = new EnvironmentExp(null);
-        res.environment.putAll(env2.environment);
-        for (Symbol name : env1.environment.keySet()) {
-            res.environment.put(name, env1.environment.get(name));
+        if (env2 == null) {
+            res.environment.putAll(env1.environment);
+        } else {
+            res.environment.putAll(env2.environment);
+            for (Symbol name : env1.environment.keySet()) {
+                res.environment.put(name, env1.environment.get(name));
+            }
         }
         return res;
     }
