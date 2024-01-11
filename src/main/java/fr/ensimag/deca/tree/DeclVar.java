@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -35,15 +36,21 @@ public class DeclVar extends AbstractDeclVar {
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type typeVariable = type.verifyType(compiler);
-        varName.setDefinition(new VariableDefinition(typeVariable, this.getLocation()));
         if (typeVariable.isVoid()) {
             throw new ContextualError("Une variable de type void est invalide : la règle (3.17) n'est pas respectée", this.getLocation());
         }
         initialization.verifyInitialization(compiler, typeVariable, localEnv.stackEnvironment(localEnv, localEnv.getParentEnvironment()), currentClass);
         try {
-            localEnv.declare(this.varName.getName(), new VariableDefinition(typeVariable, this.getLocation()));
+            ExpDefinition def = new VariableDefinition(typeVariable, this.getLocation());
+            localEnv.declare(this.varName.getName(), def);
+            varName.setDefinition(def);
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Le symbole existe déjà : la règle (3.17) n'est pas respectée", this.getLocation());
+        }
+        //Set la def de l'expression attribut de initialization dans le cas ou il s'agit d'un identifer
+        if(initialization instanceof Initialization && ((Initialization)initialization).getExpression() instanceof Identifier) {
+            Identifier ident = (Identifier)(((Initialization) initialization).getExpression());
+            ident.setDefinition(localEnv.get(ident.getName()));
         }
     }
 

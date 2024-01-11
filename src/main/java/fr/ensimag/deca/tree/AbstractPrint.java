@@ -42,7 +42,7 @@ public abstract class AbstractPrint extends AbstractInst {
                               ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // regle (3.21)
-        arguments.verifyListExpr(compiler, localEnv, currentClass);
+        arguments.verifyListExprPrint(compiler, localEnv, currentClass);
     }
 
     @Override

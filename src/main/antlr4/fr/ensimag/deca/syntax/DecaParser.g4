@@ -63,7 +63,9 @@ block returns[ListDeclVar decls, ListInst insts]
             assert($list_decl.tree != null);
             assert($list_inst.tree != null);
             $decls = $list_decl.tree;
+            setLocation($decls, $list_decl.start);
             $insts = $list_inst.tree;
+            setLocation($insts, $list_inst.start);
         }
     ;
 
@@ -169,6 +171,7 @@ list_expr returns[ListExpr tree]
         }
     : (e1=expr {
         $tree.add($e1.tree);
+        setLocation($tree, $expr.start);
         }
        (COMMA e2=expr {
         $tree.add($e2.tree);

@@ -6,6 +6,9 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -190,6 +193,11 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addInstruction(new STORE(Register.R0, getVariableDefinition().getOperand()));
     }
 
     @Override

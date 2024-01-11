@@ -8,8 +8,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -38,6 +36,7 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
+        // regle 3.8
         expression.verifyRValue(compiler, localEnv, currentClass, t);
     }
 
