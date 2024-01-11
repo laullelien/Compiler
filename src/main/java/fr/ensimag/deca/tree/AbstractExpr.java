@@ -55,10 +55,6 @@ public abstract class AbstractExpr extends AbstractInst {
          if(!(returnType.isString() || returnType.isInt() || returnType.isFloat())) {
              throw new ContextualError("Le type d'un parametre de print ne respecte pas la règle 3.30", this.getLocation());
          }
-        if(this instanceof  Identifier) {
-            Identifier ident = (Identifier)this;
-            ident.setDefinition(localEnv.get(ident.getName()));
-        }
     }
 
     /**
@@ -133,6 +129,10 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
+        throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    protected void codeGenPrintX(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
 

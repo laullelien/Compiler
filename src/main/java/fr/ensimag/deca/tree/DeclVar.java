@@ -47,11 +47,6 @@ public class DeclVar extends AbstractDeclVar {
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Le symbole existe déjà : la règle (3.17) n'est pas respectée", this.getLocation());
         }
-        //Set la def de l'expression attribut de initialization dans le cas ou il s'agit d'un identifer
-        if(initialization instanceof Initialization && ((Initialization)initialization).getExpression() instanceof Identifier) {
-            Identifier ident = (Identifier)(((Initialization) initialization).getExpression());
-            ident.setDefinition(localEnv.get(ident.getName()));
-        }
     }
 
     @Override

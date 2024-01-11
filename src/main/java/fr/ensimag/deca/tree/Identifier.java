@@ -8,8 +8,7 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -163,6 +162,8 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         ExpDefinition defIdentifier = localEnv.get(this.getName());
+        setDefinition(defIdentifier);
+        setType(defIdentifier.getType());
         if(defIdentifier == null){
             throw new ContextualError("La règle 0.1 n'est pas respectée", this.getLocation());
         }
@@ -204,8 +205,21 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
+        if(getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        }
+        if(getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
     }
 
+    protected void codeGenPrintX(DecacCompiler compiler) {
+        if(!this.getType().isFloat()) {
+            throw new RuntimeException("Le paramètre devrait être de type float");
+        }
+        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
+        compiler.addInstruction(new WFLOATX());
+    }
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(name.toString());
