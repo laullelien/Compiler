@@ -23,6 +23,56 @@ import javax.print.attribute.standard.MediaSize;
  */
 public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
+        if (getType().isInt())
+            compiler.addInstruction(new WINT());
+        else if (getType().isFloat())
+            compiler.addInstruction(new WFLOAT());
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+//        if (isLastOperation()) {
+//            compiler.addInstruction(new LOAD(getLeftOperand().getDval(), Register.getR(2)));
+//            compiler.addInstruction(new LOAD(getRightOperand().getDval(), Register.getR(3)));
+//        }
+//        else {
+//            if (!getRightOperand().isTerminal()) {
+//                getRightOperand().codeGenInst(compiler);
+//                compiler.addInstruction(new LOAD(Register.R1, Register.getR(2)));
+//                if (!getLeftOperand().isTerminal()) {
+//                    getLeftOperand().codeGenInst(compiler);
+//                }
+//                else compiler.addInstruction(new LOAD(getLeftOperand().getDval(), Register.R1));
+//                compiler.addInstruction(new LOAD(Register.getR(2), Register.R0));
+//            }
+//            else {
+//                if (!getLeftOperand().isTerminal()) {
+//                    getLeftOperand().codeGenInst(compiler);
+//                }
+//                else compiler.addInstruction(new LOAD(getLeftOperand().getDval(), Register.R1));
+//                compiler.addInstruction(new LOAD(getRightOperand().getDval(), Register.R0));
+//            }
+            if (!getLeftOperand().isTerminal()) {
+                getLeftOperand().codeGenInst(compiler);
+                compiler.addInstruction(new LOAD(Register.getR(2), Register.R0));
+                if (!getRightOperand().isTerminal()) {
+                    getRightOperand().codeGenInst(compiler);
+                    compiler.addInstruction(new LOAD(Register.getR(2), Register.getR(3)));
+                }
+                else compiler.addInstruction(new LOAD(getRightOperand().getDval(), Register.getR(3)));
+                compiler.addInstruction(new LOAD(Register.R0, Register.getR(2)));
+            }
+            else {
+                compiler.addInstruction(new LOAD(getLeftOperand().getDval(), Register.getR(2)));
+                compiler.addInstruction(new LOAD(getRightOperand().getDval(), Register.getR(3)));
+            }
+//        }
+    }
+
     protected static boolean isR0Init = false;
     protected static boolean isR1Init = false;
     protected static int operationDepth = 0;

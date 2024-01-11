@@ -40,6 +40,11 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
+    protected boolean isTerminal() {
+        return true;
+    }
+
+    @Override
     public DVal getDval(){
         return new ImmediateFloat(value);
     }

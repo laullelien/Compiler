@@ -32,6 +32,11 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
+    protected boolean isTerminal() {
+        return true;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         // regle (3.44)

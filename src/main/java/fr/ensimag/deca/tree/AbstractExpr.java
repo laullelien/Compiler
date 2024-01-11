@@ -29,7 +29,7 @@ public abstract class AbstractExpr extends AbstractInst {
         return false;
     }
 
-
+    protected boolean isTerminal() { return false; }
 
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
@@ -48,6 +48,9 @@ public abstract class AbstractExpr extends AbstractInst {
 
     public DVal getDval() {
         return dval;
+        // TODO refactor codeGenPrint de AbstractPrint qui dépend encore de cet attribut
+        // qui est encore nul ici
+        // throw new DecacInternalError("getDval() should not be called from AbstractExpr");
     }
 
     public DVal getNegativeDval() {
