@@ -13,7 +13,10 @@
 	int a = 5;
 	int b = a;
 	int c = b;
+	float d = 2.0;
 	println(a);
 	println(b);
 	println(c);
+	println(d);
+	printlnx(d);
 }
