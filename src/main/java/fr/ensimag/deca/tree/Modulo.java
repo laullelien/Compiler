@@ -33,8 +33,6 @@ public class Modulo extends AbstractOpArith {
 
     protected void codeGenPrint(DecacCompiler compiler) {
             compiler.addInstruction(new LOAD(0, Register.R1));
-            addOperands(this.getLeftOperand(), compiler, false);
-            modOperands(this.getRightOperand(), compiler, false);
             compiler.addInstruction(new WINT());
         }
 
