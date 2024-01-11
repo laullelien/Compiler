@@ -19,13 +19,13 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $source_path/*.deca
+    for source in "$source_path"/*.deca
     do
         source_lis="${source%.deca}.lis"
         filename="$(basename "$source")"
         if [ -f "$source_lis" ]
         then
-            res_synt=$(test_synt "$source" 2>&1)
+            res_synt="$(test_synt "$source" 2>&1)"
             err_synt="$(cat "$source_lis")"
             if echo "$res_synt" | grep -q -e "$err_synt"
             then
@@ -47,7 +47,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $DIR/valid/*.deca
+    for source in "$source_path"/*.deca
     do
         source_lis="${source%.deca}.lis"
         filename="$(basename "$source")"
@@ -59,7 +59,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
             # on exploite ensuite le theoreme 2 pour le résultat de decac -p avec
             # le résultat contenu dans source.lis, qui contient le résultat de decac -p sur source.deca
             source_p="$DIR/valid/$filename.p"
-            decac -p "$source" 2>&1 > "$source_p"
+            decac -p "$source" > "$source_p" 2>&1 
             if diff "$source_p" "$source_lis" > /dev/null 2>&1
             then
                 echo "    [OK] Succès attendu de $filename"

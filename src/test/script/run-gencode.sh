@@ -20,7 +20,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $source_path/*.deca
+    for source in "$source_path"/*.deca
     do
         source_lis="${source%.deca}.lis"
         filename="$(basename "$source")"
@@ -28,20 +28,21 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
         then
             echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester la compilation de $filename"
         else
-            res_decac=$(decac "$source" 2>&1)
+            res_decac="$(decac "$source" 2>&1)"
             err_decac="$(cat "source_lis")"
             if echo "$res_decac" | grep -q -e "$err_decac"
             then
                 echo "    [OK] Echec attendu pour $filename"
             else
-                echo "    [ERREUR] Succès inattendu ou erreur non détectée par test_context pour $filename"
+                echo "    [ERREUR] Succès inattendu ou erreur non détectée par decac pour $filename"
                 echo "    [DEBUG] Erreur attendu: $err_decac"
-                echo "    [DEBUG] Sortie de test_lex:"
+                echo "    [DEBUG] Sortie de decac:"
                 echo "$res_decac"
                 exit 1
             fi
         fi
     done
+fi
 
 source_path="$DIR/valid"
 echo "Section $source_path"
@@ -49,7 +50,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $source_path/*.deca
+    for source in "$source_path"/*.deca
     do
         source_res="${source%.deca}.res"
         source_ass="${source%.deca}.ass"

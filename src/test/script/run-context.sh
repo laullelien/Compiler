@@ -19,7 +19,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $source_path/*.deca
+    for source in "$source_path"/*.deca
     do
         source_lis="${source%.deca}.lis"
         filename="$(basename "$source")"
@@ -27,7 +27,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
         then
             echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester le context de $filename"
         else
-            res_context=$(test_context "$source" 2>&1)
+            res_context="$(test_context "$source" 2>&1)"
             err_context="$(cat "$source_lis")"
             if echo "$res_context" | grep -q -e "$err_context"
             then
@@ -49,12 +49,11 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $DIR/valid/*.deca
+    for source in "source_path"/*.deca
     do
         filename="$(basename "$source")"
         # pour les tests valides, on lance decac avec -v pour detecter une eventuelle erreur
-        source_v="$DIR/valid/$filename.v"
-        res_context=$(decac -v "$source" 2>&1)
+        res_context="$(decac -v "$source" 2>&1)"
         if echo "$res_context" | grep -q -e "$filename:[0-9][0-9]*:"
         then
             echo "    [ERREUR] Echec inattendu de test_context pour $filename"

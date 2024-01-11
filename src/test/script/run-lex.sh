@@ -19,18 +19,18 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $source_path/*.deca
+    for source in "$source_path"/*.deca
     do
         source_lex="${source%.deca}.lex"
         source_lis="${source%.deca}.lis"
         filename="$(basename "$source")"
         # pour pouvoir faire nos tests, il faut obligatoirement un fichier source.lex ou source.lis
         # qui contient les résultats attendus par test_lex et decac
-        if [ ! -f "$source_lex" -a ! -f "$source_lis" ]
+        if [ ! -f "$source_lex" ] && [ ! -f "$source_lis" ]
         then
             echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester le lexer de $filename"
         else
-            res_lex=$(test_lex "$source" 2>&1)
+            res_lex="$(test_lex "$source" 2>&1)"
             # si on a qu'un fichier source.lis, test_lex doit marcher
             if [ -f "$source_lis" ]
             then
@@ -67,10 +67,10 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in $DIR/valid/*.deca
+        for source in "$source_path"/*.deca
     do
         filename="$(basename "$source")"
-        res_lex=$(test_lex "$source" 2>&1)
+        res_lex="$(test_lex "$source" 2>&1)"
         if echo "$res_lex" | grep -q -e "$filename:[0-9][0-9]*:"
         then
             echo "    [ERREUR] Echec inattendu de test_lex pour $filename"
