@@ -15,6 +15,11 @@ options {
 
 WHILE: 'while';
 
+// grammer for if branch
+
+IF: 'if';
+ELSE: 'else';
+
 // grammar for print instructions
 
 PRINTX: 'printx';
@@ -71,8 +76,4 @@ fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NU
 
 PLUS : '+' ;
 MINUS : '-' ;
-
-// grammer for if branch
-IF: 'if';
-ELSE: 'else';
 
