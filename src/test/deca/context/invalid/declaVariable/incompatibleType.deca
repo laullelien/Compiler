@@ -1,0 +1,12 @@
+// Description:
+//    Déclaration de variables
+//
+// Résultats:
+//    Ligne 11: Type de la valeur incompatible
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+   int a = 3.2;
+}

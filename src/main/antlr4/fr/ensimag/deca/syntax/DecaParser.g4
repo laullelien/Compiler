@@ -24,8 +24,10 @@ options {
 
 // which packages should be imported?
 @header {
+    import fr.ensimag.deca.tools.*;
     import fr.ensimag.deca.tree.*;
     import java.io.PrintStream;
+
 }
 
 @members {
@@ -61,7 +63,9 @@ block returns[ListDeclVar decls, ListInst insts]
             assert($list_decl.tree != null);
             assert($list_inst.tree != null);
             $decls = $list_decl.tree;
+            setLocation($decls, $list_decl.start);
             $insts = $list_inst.tree;
+            setLocation($insts, $list_inst.start);
         }
     ;
 
@@ -69,7 +73,8 @@ list_decl returns[ListDeclVar tree]
 @init   {
             $tree = new ListDeclVar();
         }
-    : decl_var_set[$tree]*
+    : decl_var_set[$tree]* {
+    }
     ;
 
 decl_var_set[ListDeclVar l]
@@ -80,6 +85,7 @@ list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
+        $l.add($dv2.tree);
         }
       )*
     ;
@@ -88,8 +94,14 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 @init   {
         }
     : i=ident {
+            $tree = new DeclVar(t, $i.tree, new NoInitialization());
+            setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
+            Initialization init = new Initialization($e.tree);
+            setLocation(init, $e.start);
+            $tree = new DeclVar(t, $i.tree, init);
+            setLocation($tree, $e.start);
         }
       )? {
         }
@@ -140,6 +152,8 @@ inst returns[AbstractInst tree]
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
             assert($body.tree != null);
+            $tree = new While($condition.tree, $body.tree);
+            setLocation($tree, $WHILE);
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
@@ -173,6 +187,7 @@ list_expr returns[ListExpr tree]
         }
     : (e1=expr {
         $tree.add($e1.tree);
+        setLocation($tree, $expr.start);
         }
        (COMMA e2=expr {
         $tree.add($e2.tree);
@@ -197,10 +212,13 @@ assign_expr returns[AbstractExpr tree]
         EQUALS e2=assign_expr {
             assert($e.tree != null);
             assert($e2.tree != null);
+            $tree = new Assign((AbstractLValue)$e.tree, $e2.tree);
+            setLocation($tree, $e.start);
         }
       | /* epsilon */ {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
       )
     ;
@@ -209,6 +227,7 @@ or_expr returns[AbstractExpr tree]
     : e=and_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
     | e1=or_expr OR e2=and_expr {
             assert($e1.tree != null);
@@ -220,6 +239,7 @@ and_expr returns[AbstractExpr tree]
     : e=eq_neq_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
     |  e1=and_expr AND e2=eq_neq_expr {
             assert($e1.tree != null);                         
@@ -231,6 +251,7 @@ eq_neq_expr returns[AbstractExpr tree]
     : e=inequality_expr {
             assert($e.tree != null);
             $tree = $e.tree;
+            setLocation($tree, $e.start);
         }
     | e1=eq_neq_expr EQEQ e2=inequality_expr {
             assert($e1.tree != null);
@@ -346,6 +367,7 @@ select_expr returns[AbstractExpr tree]
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
@@ -375,6 +397,8 @@ primary_expr returns[AbstractExpr tree]
 type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     ;
 
@@ -411,6 +435,8 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
+        $tree = new Identifier(getDecacCompiler().createSymbol($IDENT.text));
+        setLocation($tree, $IDENT);
         }
     ;
 

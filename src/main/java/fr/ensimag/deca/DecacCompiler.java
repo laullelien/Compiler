@@ -8,15 +8,17 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -38,6 +40,17 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    private int nbDeclVar = 0;
+
+    public int generateDeclVarOffset() {
+        nbDeclVar ++;
+        return nbDeclVar;
+    }
+
+    public int getNbDeclVar() {
+        return nbDeclVar;
+    }
 
     /**
      * Portable newline character.
@@ -104,15 +117,15 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
-    
+
     /**
-     * @see 
+     * @see
      * fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
         return program.display();
     }
-    
+
     private final CompilerOptions compilerOptions;
     private final File source;
     /**
@@ -120,17 +133,15 @@ public class DecacCompiler {
      */
     private final IMAProgram program = new IMAProgram();
 
-
-    /** The global environment for types (and the symbolTable) */
-    public final EnvironmentType environmentType = new EnvironmentType(this);
-
     /** Dictionnaire qui associe à chaque identificateur (Symbol) sa définition (Type) */
     public final SymbolTable symbolTable = new SymbolTable();
 
     public Symbol createSymbol(String name) {
-        return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
-        //return symbolTable.create(name);
+        return symbolTable.create(name);
     }
+    /** The global environment for types (and the symbolTable) */
+
+    public final EnvironmentType environmentType = new EnvironmentType(this);
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -210,6 +221,14 @@ public class DecacCompiler {
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
+
+        addComment("error handling");
+
+        addLabel(new Label("stack_full"));
+        addInstruction(new WSTR(new ImmediateString("La pile est pleine")));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
+
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
