@@ -9,8 +9,8 @@
 
 {
     boolean a = true;
-    while (b) {
-        print("while false n'a pas marché");
+    while (a) {
+        print("boucle infinie");
     }
-    print("on n'est pas passé dans while false");
+    print("on est sorti du while true");
 }

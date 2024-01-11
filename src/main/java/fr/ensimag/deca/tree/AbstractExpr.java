@@ -7,12 +7,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-<<<<<<< HEAD
 import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.Label;
-=======
 import org.apache.commons.lang.Validate;
->>>>>>> faire-declarations-variables
 
 import java.io.PrintStream;
 
@@ -44,8 +40,7 @@ public abstract class AbstractExpr extends AbstractInst {
         Validate.notNull(type);
         this.type = type;
     }
-<<<<<<< HEAD
-    private Type type;
+
     private DVal dval ;
     private DVal negDval;
 
@@ -56,8 +51,7 @@ public abstract class AbstractExpr extends AbstractInst {
     public DVal getNegativeDval() {
         return negDval;
     }
-=======
->>>>>>> faire-declarations-variables
+
 
     @Override
     protected void checkDecoration() {
