@@ -1,0 +1,16 @@
+// Description:
+//    Programme avec un while dont la condition n'est pa sde type booléen
+//
+// Resultats:
+//         Ligne 11 : la condition n'est pas de type booléen
+//
+// Historique:
+//    cree le 10/01/2024
+
+{
+    boolean falseOfDeathWhichKill = false;
+    while (falseOfDeathWhichKill) {
+        print("personne ne sera jamais que j'aurais prononcé ces mots mais sarah pense que tu pues");
+    }
+    print("pour l'instant on ne peut tester que des while false ou while true donc c'est chiant. Mais vousinquiétez pas monsieur, les bons tests arrivent");
+}

@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -31,8 +32,10 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         // regle (3.18)
-        declVariables.verifyListDeclVariable(compiler, new EnvironmentExp(), null);
-        insts.verifyListInst(compiler, new EnvironmentExp(), null, compiler.environmentType.VOID);
+        EnvironmentExp globalEnvironment = new EnvironmentExp();
+        ClassDefinition currentClass = null;
+        declVariables.verifyListDeclVariable(compiler, globalEnvironment, currentClass);
+        insts.verifyListInst(compiler, globalEnvironment, currentClass, compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
     }
 

@@ -75,6 +75,10 @@ public class EnvironmentExp {
         this.environment.put(name, def);
     }
 
+    public HashMap<Symbol, ExpDefinition> getEnvironment(){
+        return this.environment;
+    }
+
     /**
      * Stack two environment with env1 having the priority.
      * If env2 is null, an environment with the definitions from env1 is returned.

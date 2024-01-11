@@ -8,6 +8,11 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -40,7 +45,21 @@ public class While extends AbstractInst {
         compiler.incrementLabelId();
         Label startWhileLabel = new Label(labelString + "_while");
         Label endWhileLabel = new Label(labelString + "_endWhile");
+
+        compiler.addLabel(startWhileLabel);
+
         condition.codeGenInst(compiler);
+
+        compiler.addInstruction(new CMP(1, Register.R0));
+        compiler.addInstruction(new BNE(endWhileLabel));
+
+        body.codeGenListInst(compiler);
+
+        compiler.addInstruction(new BRA(startWhileLabel));
+
+        compiler.addLabel(endWhileLabel);
+
+        System.out.println("on est passé");
 
     }
 
@@ -48,6 +67,7 @@ public class While extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        // regle (3.25)
         this.condition.verifyCondition(compiler, localEnv, currentClass);
         this.body.verifyListInst(compiler, localEnv, currentClass, returnType);
     }
