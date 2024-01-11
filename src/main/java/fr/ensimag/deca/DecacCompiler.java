@@ -276,4 +276,13 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    private int labelId = 0;
+    public int getLebalId() {
+        return labelId;
+    }
+
+    public void incrementLabelId(){
+        labelId++;
+    }
+
 }

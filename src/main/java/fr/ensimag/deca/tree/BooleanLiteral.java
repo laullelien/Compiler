@@ -36,12 +36,11 @@ public class BooleanLiteral extends AbstractExpr {
         return getType();
     }
 
-    @Override
     protected void codeGenInst(DecacCompiler compiler) {
         if (value) {
-            compiler.addInstruction(new LOAD(new ImmediateInteger(1), Register.R0));
+            compiler.addInstruction(new LOAD(1, Register.R0));
         } else {
-            compiler.addInstruction(new LOAD(new ImmediateInteger(0), Register.R0));
+            compiler.addInstruction(new LOAD(0, Register.R0));
         }
     }
 

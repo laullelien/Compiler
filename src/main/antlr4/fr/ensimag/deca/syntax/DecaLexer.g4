@@ -11,6 +11,10 @@ options {
 @members {
 }
 
+// grammar for while instruction
+
+WHILE: 'while';
+
 // grammar for print instructions
 
 PRINTX: 'printx';
