@@ -58,9 +58,6 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(startWhileLabel));
 
         compiler.addLabel(endWhileLabel);
-
-        System.out.println("on est passé");
-
     }
 
     @Override

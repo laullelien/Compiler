@@ -36,7 +36,6 @@ public class ListInst extends TreeList<AbstractInst> {
         for (AbstractInst i : getList()) {
             i.codeGenInst(compiler);
         }
-        System.out.println("yegfuh");
     }
 
     @Override
