@@ -10,7 +10,7 @@
 
 {
     float b = 3.2;
-    print(b);
+    println(b);
     b = 2;
-    print(b);
+    println(b);
 }
