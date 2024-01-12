@@ -1,0 +1,13 @@
+// Description:
+//    Impression d'un mauvais token, non chaine de caractères.
+//
+// Resultats:
+//    Ligne 12: Token interdit.
+//    test_lex ne doit pas donner d'erreur.
+//
+// Historique:
+//    cree le 01/01/2024
+
+{
+    print({);
+}
