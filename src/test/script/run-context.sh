@@ -52,7 +52,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     then
         echo "    [WARNING] Pas de fichier a tester"
     else
-    for source in "source_path"/*.deca
+    for source in "$source_path"/*.deca
     do
         filename="$(basename "$source")"
         # pour les tests valides, on lance decac avec -v pour detecter une eventuelle erreur
