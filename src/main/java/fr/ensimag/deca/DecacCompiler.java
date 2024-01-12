@@ -141,8 +141,8 @@ public class DecacCompiler {
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
     public Symbol createSymbol(String name) {
-        return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
-        //return symbolTable.create(name);
+       // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
+        return symbolTable.create(name);
     }
 
     /**

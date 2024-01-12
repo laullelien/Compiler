@@ -162,11 +162,11 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         ExpDefinition defIdentifier = localEnv.get(this.getName());
-        setDefinition(defIdentifier);
-        setType(defIdentifier.getType());
-        if(defIdentifier == null){
+        if(defIdentifier == null) {
             throw new ContextualError("La règle 0.1 n'est pas respectée", this.getLocation());
         }
+        setDefinition(defIdentifier);
+        setType(defIdentifier.getType());
         return defIdentifier.getType();
     }
 
