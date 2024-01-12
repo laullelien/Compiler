@@ -1,3 +1,16 @@
+// Description:
+//    Programme minimaliste utilisant printx et printlnx.
+//
+// Resultats:
+//    3
+//    0x1.47ae14p+1
+//    Hello world
+//    Helloan other word
+//    30x1.47ae14p+1Hello worldHelloan other word2.56000e+00
+//
+// Historique:
+//    cree le 01/01/2024
+
 {
     printlnx(3);
     printlnx(2.56);

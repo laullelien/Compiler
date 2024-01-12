@@ -1,0 +1,18 @@
+// Description:
+//    Programme simple testant les if
+//
+// Resultats:
+//    hello
+//
+// Historique:
+//    Cree le 09/01/2024
+
+{
+	if(true) {
+		println("hello");
+	}
+	if(false) {
+		println("bye");
+	}
+}
+

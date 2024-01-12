@@ -5,6 +5,11 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
+import fr.ensimag.ima.pseudocode.instructions.BOV;
+import fr.ensimag.ima.pseudocode.instructions.TSTO;
 
 import java.util.Iterator;
 
@@ -14,6 +19,7 @@ import java.util.Iterator;
  * @author gl38
  * @date 01/01/2024
  */
+
 public class ListDeclVar extends TreeList<AbstractDeclVar> {
 
     @Override
@@ -23,6 +29,21 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         while (iterator.hasNext()) {
             AbstractDeclVar declaration = iterator.next();
             declaration.decompile(s);
+        }
+    }
+
+    public void setOperand(DecacCompiler compiler) {
+        for (AbstractDeclVar declVar : this.getList()) {
+            declVar.setOperand(compiler);
+        }
+    }
+
+    public void codeGenListDeclVar(DecacCompiler compiler){
+        compiler.addInstruction(new TSTO(compiler.getNbDeclVar()));
+        compiler.addInstruction(new BOV(new Label("stack_full")));
+        compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
+        for (AbstractDeclVar declVar : this.getList()) {
+            declVar.codeGenDeclVar(compiler);
         }
     }
 
@@ -41,6 +62,9 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */    
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        for (AbstractDeclVar e : this.getList()) {
+            e.verifyDeclVar(compiler, localEnv, currentClass);
+        }
     }
 
 

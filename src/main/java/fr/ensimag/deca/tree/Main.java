@@ -1,10 +1,17 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -14,7 +21,6 @@ import org.apache.log4j.Logger;
  */
 public class Main extends AbstractMain {
     private static final Logger LOG = Logger.getLogger(Main.class);
-    
     private ListDeclVar declVariables;
     private ListInst insts;
     public Main(ListDeclVar declVariables,
@@ -32,8 +38,9 @@ public class Main extends AbstractMain {
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
         // regle (3.18)
-        // TODO decommenter lors de l'implementation des variables de type
-        insts.verifyListInst(compiler, new EnvironmentExp(), null, compiler.environmentType.VOID);
+        EnvironmentExp localEnv = new EnvironmentExp();
+        declVariables.verifyListDeclVariable(compiler, localEnv, null);
+        insts.verifyListInst(compiler, localEnv.stackEnvironment(localEnv, localEnv.getParentEnvironment()), null, compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
     }
 
@@ -41,6 +48,8 @@ public class Main extends AbstractMain {
     protected void codeGenMain(DecacCompiler compiler) {
         // A FAIRE: traiter les déclarations de variables.
         compiler.addComment("Beginning of main instructions:");
+        declVariables.setOperand(compiler);
+        declVariables.codeGenListDeclVar(compiler);
         insts.codeGenListInst(compiler);
     }
     

@@ -45,7 +45,7 @@ public abstract class AbstractPrint extends AbstractInst {
                               ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // regle (3.21)
-        arguments.verifyListExpr(compiler, localEnv, currentClass);
+        arguments.verifyListExprPrint(compiler, localEnv, currentClass);
     }
 
     @Override
@@ -55,7 +55,7 @@ public abstract class AbstractPrint extends AbstractInst {
                 compiler.addInstruction(new LOAD(a.getDval(), Register.R1));
             }
             if (printHex && a.getType().isFloat()) {
-                compiler.addInstruction(new WFLOATX());
+                a.codeGenPrintX(compiler);
             } else {
                 a.codeGenPrint(compiler);
             }

@@ -1,3 +1,12 @@
+// Description:
+//    Tests de décompilation des 4 print
+//
+// Resultats:
+//    Le même programme, aux indentations près
+//
+// Historique:
+//    Cree le 08/01/2024
+
 {
     printlnx("Bonjour",55,3.14);
     println("Hello",66,2.7);

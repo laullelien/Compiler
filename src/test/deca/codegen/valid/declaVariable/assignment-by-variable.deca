@@ -1,0 +1,22 @@
+// Description:
+//    test de déclaration de variable avec des expressions
+//
+// Resultats:
+//      5
+//      5
+//      5
+//
+// Historique:
+//    cree le 11/01/2024
+
+{
+	int a = 5;
+	int b = a;
+	int c = b;
+	float d = 2.0;
+	println(a);
+	println(b);
+	println(c);
+	println(d);
+	printlnx(d);
+}

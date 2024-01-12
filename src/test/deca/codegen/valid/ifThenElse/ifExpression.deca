@@ -1,0 +1,17 @@
+// Description:
+//    Programme simple testant les if avec une expression en condition
+//
+// Resultats:
+//    hello
+//
+// Historique:
+//    Cree le 09/01/2024
+
+{
+    boolean a = true;
+	if (a) {
+		println("hello");
+	} else {
+		println("bye");
+	}
+}
