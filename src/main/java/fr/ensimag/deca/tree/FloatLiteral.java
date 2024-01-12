@@ -64,11 +64,13 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-
         compiler.addInstruction(new WFLOAT());
     }
 
-
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler) {
+        compiler.addInstruction(new WFLOATX());
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
