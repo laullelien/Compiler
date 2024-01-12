@@ -8,7 +8,7 @@
 //    cree le 10/01/2024
 
 {
-    boolean a = true;
+    boolean b = false;
     while (b) {
         print("while false n'a pas marché");
     }
