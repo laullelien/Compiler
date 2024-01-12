@@ -30,6 +30,9 @@ Exemple: le *basename* de **hello-world.deca** est *hello-world* .
 | Lex valide | Utiliser Synt valide ou invalide |  |
 | Lex invalide | *.lex* | *basename.deca*:*n*: |
 
-## SKIP
+## SKIP test
 On peut passer un test en ajoutant *.skip* . Par exemple,pour passer le test hello-world:
 hello-world.deca -> hello-world.deca.skip
+
+## SKIP test unitaire
+mvn test -Dmaven.test.failure.ignore
