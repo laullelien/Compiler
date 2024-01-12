@@ -42,14 +42,21 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
+    /**
+     * Détermine si l'opération ne contient que des feuilles en opérande
+     * @return True si l'opérande à droite et à gauche sont des feuilles (ex: des litéraux)
+     */
+    protected boolean isLastOperation() {
+        return getLeftOperand().isTerminal() && getRightOperand().isTerminal();
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("");
+        s.print("(");
         getLeftOperand().decompile(s);
         s.print(" " + getOperatorName() + " ");
         getRightOperand().decompile(s);
-        s.print("");
+        s.print(")");
     }
 
     abstract protected String getOperatorName();

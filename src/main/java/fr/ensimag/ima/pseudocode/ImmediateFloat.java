@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import java.util.Objects;
+
 /**
  * Immediate operand containing a float value.
  * 
@@ -17,5 +19,18 @@ public class ImmediateFloat extends DVal {
     @Override
     public String toString() {
         return "#" + Float.toHexString(value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ImmediateFloat that = (ImmediateFloat) o;
+        return Float.compare(that.value, value) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value);
     }
 }

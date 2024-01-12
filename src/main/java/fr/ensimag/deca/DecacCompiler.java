@@ -8,8 +8,11 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.*;
-
+import fr.ensimag.ima.pseudocode.AbstractLine;
+import fr.ensimag.ima.pseudocode.IMAProgram;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.ImmediateString;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -119,7 +122,7 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
+     * @see 
      * fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
@@ -133,15 +136,14 @@ public class DecacCompiler {
      */
     private final IMAProgram program = new IMAProgram();
 
-    /** Dictionnaire qui associe à chaque identificateur (Symbol) sa définition (Type) */
+    /** The global environment for types (and the symbolTable) */
     public final SymbolTable symbolTable = new SymbolTable();
+    public final EnvironmentType environmentType = new EnvironmentType(this);
 
     public Symbol createSymbol(String name) {
+       // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
-    /** The global environment for types (and the symbolTable) */
-
-    public final EnvironmentType environmentType = new EnvironmentType(this);
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -210,13 +212,12 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
+        // TODO a décommenter une fois qu'on applique le défensive programming et décoré l'arbre abstrait
+        // assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;
         }
-
-        // TODO a décommenter une fois qu'on applique le défensive programming
-        // assert(prog.checkAllDecorations());
 
         addComment("start main program");
         prog.codeGenProgram(this);
@@ -229,6 +230,10 @@ public class DecacCompiler {
         addInstruction(new WNL());
         addInstruction(new ERROR());
 
+        addLabel(new Label("division_by_0"));
+        addInstruction(new WSTR("Erreur de division par 0"));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
@@ -256,7 +261,7 @@ public class DecacCompiler {
      * @throws DecacFatalError When an error prevented opening the source file
      * @throws DecacInternalError When an inconsistency was detected in the
      * compiler.
-     * @throws  LocationException When a compilation error (incorrect program)
+     * @throws LocationException When a compilation error (incorrect program)
      * occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)

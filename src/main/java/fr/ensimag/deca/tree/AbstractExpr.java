@@ -1,10 +1,10 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -19,8 +19,6 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public abstract class AbstractExpr extends AbstractInst {
-    private Type type;
-
     /**
      * @return true if the expression does not correspond to any concrete token
      * in the source code (and should be decompiled to the empty string).
@@ -28,6 +26,8 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
+
+    protected boolean isTerminal() { return false; }
 
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
@@ -40,18 +40,20 @@ public abstract class AbstractExpr extends AbstractInst {
         Validate.notNull(type);
         this.type = type;
     }
-
+    private Type type;
     private DVal dval ;
     private DVal negDval;
 
     public DVal getDval() {
         return dval;
+        // TODO refactor codeGenPrint de AbstractPrint qui dépend encore de cet attribut
+        // qui est encore nul ici
+        // throw new DecacInternalError("getDval() should not be called from AbstractExpr");
     }
 
     public DVal getNegativeDval() {
         return negDval;
     }
-
 
     @Override
     protected void checkDecoration() {
@@ -72,37 +74,39 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Verify the expression for contextual error.
-     * <p>
-     * implements non-terminals "expr" and "lvalue"
-     * of [SyntaxeContextuelle] in pass 3
+     * 
+     * implements non-terminals "expr" and "lvalue" 
+     *    of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler     (contains the "env_types" attribute)
-     * @param localEnv     Environment in which the expression should be checked
-     *                     (corresponds to the "env_exp" attribute)
-     * @param currentClass Definition of the class containing the expression
-     *                     (corresponds to the "class" attribute)
-     *                     is null in the main bloc.
+     * @param compiler  (contains the "env_types" attribute)
+     * @param localEnv
+     *            Environment in which the expression should be checked
+     *            (corresponds to the "env_exp" attribute)
+     * @param currentClass
+     *            Definition of the class containing the expression
+     *            (corresponds to the "class" attribute)
+     *             is null in the main bloc.
      * @return the Type of the expression
-     * (corresponds to the "type" attribute)
+     *            (corresponds to the "type" attribute)
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
-                                    EnvironmentExp localEnv, ClassDefinition currentClass)
+            EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError;
 
     /**
-     * Verify the expression in right hand-side of (implicit) assignments
-     * <p>
+     * Verify the expression in right hand-side of (implicit) assignments 
+     * 
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler     contains the "env_types" attribute
-     * @param localEnv     corresponds to the "env_exp" attribute
+     * @param compiler  contains the "env_types" attribute
+     * @param localEnv corresponds to the "env_exp" attribute
      * @param currentClass corresponds to the "class" attribute
-     * @param expectedType corresponds to the "type1" attribute
+     * @param expectedType corresponds to the "type1" attribute            
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-                                     EnvironmentExp localEnv, ClassDefinition currentClass,
-                                     Type expectedType)
+            EnvironmentExp localEnv, ClassDefinition currentClass, 
+            Type expectedType)
             throws ContextualError {
         Type assignedType = this.verifyExpr(compiler, localEnv, currentClass);
         setType(assignedType);
@@ -113,11 +117,11 @@ public abstract class AbstractExpr extends AbstractInst {
         // ConvFloat à ajouter si besoin
         return this;
     }
-
-
+    
+    
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-                              ClassDefinition currentClass, Type returnType)
+            ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         // regle 3.20
         verifyExpr(compiler, localEnv, currentClass);
@@ -127,9 +131,11 @@ public abstract class AbstractExpr extends AbstractInst {
      * Verify the expression as a condition, i.e. check that the type is
      * boolean.
      *
-     * @param localEnv     Environment in which the condition should be checked.
-     * @param currentClass Definition of the class containing the expression, or null in
-     *                     the main program.
+     * @param localEnv
+     *            Environment in which the condition should be checked.
+     * @param currentClass
+     *            Definition of the class containing the expression, or null in
+     *            the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {

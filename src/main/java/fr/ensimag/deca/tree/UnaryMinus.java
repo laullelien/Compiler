@@ -5,8 +5,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl38
@@ -19,20 +22,30 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        Type typeOperand = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (!(typeOperand.isInt() || typeOperand.isFloat())){
-            throw new ContextualError("Le type ne respecte pas la règle 3.37", this.getLocation());
-        }
-        setType(typeOperand);
-        return getType();
+    public DVal getDval() {
+        return getOperand().getNegativeDval();
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(this.getOperand().getNegativeDval(), Register.R1));
-        this.getOperand().codeGenPrint(compiler);
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+            ClassDefinition currentClass) throws ContextualError {
+        //regle 3.37
+        Type typeOperand = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        if (typeOperand.isInt()){
+            setType(compiler.environmentType.INT);
+            return getType();
+        }
+        if (typeOperand.isFloat()){
+            setType(compiler.environmentType.FLOAT);
+            return getType();
+        }
+        throw new ContextualError("Le type ne respecte pas la règle 3.37", this.getLocation());
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        getOperand().codeGenInst(compiler);
+        compiler.addInstruction(new OPP(getOperand().getDval(), Register.getR(2)));
     }
 
     @Override
@@ -41,3 +54,5 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
 }
+
+

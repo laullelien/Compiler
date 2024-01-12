@@ -7,8 +7,8 @@
 	println(b);
 	printx(c);
 	printlnx(d);
-	print(5);
-	println(3);
-	printx(2.0);
-	printlnx(1.0);
+	print(a);
+	println(b);
+	printx(c);
+	printlnx(d);
 }
