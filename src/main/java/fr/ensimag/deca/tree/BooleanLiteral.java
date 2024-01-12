@@ -23,6 +23,11 @@ public class BooleanLiteral extends AbstractExpr {
         this.value = value;
     }
 
+    @Override
+    protected boolean isTerminal() {
+        return true;
+    }
+
     public boolean getValue() {
         return value;
     }
