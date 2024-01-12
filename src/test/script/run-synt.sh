@@ -52,30 +52,30 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     else
     for source in "$source_path"/*.deca
     do
-        source_lis="${source%.deca}.lis"
+        source_pp="${source%.deca}.pp"
         filename="$(basename "$source")"
-        if [ ! -f "$source_lis" ]
+        if [ ! -f "$source_pp" ]
         then
-            echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester le parser de $filename"
+            echo "    [WARNING] Fichier $source_pp n'existe pas, impossible de tester le parser de $filename"
         else
-            # pour les tests valides, on lance decac avec -p pour obtenir l'arbre plus lisible
+            # pour les tests valides, on lance decac avec -p pour obtenir l'arbre plus ppible
             # on exploite ensuite le theoreme 2 pour le résultat de decac -p avec
-            # le résultat contenu dans source.lis, qui contient le résultat de decac -p sur source.deca
+            # le résultat contenu dans source.pp, qui contient le résultat de decac -p sur source.deca
             source_p="$DIR/valid/$filename.p"
             decac -p "$source" > "$source_p" 2>&1 
-            if diff "$source_p" "$source_lis" > /dev/null 2>&1
+            if diff "$source_p" "$source_pp" > /dev/null 2>&1
             then
                 echo "    [OK] Succès attendu de $filename"
                 rm "$source_p"
             else
                 echo "    [ERREUR] decac -p ne respecte pas le théorème 2 pour $filename"
                 echo "    [DEBUG] Sortie attendu:"
-                cat "$source_lis"
+                cat "$source_pp"
                 echo "    [DEBUG] Sortie de decac -p:"
                 cat "$source_p"
                 # décommenter pour voir la différence entre les sorties
                 # echo "    [DEBUG] Différences constatées par diff:"
-                # diff "$source_p" "$source_lis"
+                # diff "$source_p" "$source_pp"
                 rm "$source_p"
                 exit 1
             fi
