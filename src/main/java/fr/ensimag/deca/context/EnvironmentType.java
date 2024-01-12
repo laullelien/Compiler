@@ -47,6 +47,14 @@ public class EnvironmentType {
         return envTypes.get(s);
     }
 
+    public boolean assignCompatible(Type t1, Type t2) {
+        // gestion des sous-classes à implémenter
+        if (t1.isFloat() && t2.isInt() || t1 == t2) {
+            return true;
+        }
+        return false;
+    }
+
     public final VoidType    VOID;
     public final IntType     INT;
     public final FloatType   FLOAT;

@@ -1,3 +1,10 @@
+// Description:
+//    Ajout de quote en trop
+//
+// Resultats:
+//    Erreur du lexer ligne 10, à la 3e quote
+//
+
 {
     println(""");
 }

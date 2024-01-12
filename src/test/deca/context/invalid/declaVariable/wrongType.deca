@@ -1,0 +1,12 @@
+// Description:
+//    Déclaration de variables
+//
+// Résultats:
+//    Ligne 11: Le type n'est pas un type valide
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+   sarah a = 3.1;
+}

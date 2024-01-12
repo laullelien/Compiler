@@ -1,3 +1,9 @@
+// Description:
+//    Test des caractères spéciaux
+//
+// Resultats:
+//    \\\"
+
 {
     println("\\","\"");
 }

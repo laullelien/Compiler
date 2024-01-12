@@ -18,18 +18,17 @@ import java.util.Iterator;
 public class ListExpr extends TreeList<AbstractExpr> {
 
     public void verifyListExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+                                    ClassDefinition currentClass)
+            throws ContextualError {
+        throw new ContextualError("not yet implemented", this.getLocation());
+    }
+
+    public void verifyListExprPrint(DecacCompiler compiler, EnvironmentExp localEnv,
                                ClassDefinition currentClass)
             throws ContextualError {
         // regle (3.30)
         for (AbstractExpr e : this.getList()) {
-            // regle (3.33)
-            Type typeExpression = e.verifyExpr(compiler, localEnv, currentClass);
-            // regle (3.31)
-            if (!(typeExpression.isString()
-                    || typeExpression.isInt()
-                    || typeExpression.isFloat())) {
-                throw new ContextualError("Argument " + e.prettyPrintNode() + " invalide (regle 3.31)", e.getLocation());
-            }
+            e.verifyExprPrint(compiler, localEnv, currentClass);
         }
     }
 

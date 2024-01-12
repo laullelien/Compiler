@@ -1,0 +1,16 @@
+// Description:
+//    Programme avec un while dont la condition est une expression
+//
+// Resultats:
+//         on n'est pas passé dans while false
+//
+// Historique:
+//    cree le 10/01/2024
+
+{
+    boolean a = true;
+    while (a) {
+        print("boucle infinie");
+    }
+    print("on est sorti du while true");
+}

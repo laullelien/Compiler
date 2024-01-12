@@ -1,9 +1,6 @@
 package fr.ensimag.deca;
 
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.EnvironmentType;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -11,15 +8,17 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -41,7 +40,18 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    
+
+    private int nbDeclVar = 0;
+
+    public int generateDeclVarOffset() {
+        nbDeclVar ++;
+        return nbDeclVar;
+    }
+
+    public int getNbDeclVar() {
+        return nbDeclVar;
+    }
+
     /**
      * Portable newline character.
      */
@@ -107,15 +117,15 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
-    
+
     /**
-     * @see 
+     * @see
      * fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
         return program.display();
     }
-    
+
     private final CompilerOptions compilerOptions;
     private final File source;
     /**
@@ -214,10 +224,18 @@ public class DecacCompiler {
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
+
+        addComment("error handling");
+
+        addLabel(new Label("stack_full"));
+        addInstruction(new WSTR(new ImmediateString("La pile est pleine")));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
+
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
-        FileOutputStream fstream = null;
+        FileOutputStream fstream;
         try {
             fstream = new FileOutputStream(destName);
         } catch (FileNotFoundException e) {
@@ -241,7 +259,7 @@ public class DecacCompiler {
      * @throws DecacFatalError When an error prevented opening the source file
      * @throws DecacInternalError When an inconsistency was detected in the
      * compiler.
-     * @throws LocationException When a compilation error (incorrect program)
+     * @throws  LocationException When a compilation error (incorrect program)
      * occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)
@@ -259,4 +277,16 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    /*
+     * Used to get different labelId
+     */
+    private int labelId = 0;
+
+    public int getLabelId() {
+        return labelId;
+    }
+
+    public void incrementLabelId() {
+        labelId++;
+    }
 }

@@ -11,19 +11,48 @@ options {
 @members {
 }
 
+// grammar for while instruction
+
+WHILE: 'while';
+
+// grammer for if branch
+
+IF: 'if';
+ELSE: 'else';
+
+// grammar for print instructions
+
+PRINTX: 'printx';
+PRINTLNX: 'printlnx';
+PRINTLN: 'println';
+PRINT: 'print';
+
+// grammar for int
+
+fragment DIGIT: '0' .. '9';
+fragment POSITIVE_DIGIT: '1' .. '9';
+INT: '0' | POSITIVE_DIGIT DIGIT*;
+
+// grammar for bool
+
+TRUE: 'true';
+FALSE: 'false';
+
+// grammar for identifiers
+
+fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
+IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
+
 // Deca lexer rules for strings & println.
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 COMMENT: '//' .*? '\n' {skip();};
 SEMI: ';';
-PRINTX: 'printx';
-PRINTLNX: 'printlnx';
-PRINTLN: 'println';
-PRINT: 'print';
 OBRACE: '{';
 CBRACE: '}';
 OPARENT: '(';
 CPARENT: ')';
+EQUALS: '=';
 COMMA: ',';
 TO_SKIP:
         ('\n'
@@ -31,12 +60,7 @@ TO_SKIP:
         | ' '
         ){skip();};
 
-// Grammaire des Int
-fragment DIGIT: '0' .. '9';
-fragment POSITIVE_DIGIT: '1' .. '9';
-INT: '0' | POSITIVE_DIGIT DIGIT*;
-
-// Grammaire des Floats
+// grammar for float
 fragment NUM: DIGIT+;
 fragment SIGN: '+' | '-' ;
 fragment SIGN_OR_EMPTY: SIGN | ;

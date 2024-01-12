@@ -1,0 +1,12 @@
+// Description:
+//    Déclaration d'une variable de type boolean
+//
+// Résultats:
+//    Pass
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+    boolean a = true;
+}
