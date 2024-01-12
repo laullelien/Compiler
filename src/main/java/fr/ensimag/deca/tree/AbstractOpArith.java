@@ -46,7 +46,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             // appel récursif pour obtenir le résultat de l'opération à gauche
             // qui sera alors stocké dans R2
             getLeftOperand().codeGenInst(compiler);
-        else 
+        else
             compiler.addInstruction(new LOAD(getLeftOperand().getDval(), Register.getR(2)));
         if (!getRightOperand().isTerminal()) {
             // On stocke temporairement le résultat de l'opérande gauche dans un autre registre
@@ -55,8 +55,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             getRightOperand().codeGenInst(compiler);
             compiler.addInstruction(new LOAD(Register.getR(2), Register.getR(3)));
             compiler.addInstruction(new LOAD(Register.R0, Register.getR(2)));
-        }
-        else
+        } else
             compiler.addInstruction(new LOAD(getRightOperand().getDval(), Register.getR(3)));
     }
 
@@ -66,17 +65,30 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
-        if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt()){
+                           ClassDefinition currentClass) throws ContextualError {
+        if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt()) {
             setType(compiler.environmentType.INT);
             return getType();
-        }
-        if((this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt())
-            || (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat())
-            || (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat())){
+        } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat()) {
+            setType(compiler.environmentType.FLOAT);
+            return getType();
+        } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt()) {
+            ConvFloat convFloat = new ConvFloat(this.getRightOperand());
+            convFloat.setType(getRightOperand().getType());
+            getRightOperand().setType(compiler.environmentType.FLOAT);
+            setType(compiler.environmentType.FLOAT);
+            return getType();
+        } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat()) {
+            ConvFloat convFloat = new ConvFloat(this.getRightOperand());
+            convFloat.setType(getRightOperand().getType());
+            getRightOperand().setType(compiler.environmentType.FLOAT);
             setType(compiler.environmentType.FLOAT);
             return getType();
         }
-        throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
+
+
+        {
+            throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
+        }
     }
 }

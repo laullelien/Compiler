@@ -45,7 +45,7 @@ public class UnaryMinus extends AbstractUnaryExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getOperand().codeGenInst(compiler);
-        compiler.addInstruction(new OPP(Register.getR(2), Register.getR(2)));
+        compiler.addInstruction(new OPP(getOperand().getDval(), Register.getR(2)));
     }
 
     @Override
