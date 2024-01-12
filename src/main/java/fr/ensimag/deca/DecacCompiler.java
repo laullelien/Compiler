@@ -136,15 +136,14 @@ public class DecacCompiler {
      */
     private final IMAProgram program = new IMAProgram();
 
-    /** Dictionnaire qui associe à chaque identificateur (Symbol) sa définition (Type) */
+    /** The global environment for types (and the symbolTable) */
     public final SymbolTable symbolTable = new SymbolTable();
+    public final EnvironmentType environmentType = new EnvironmentType(this);
 
     public Symbol createSymbol(String name) {
+       // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
-
-    /** The global environment for types (and the symbolTable) */
-    public final EnvironmentType environmentType = new EnvironmentType(this);
 
     /**
      * Run the compiler (parse source file, generate code)
@@ -231,6 +230,10 @@ public class DecacCompiler {
         addInstruction(new WNL());
         addInstruction(new ERROR());
 
+        addLabel(new Label("division_by_0"));
+        addInstruction(new WSTR("Erreur de division par 0"));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

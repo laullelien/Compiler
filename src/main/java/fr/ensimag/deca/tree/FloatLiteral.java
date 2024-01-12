@@ -40,6 +40,11 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
+    protected boolean isTerminal() {
+        return true;
+    }
+
+    @Override
     public DVal getDval(){
         return new ImmediateFloat(value);
     }
@@ -59,7 +64,7 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new ImmediateFloat(value), Register.R0));
+        compiler.addInstruction(new LOAD(getDval(), Register.getR(2)));
     }
 
     @Override

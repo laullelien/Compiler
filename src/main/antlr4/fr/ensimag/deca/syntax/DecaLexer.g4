@@ -72,7 +72,12 @@ fragment NUMHEX: DIGITHEX+;
 fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
  FLOAT: FLOATDEC | FLOATHEX;
 
-// grammar
+
+
+// Grammaire des opérations
 
 PLUS : '+' ;
 MINUS : '-' ;
+TIMES : '*' ;
+SLASH : '/' ;
+PERCENT : '%' ;
