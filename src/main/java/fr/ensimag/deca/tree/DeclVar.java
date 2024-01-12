@@ -82,7 +82,7 @@ public class DeclVar extends AbstractDeclVar {
     public void codeGenDeclVar(DecacCompiler compiler) {
         initialization.codeGenInst(compiler);
         if (initialization instanceof Initialization) {
-            compiler.addInstruction(new STORE(Register.R0, varName.getVariableDefinition().getOperand()));
+            compiler.addInstruction(new STORE(Register.R2, varName.getVariableDefinition().getOperand()));
         }
     }
 }
