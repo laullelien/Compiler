@@ -24,14 +24,14 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     else
     for source in "$source_path"/*.deca
     do
-        source_lis="${source%.deca}.lis"
+        source_ima="${source%.deca}.ima"
         filename="$(basename "$source")"
-        if [ ! -f "$source_lis" ]
+        if [ ! -f "$source_ima" ]
         then
-            echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester la compilation de $filename"
+            echo "    [WARNING] Fichier $source_ima n'existe pas, impossible de tester la compilation de $filename"
         else
             res_decac="$(decac "$source" 2>&1)"
-            err_decac="$(cat "source_lis")"
+            err_decac="$(cat "source_ima")"
             if echo "$res_decac" | grep -q -e "$err_decac"
             then
                 echo "    [OK] Echec attendu pour $filename"

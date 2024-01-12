@@ -24,12 +24,12 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     else
     for source in "$source_path"/*.deca
     do
-        source_lis="${source%.deca}.lis"
+        source_synt="${source%.deca}.synt"
         filename="$(basename "$source")"
-        if [ -f "$source_lis" ]
+        if [ -f "$source_synt" ]
         then
             res_synt="$(test_synt "$source" 2>&1)"
-            err_synt="$(cat "$source_lis")"
+            err_synt="$(cat "$source_synt")"
             if echo "$res_synt" | grep -q -e "$err_synt"
             then
                 echo "    [OK] Echec attendu pour $filename"

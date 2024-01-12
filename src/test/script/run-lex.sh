@@ -25,17 +25,17 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     for source in "$source_path"/*.deca
     do
         source_lex="${source%.deca}.lex"
-        source_lis="${source%.deca}.lis"
+        source_synt="${source%.deca}.synt"
         filename="$(basename "$source")"
         # pour pouvoir faire nos tests, il faut obligatoirement un fichier source.lex ou source.lis
         # qui contient les résultats attendus par test_lex et decac
-        if [ ! -f "$source_lex" ] && [ ! -f "$source_lis" ]
+        if [ ! -f "$source_lex" ] && [ ! -f "$source_synt" ]
         then
-            echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester le lexer de $filename"
+            echo "    [WARNING] Fichier $source_synt n'existe pas, impossible de tester le lexer de $filename"
         else
             res_lex="$(test_lex "$source" 2>&1)"
             # si on a qu'un fichier source.lis, test_lex doit marcher
-            if [ -f "$source_lis" ]
+            if [ -f "$source_synt" ]
             then
                 if echo "$res_lex" | head -n 1 | grep -q "$filename:[0-9][0-9]*:"
                 then

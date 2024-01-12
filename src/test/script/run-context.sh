@@ -24,14 +24,14 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     else
     for source in "$source_path"/*.deca
     do
-        source_lis="${source%.deca}.lis"
+        source_context="${source%.deca}.context"
         filename="$(basename "$source")"
-        if [ ! -f "$source_lis" ]
+        if [ ! -f "$source_context" ]
         then
-            echo "    [WARNING] Fichier $source_lis n'existe pas, impossible de tester le context de $filename"
+            echo "    [WARNING] Fichier $source_context n'existe pas, impossible de tester le context de $filename"
         else
             res_context="$(test_context "$source" 2>&1)"
-            err_context="$(cat "$source_lis")"
+            err_context="$(cat "$source_context")"
             if echo "$res_context" | grep -q -e "$err_context"
             then
                 echo "    [OK] Echec attendu pour $filename"
