@@ -12,6 +12,6 @@
     int a = 4;
     float b = 5.0;
     boolean c = true;
-    print(a);
+    println(a);
     print(b);
 }
