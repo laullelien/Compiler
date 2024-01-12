@@ -72,10 +72,7 @@ fragment NUMHEX: DIGITHEX+;
 fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
  FLOAT: FLOATDEC | FLOATHEX;
 
-// Grammaire des booléens
 
-TRUE: 'true';
-FALSE: 'false';
 
 // Grammaire des opérations
 

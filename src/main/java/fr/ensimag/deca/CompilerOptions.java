@@ -40,6 +40,8 @@ public class CompilerOptions {
         return Collections.unmodifiableNavigableSet(sourceFiles);
     }
 
+    public boolean getNocheck(){return noCheck;}
+
     private int debug = 0;
 
     private boolean noCheck = false;
