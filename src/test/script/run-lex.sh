@@ -10,6 +10,9 @@
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
+PATH=./src/main/bin:"$PATH"
+PATH=./bin:"$PATH"
+
 DIR=src/test/deca/syntax
 
 echo "Début tests lexer"

@@ -10,10 +10,12 @@
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
+PATH=./src/main/bin:"$PATH"
+PATH=./bin:"$PATH"
+
 DIR=src/test/deca/codegen
 
 echo "Début tests codegen"
-
 source_path="$DIR/invalid"
 echo "Section $source_path"
 if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
