@@ -68,7 +68,10 @@ public class FloatLiteral extends AbstractExpr {
         compiler.addInstruction(new WFLOAT());
     }
 
-
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(getDval(),Register.getR(2)));
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {

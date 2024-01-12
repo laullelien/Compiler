@@ -2,7 +2,7 @@
 //    Paranthèse du string ouverte
 //
 // Resultats:
-//    15:8: token recognition error at: '"Madara Uchiwa);\n'
+//    token recognition error at: '"Madara Uchiwa);\n'
 
 
 //

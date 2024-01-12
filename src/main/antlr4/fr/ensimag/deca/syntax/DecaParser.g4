@@ -345,6 +345,9 @@ primary_expr returns[AbstractExpr tree]
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
+            $tree = $expr.tree;
+            setLocation($tree, $OPARENT);
+
         }
     | READINT OPARENT CPARENT {
         }
