@@ -8,8 +8,11 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.*;
-
+import fr.ensimag.ima.pseudocode.AbstractLine;
+import fr.ensimag.ima.pseudocode.IMAProgram;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.ImmediateString;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -119,7 +122,7 @@ public class DecacCompiler {
     }
 
     /**
-     * @see
+     * @see 
      * fr.ensimag.ima.pseudocode.IMAProgram#display()
      */
     public String displayIMAProgram() {
@@ -139,8 +142,8 @@ public class DecacCompiler {
     public Symbol createSymbol(String name) {
         return symbolTable.create(name);
     }
-    /** The global environment for types (and the symbolTable) */
 
+    /** The global environment for types (and the symbolTable) */
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
     /**
@@ -210,13 +213,12 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
+        // TODO a décommenter une fois qu'on applique le défensive programming et décoré l'arbre abstrait
+        // assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;
         }
-
-        // TODO a décommenter une fois qu'on applique le défensive programming
-        // assert(prog.checkAllDecorations());
 
         addComment("start main program");
         prog.codeGenProgram(this);
@@ -256,7 +258,7 @@ public class DecacCompiler {
      * @throws DecacFatalError When an error prevented opening the source file
      * @throws DecacInternalError When an inconsistency was detected in the
      * compiler.
-     * @throws  LocationException When a compilation error (incorrect program)
+     * @throws LocationException When a compilation error (incorrect program)
      * occurs.
      */
     protected AbstractProgram doLexingAndParsing(String sourceName, PrintStream err)

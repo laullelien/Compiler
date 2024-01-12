@@ -76,4 +76,3 @@ fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NU
 
 PLUS : '+' ;
 MINUS : '-' ;
-

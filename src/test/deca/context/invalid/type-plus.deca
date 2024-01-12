@@ -1,0 +1,12 @@
+// Description:
+//    addition avec une opérande booléenne.
+//
+// Resultats:
+//    Ligne 11: Le type ne respecte pas la règle 3.33.
+//
+// Historique:
+//    cree le 01/01/2024
+
+{
+    println(true + 3);
+}
