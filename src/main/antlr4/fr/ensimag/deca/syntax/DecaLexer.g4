@@ -38,9 +38,17 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 TRUE: 'true';
 FALSE: 'false';
 
-// grammar for identifiers
+// fragment LETTER useful for INCLUDE and IDENTIFIER
 
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
+
+// grammar for include
+
+fragment FILENAME: (LETTER | DIGIT | '.' | '-' | '_')+;
+INCLUDE: ('#include' (' ')* '"' FILENAME '"'){doInclude(getText());};
+
+// grammar for identifiers
+
 IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
 
 // Deca lexer rules for strings & println.
@@ -76,4 +84,3 @@ fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NU
 
 PLUS : '+' ;
 MINUS : '-' ;
-

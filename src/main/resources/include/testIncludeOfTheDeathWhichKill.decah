@@ -1,0 +1,5 @@
+// Oh my friends It s been a long time since I didn t have the opportunity to talk with someone Please help me
+
+int a = 3;
+println("je suis un fichier include");
+#include "forMyself.decah"
