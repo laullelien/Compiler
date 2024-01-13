@@ -184,6 +184,8 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDef = compiler.environmentType.defOfType(this.getName());
         if (typeDef != null) {
+            setDefinition(typeDef);
+            setType(typeDef.getType());
             return typeDef.getType();
         }
         throw new ContextualError("Le type ne respecte pas la règle 0.2", this.getLocation());
