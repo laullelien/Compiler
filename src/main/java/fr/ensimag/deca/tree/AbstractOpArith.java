@@ -85,8 +85,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             setType(compiler.environmentType.FLOAT);
             return getType();
         }
-
-
         {
             throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
         }
