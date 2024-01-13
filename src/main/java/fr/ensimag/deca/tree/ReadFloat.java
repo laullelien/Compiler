@@ -37,9 +37,16 @@ public class ReadFloat extends AbstractReadExpr {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new RINT());
+        compiler.addInstruction(new RFLOAT());
         compiler.addInstruction(new BOV(new Label("input_error")));
         compiler.addInstruction(new WINT());
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler) {
+        compiler.addInstruction(new RFLOAT());
+        compiler.addInstruction(new BOV(new Label("input_error")));
+        compiler.addInstruction(new WFLOATX());
     }
 
     @Override
