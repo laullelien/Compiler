@@ -7,8 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.Definition;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -35,6 +34,7 @@ public class Assign extends AbstractBinaryExpr {
         // règle 3.32
         Type type = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, type);
+        setType(type);
         return type;
     }
 
@@ -44,10 +44,26 @@ public class Assign extends AbstractBinaryExpr {
             this.getRightOperand().codeGenInst(compiler);
             compiler.addInstruction(new STORE(Register.R2, ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
         }
-
-
     }
 
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(Register.R2, Register.R1));
+        if(getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        }
+        if(getType().isFloat()) {
+            compiler.addInstruction(new WFLOAT());
+        }
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler) {
+        codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(Register.R2, Register.R1));
+        compiler.addInstruction(new WFLOATX());
+    }
     @Override
     protected String getOperatorName() {
         return "=";
