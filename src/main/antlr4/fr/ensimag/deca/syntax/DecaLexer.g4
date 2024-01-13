@@ -48,6 +48,13 @@ READFLOAT : 'readFloat';
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
 IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
 
+// grammar for compares
+
+LEQ: '<=';
+GEQ: '>=';
+GT: '>';
+LT: '<';
+
 // Deca lexer rules for strings & println.
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
