@@ -33,7 +33,8 @@ public class Assign extends AbstractBinaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         // règle 3.32
         Type type = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, type);
+        AbstractExpr expr = this.getRightOperand().verifyRValue(compiler, localEnv, currentClass, type);
+        setRightOperand(expr);
         setType(type);
         return type;
     }

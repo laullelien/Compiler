@@ -1,0 +1,15 @@
+// Description:
+//    Programme de test d'un assignement de int vers float
+//
+// Resultats:
+//    4.0
+//
+// Historique:
+//    Cree le 09/01/2024
+
+{
+	float b;
+	b = 4;
+	print(b);
+}
+

@@ -37,7 +37,9 @@ public class Initialization extends AbstractInitialization {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         // regle 3.8
-        expression.verifyRValue(compiler, localEnv, currentClass, t);
+        AbstractExpr expr = expression.verifyRValue(compiler, localEnv, currentClass, t);
+        // Ajout de convfloat
+        expression = expr;
     }
 
 

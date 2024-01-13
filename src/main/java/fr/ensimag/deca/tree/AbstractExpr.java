@@ -114,7 +114,11 @@ public abstract class AbstractExpr extends AbstractInst {
         if (!(compiler.environmentType.assignCompatible(expectedType, assignedType))) {
             throw new ContextualError("La règle 3.28 n'est pas respectée : le type n'est pas compatible pour l'affectation", this.getLocation());
         }
-        // ConvFloat à ajouter si besoin
+        if(expectedType.isFloat() && assignedType.isInt()) {
+            AbstractExpr convFloat = new ConvFloat(this);
+            convFloat.setType(compiler.environmentType.FLOAT);
+            return convFloat;
+        }
         return this;
     }
     
