@@ -1,0 +1,15 @@
+// Description:
+//    Programme utilisant readFloat() et readInt() en utilisant ConvFLoat
+//
+// Resultat:
+//   si les inputs sont bons et que convFloat marche,
+//
+// Historique:
+//    cree le 13/01/2024
+
+{
+   float f = readFloat();
+   int i = readInt();
+   println(i + f);
+}
+

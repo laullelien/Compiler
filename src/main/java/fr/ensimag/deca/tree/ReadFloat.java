@@ -6,6 +6,10 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
+
 import java.io.PrintStream;
 
 /**
@@ -18,9 +22,32 @@ public class ReadFloat extends AbstractReadExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        setType(compiler.environmentType.FLOAT);
+        return compiler.environmentType.FLOAT;
     }
 
+
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addInstruction(new RFLOAT());
+        compiler.addInstruction(new BOV(new Label("input_error")));
+        compiler.addInstruction(new LOAD(Register.getR(1), Register.R2));
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new RFLOAT());
+        compiler.addInstruction(new BOV(new Label("input_error")));
+        compiler.addInstruction(new WINT());
+    }
+
+    @Override
+    protected void codeGenPrintX(DecacCompiler compiler) {
+        compiler.addInstruction(new RFLOAT());
+        compiler.addInstruction(new BOV(new Label("input_error")));
+        compiler.addInstruction(new WFLOATX());
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
