@@ -37,7 +37,7 @@ public class Main extends AbstractMain {
         // A FAIRE: Appeler méthodes "verify*" de ListDeclVarSet et ListInst.
         // Vous avez le droit de changer le profil fourni pour ces méthodes
         // (mais ce n'est à priori pas nécessaire).
-        // regle (3.18)
+        // regle (3.4), (3.18)
         EnvironmentExp localEnv = new EnvironmentExp();
         declVariables.verifyListDeclVariable(compiler, localEnv, null);
         insts.verifyListInst(compiler, localEnv.stackEnvironment(localEnv, localEnv.getParentEnvironment()), null, compiler.environmentType.VOID);

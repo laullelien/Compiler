@@ -1,0 +1,13 @@
+// Description:
+//    Programme utilisant readInt()
+//
+// Resultat:
+//    soit intInput + 19, soit erreur si mauvais input.
+//
+// Historique:
+//    cree le 13/01/2024
+
+{
+   float x = readInt();
+   println(x+19);
+}

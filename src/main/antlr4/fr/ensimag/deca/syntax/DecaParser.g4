@@ -348,8 +348,9 @@ unary_expr returns[AbstractExpr tree]
             assert($e.tree != null);
         }
     | select_expr {
+            $tree=$select_expr.tree;
             assert($select_expr.tree != null);
-            $tree = $select_expr.tree;
+            setLocation($tree, $select_expr.start);
         }
     ;
 
@@ -376,6 +377,7 @@ primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
@@ -388,8 +390,13 @@ primary_expr returns[AbstractExpr tree]
 
         }
     | READINT OPARENT CPARENT {
+             $tree = new ReadInt();
+             setLocation($tree, $READINT);
+
         }
     | READFLOAT OPARENT CPARENT {
+             $tree = new ReadFloat();
+             setLocation($tree, $READFLOAT);
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);

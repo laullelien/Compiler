@@ -234,6 +234,11 @@ public class DecacCompiler {
         addInstruction(new WSTR("Erreur de division par 0"));
         addInstruction(new WNL());
         addInstruction(new ERROR());
+
+        addLabel(new Label("input_error"));
+        addInstruction(new WSTR(new ImmediateString("Depassement ou mauvais format")));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

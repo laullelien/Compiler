@@ -1,0 +1,18 @@
+// Description:
+//   Programme utilisant plusieurs readInt
+//
+// Resultat:
+//  La somme des readInt
+//
+// Historique:
+//    cree le 13/01/2024
+
+
+{
+   int x =  readInt();
+   int y = readInt();
+   int z = readInt();
+   println(x + y + z);
+}
+
+
