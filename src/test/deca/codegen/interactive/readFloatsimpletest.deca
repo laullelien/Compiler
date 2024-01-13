@@ -1,0 +1,13 @@
+// Description:
+//    Programme utilisant readFloat()
+//
+// Resultat:
+//    soit floatInput - 13.0, soit erreur si mauvais input.
+//
+// Historique:
+//    cree le 13/01/2024
+
+{
+   float i = readFloat();
+   println(i-13.0);
+}

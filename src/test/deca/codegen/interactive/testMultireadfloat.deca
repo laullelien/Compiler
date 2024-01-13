@@ -1,0 +1,16 @@
+// Description:
+//   Programme utilisant plusieurs readFloat
+//
+// Resultat:
+//  Le produit des readFloat
+//
+// Historique:
+//    cree le 13/01/2024
+
+
+{
+   float x =  readFloat();
+   float y = readFloat();
+   float z = readFloat();
+   println(x * y * z);
+}
