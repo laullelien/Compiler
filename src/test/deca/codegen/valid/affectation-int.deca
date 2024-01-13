@@ -11,7 +11,7 @@
 {
     int b = 3;
     int a = 4;
-    b = a;
+    b = a = 3;
     println(a);
     println(b);
 }
