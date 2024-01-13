@@ -38,6 +38,11 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 TRUE: 'true';
 FALSE: 'false';
 
+// grammar for readInt
+
+READINT : 'readInt';
+READFLOAT : 'readFloat';
+
 // grammar for identifiers
 
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
