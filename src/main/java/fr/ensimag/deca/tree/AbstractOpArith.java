@@ -5,14 +5,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
-
-import javax.print.attribute.standard.MediaSize;
+import org.apache.commons.lang.Validate;
 
 
 /**
@@ -36,27 +31,45 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     /**
      * Permet de générer le résultat d'une opération arithmétique.
      * Le résultat sera stocké dans le registre R2
-     * Cette fonction sera essentiellement appelée par les filles concrètes de la classe (les opérations)
-     * qui font un appel à super et attend que le résultat de son opérande droite soit stocké dans R2
-     * et que le résultat de son opérande gauche soit stocké dans R3
      */
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        if (!getLeftOperand().isTerminal())
-            // appel récursif pour obtenir le résultat de l'opération à gauche
-            // qui sera alors stocké dans R2
-            getLeftOperand().codeGenInst(compiler);
-        else
-            compiler.addInstruction(new LOAD(getLeftOperand().getDval(), Register.getR(2)));
-        if (!getRightOperand().isTerminal()) {
-            // On stocke temporairement le résultat de l'opérande gauche dans un autre registre
-            // pour ne pas être écrasé par le calcul de l'opération à droite
-            compiler.addInstruction(new LOAD(Register.getR(2), Register.R0));
-            getRightOperand().codeGenInst(compiler);
-            compiler.addInstruction(new LOAD(Register.getR(2), Register.getR(3)));
-            compiler.addInstruction(new LOAD(Register.R0, Register.getR(2)));
-        } else
-            compiler.addInstruction(new LOAD(getRightOperand().getDval(), Register.getR(3)));
+        codeExp(compiler, this, 2);
+    }
+
+    /**
+     * Génération de code naïve pour expressions arithmétiques
+     * donné par les profs
+     * cf. diapo étape C, page 12
+     */
+    private void codeExp(DecacCompiler compiler, AbstractExpr e, int n) {
+        // On vérifie que e est un litéral ou une variable
+        if (e.getDval() != null)
+            compiler.addInstruction(new LOAD(e.getDval(), Register.getR(n)));
+        else {
+            // e est donc une opération
+            Validate.isTrue(e instanceof AbstractBinaryExpr);
+            AbstractBinaryExpr op = (AbstractBinaryExpr) e;
+            if (op.getRightOperand().getDval() != null) {
+                codeExp(compiler, op.getLeftOperand(), n);
+                op.codeGenInstruction(compiler, op.getRightOperand().getDval(), Register.getR(n));
+            }
+            else {
+                if (n < compiler.getCompilerOptions().getMaxRegisters()) {
+                    codeExp(compiler, op.getLeftOperand(), n);
+                    codeExp(compiler, op.getRightOperand(), n + 1);
+                    op.codeGenInstruction(compiler, Register.getR(n + 1), Register.getR(n));
+                }
+                else {
+                    codeExp(compiler, op.getLeftOperand(), n);
+                    compiler.addInstruction(new PUSH(Register.getR(n)));
+                    codeExp(compiler, op.getRightOperand(), n + 1);
+                    compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+                    compiler.addInstruction(new POP(Register.getR(n)));
+                    op.codeGenInstruction(compiler, Register.R0, Register.getR(n));
+                }
+            }
+        }
     }
 
     public AbstractOpArith(AbstractExpr leftOperand, AbstractExpr rightOperand) {
@@ -85,8 +98,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             setType(compiler.environmentType.FLOAT);
             return getType();
         }
-        {
-            throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
-        }
+        throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
     }
 }

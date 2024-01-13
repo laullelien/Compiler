@@ -55,7 +55,11 @@ public class CompilerOptions {
     private boolean customRegister = false;
 
     // On choisit tous les registres par défault
-    private int nbRegisters = 16;
+    private int maxRegisters = 16;
+
+    public int getMaxRegisters() {
+        return maxRegisters;
+    }
 
     private NavigableSet<File> sourceFiles = new TreeSet<>();
 
@@ -103,11 +107,11 @@ public class CompilerOptions {
                 }
             } else if (isRCount) {
                 try {
-                    int nbRegisters = Integer.parseInt(s);
-                    if (nbRegisters < 4 || nbRegisters > 16) {
+                    int maxRegisters = Integer.parseInt(s);
+                    if (maxRegisters < 4 || maxRegisters > 16) {
                         throw new CLIException("Le nombre de registres n'est pas valide (entre 4 et 16)");
                     }
-                    this.nbRegisters = nbRegisters;
+                    this.maxRegisters = maxRegisters;
                 } catch (NumberFormatException | IndexOutOfBoundsException e) {
                     throw new CLIException("Il faut renseigner un nombre de registres entre 4 et 16");
                 }
