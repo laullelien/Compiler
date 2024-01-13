@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -29,18 +31,13 @@ public class Modulo extends AbstractOpArith {
         throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
     }
 
-
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        super.codeGenInst(compiler);
-        compiler.addInstruction(new REM(Register.getR(3), Register.getR(2)));
-        }
-
-
-
     @Override
     protected String getOperatorName() {
         return "%";
     }
 
+    @Override
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        compiler.addInstruction(new REM(value, target));
+    }
 }

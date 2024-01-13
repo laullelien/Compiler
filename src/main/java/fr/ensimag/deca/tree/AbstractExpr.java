@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -27,8 +28,6 @@ public abstract class AbstractExpr extends AbstractInst {
         return false;
     }
 
-    protected boolean isTerminal() { return false; }
-
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
@@ -46,9 +45,6 @@ public abstract class AbstractExpr extends AbstractInst {
 
     public DVal getDval() {
         return dval;
-        // TODO refactor codeGenPrint de AbstractPrint qui dépend encore de cet attribut
-        // qui est encore nul ici
-        // throw new DecacInternalError("getDval() should not be called from AbstractExpr");
     }
 
     public DVal getNegativeDval() {
@@ -167,6 +163,17 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
         s.print(";");
+    }
+
+    /**
+     * Permet de générer les instructions assembleur d'une expression en spécifiant les registres
+     * utilisés
+     * @param compiler
+     * @param value Position ou valeur à calculer
+     * @param target Position du résultat de l'expression
+     */
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        throw new DecacInternalError("Not yet implemented");
     }
 
     @Override
