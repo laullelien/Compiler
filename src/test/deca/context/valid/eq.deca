@@ -1,0 +1,7 @@
+{
+	float a, b;
+	true != true;
+	6 == 2;
+	a == b;	
+	2 != b;
+}
