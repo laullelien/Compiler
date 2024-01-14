@@ -52,6 +52,7 @@ IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 COMMENT: '//' .*? '\n' {skip();};
+STARCOMMENT : '/*' .*? '*/' {skip();};
 SEMI: ';';
 OBRACE: '{';
 CBRACE: '}';
