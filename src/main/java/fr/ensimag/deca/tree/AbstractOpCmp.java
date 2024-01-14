@@ -5,6 +5,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 /**
  *
@@ -39,5 +42,10 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         }
         setType(compiler.environmentType.BOOLEAN);
         return getType();
+    }
+
+    @Override
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        compiler.addInstruction(new CMP(value, target));
     }
 }
