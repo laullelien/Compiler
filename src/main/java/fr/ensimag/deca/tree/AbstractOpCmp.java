@@ -26,7 +26,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             //type_binary_op
             throw new ContextualError("Au moins un des opérandes de la comparaison n'est pas de type int ou float. Regle 3.33", this.getLocation());
         }
-        // Confloat si les opérandes ne sont pas du même type
+        // Convfloat si les opérandes ne sont pas du même type
         if(leftOperandType != rightOperandType) {
             if(leftOperandType.isInt()) {
                 setLeftOperand(new ConvFloat(getLeftOperand()));
