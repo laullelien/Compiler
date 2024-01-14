@@ -1,0 +1,5 @@
+{
+    int a = 3;
+    float c = 4;
+    float d = a + c;
+}
