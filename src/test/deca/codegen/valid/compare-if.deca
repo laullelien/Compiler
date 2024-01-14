@@ -1,11 +1,13 @@
 // Description:
-//    Test des signes de comparaison
+//    Programme qui teste les comparaisons
 //
 // Resultats:
+//    0
 //    3
+//    4
 //
 // Historique:
-//    cree le 13/01/2024
+//    cree le 14/01/2024
 
 {
     int i = 0;
@@ -18,13 +20,13 @@
     if (i > 0) {
         println("1");
     }
-    else if (i < 0) {
+    if (i < 0) {
         println("2");
     }
-    else if (i >= 0) {
+    if (i >= 0) {
         println("3");
     }
-    else if (i <= 0) {
+    if (i - 1 <= 0) {
         println("4");
     }
 }
