@@ -79,25 +79,24 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
-        if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt()) {
+        Type leftOperandType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightOperandType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        if (!(leftOperandType.isInt() || leftOperandType.isFloat()) ||
+                !(rightOperandType.isInt() || rightOperandType.isFloat()))
+            throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
+        if (leftOperandType.isInt() && rightOperandType.isInt()) {
             setType(compiler.environmentType.INT);
             return getType();
-        } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat()) {
-            setType(compiler.environmentType.FLOAT);
-            return getType();
-        } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt()) {
-            ConvFloat convFloat = new ConvFloat(this.getRightOperand());
-            convFloat.setType(getRightOperand().getType());
-            getRightOperand().setType(compiler.environmentType.FLOAT);
-            setType(compiler.environmentType.FLOAT);
-            return getType();
-        } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat()) {
-            ConvFloat convFloat = new ConvFloat(this.getRightOperand());
-            convFloat.setType(getRightOperand().getType());
-            getRightOperand().setType(compiler.environmentType.FLOAT);
-            setType(compiler.environmentType.FLOAT);
-            return getType();
         }
-        throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
+        setType(compiler.environmentType.FLOAT);
+        if (leftOperandType.isInt()) {
+            ConvFloat convFloat = new ConvFloat(getLeftOperand());
+            convFloat.verifyExpr(compiler, localEnv, currentClass);
+        }
+        else if (rightOperandType.isInt()) {
+            ConvFloat convFloat = new ConvFloat(getRightOperand());
+            convFloat.verifyExpr(compiler, localEnv, currentClass);
+        }
+        return getType();
     }
 }
