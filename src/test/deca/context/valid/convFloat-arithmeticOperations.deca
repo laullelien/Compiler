@@ -2,4 +2,8 @@
     int a = 3;
     float c = 4;
     float d = a + c;
+    float e = a * d;
+    float f = a - d;
+    float g = a / c;
+    float h = (3 * a + 4) - c;
 }
