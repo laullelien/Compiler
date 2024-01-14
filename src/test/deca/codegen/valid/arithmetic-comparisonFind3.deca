@@ -1,0 +1,17 @@
+{
+ int secretNumber = 3;
+ int counter = 1 ;
+ if (counter != secretNumber){
+ println("Ce n'est pas 1");
+ counter = counter + 1;
+ }
+if (counter != secretNumber){
+ println("Ce n'est pas 2");
+ 
+ counter = counter + 1;}
+if(counter == secretNumber){
+ println("C'est 3");
+ }
+ }
+ 
+ 
