@@ -87,15 +87,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             return getType();
         } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isFloat() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isInt()) {
             ConvFloat convFloat = new ConvFloat(this.getRightOperand());
-            convFloat.setType(getRightOperand().getType());
-            getRightOperand().setType(compiler.environmentType.FLOAT);
-            setType(compiler.environmentType.FLOAT);
+            convFloat.verifyExpr(compiler, localEnv, currentClass);
+            setType(convFloat.verifyExpr(compiler, localEnv, currentClass));
             return getType();
         } else if (this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass).isInt() && this.getRightOperand().verifyExpr(compiler, localEnv, currentClass).isFloat()) {
             ConvFloat convFloat = new ConvFloat(this.getRightOperand());
-            convFloat.setType(getRightOperand().getType());
-            getRightOperand().setType(compiler.environmentType.FLOAT);
-            setType(compiler.environmentType.FLOAT);
+            setType(convFloat.verifyExpr(compiler, localEnv, currentClass));
             return getType();
         }
         throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
