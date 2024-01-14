@@ -8,5 +8,5 @@
 //    cree le 01/01/2024
 
 {
-    print("sarah est pas bizarre" - 2);
+    print("sarah est bizarre" - 2);
 }
