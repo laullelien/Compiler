@@ -1,0 +1,32 @@
+// Description:
+//    Programme qui teste les comparaisons
+//
+// Resultats:
+//    0
+//    3
+//    4
+//
+// Historique:
+//    cree le 14/01/2024
+
+{
+    int i = 0;
+    if (i == 0) {
+        println("0");
+    }
+    if (i != 0) {
+        println("non 0");
+    }
+    if (i > 0) {
+        println("1");
+    }
+    if (i < 0) {
+        println("2");
+    }
+    if (i >= 0) {
+        println("3");
+    }
+    if (i - 1 <= 0) {
+        println("4");
+    }
+}

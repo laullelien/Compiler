@@ -1,0 +1,30 @@
+// Description:
+//    Test des signes de comparaison
+//
+// Resultats:
+//    3
+//
+// Historique:
+//    cree le 13/01/2024
+
+{
+    int i = 0;
+    if (i == 0) {
+        println("0");
+    }
+    if (i != 0) {
+        println("non 0");
+    }
+    if (i > 0) {
+        println("1");
+    }
+    else if (i < 0) {
+        println("2");
+    }
+    else if (i >= 0) {
+        println("3");
+    }
+    else if (i <= 0) {
+        println("4");
+    }
+}

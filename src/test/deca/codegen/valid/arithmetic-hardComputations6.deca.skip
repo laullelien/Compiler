@@ -1,0 +1,9 @@
+{
+    // Test 6: Opérations avec des opérateurs unaires et binaires
+    int i;
+    int operand = 2;
+
+    if ((((i = -3) * operand <= (2 % 3.0)) && ((!(-3) % (1 - 3) == 2) || (operand > 0)))) {
+        println("le fou");
+    }
+}
