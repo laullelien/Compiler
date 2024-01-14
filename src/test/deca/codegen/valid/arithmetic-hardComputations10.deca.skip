@@ -1,0 +1,10 @@
+{
+    // Test 10: Mélange avec valeurs négatives et conditions multiples
+    int i;
+    int a = 5;
+    int b = 10;
+
+    if (!((a > b) && (((i = 3) * (a + b)) <= (2 % 3.0) || (-3 % (1 - 3) == 2)))) {
+        println("le fou");
+    }
+}
