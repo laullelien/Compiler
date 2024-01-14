@@ -21,7 +21,7 @@ public class GreaterOrEqual extends AbstractOpIneq {
 
     @Override
     protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        compiler.addInstruction(new LOAD(value, target));
+        super.codeGenInstruction(compiler, value, target);
         compiler.addInstruction(new SGE(target));
     }
 
