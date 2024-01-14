@@ -24,7 +24,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         Type rightOperandType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         if(!(leftOperandType.isBoolean() && rightOperandType.isBoolean())) {
             // type_binary_op
-            throw new ContextualError("Les opérandes d'un opérateur boolean doivent être de type boolean", this.getLocation());
+            throw new ContextualError("Les opérandes d'un opérateur boolean doivent être de type boolean. Regle 3.33", this.getLocation());
         }
         setType(compiler.environmentType.BOOLEAN);
         return getType();
