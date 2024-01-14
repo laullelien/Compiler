@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -38,6 +39,12 @@ public class Modulo extends AbstractOpArith {
 
     @Override
     protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        compiler.addInstruction(new REM(value, target));
+
+        if (!compiler.getCompilerOptions().getNocheck()) {
+            compiler.addInstruction(new LOAD(value, Register.R1));
+            compiler.addInstruction(new CMP(0, Register.R1));
+            compiler.addInstruction(new BEQ(new Label("division_by_0")));
+        }
+        compiler.addInstruction(new REM(value, target)); // division entière
     }
 }
