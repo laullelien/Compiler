@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.FloatType;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
@@ -22,7 +19,8 @@ public class ConvFloat extends AbstractUnaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) {
-        setLocation(getOperand().getLocation());
+        // No setLocation because the example in the handout doesn't have one
+        // No verifyExpr of the operand because it has been done already
         setType(compiler.environmentType.FLOAT);
         return compiler.environmentType.FLOAT;
     }

@@ -1,0 +1,16 @@
+{
+	int i = 5;
+    int j = 4;
+    boolean c = true;
+    boolean d = false;
+    float a = 3.0;
+    float b;
+    float e;
+    a = c;
+    c = b;
+    b = d;
+    e = i;
+    j = a;
+    j = c;
+    e = true;
+}

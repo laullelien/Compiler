@@ -1,0 +1,12 @@
+// Description:
+//    on teste le fait que l'opération  % + soit rejeté
+//
+// Resultats:
+//    Erreur du parser ligne 11
+//
+// Historique:
+//    Cree le 09/01/2024
+
+{
+    println( 3 % + 2);
+}

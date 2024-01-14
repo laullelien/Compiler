@@ -1,0 +1,1 @@
+declVar-invalidType.deca:2:

@@ -1,0 +1,15 @@
+// Description:
+//    Programme testant la division par 0 pour le modulo
+//
+// Resultats:
+//
+// 2.30000e+00
+// Erreur de division par 0
+//
+// Historique:
+//    cree le 01/01/2024
+
+{
+        println(2.3);
+        println(9%0);
+}

@@ -1,0 +1,13 @@
+// Description:
+//    Modulo Equal n'est pas sensé marché.
+//
+// Résultats:
+//    Erreur parser l.12
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+   int a = 2;
+   a%= 2;
+}

@@ -25,18 +25,24 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // regle 3.33
-        Type leftOperandType = getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
-        Type rightOperandType = getRightOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (!(leftOperandType.isInt() || leftOperandType.isFloat()) ||
-                !(rightOperandType.isInt() || rightOperandType.isFloat()))
-            throw new ContextualError("Le type ne respecte pas la règle 3.33", this.getLocation());
+        Type leftOperandType = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type rightOperandType = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
+        if((!(leftOperandType.isFloat() || leftOperandType.isInt())) || (!(rightOperandType.isFloat() || rightOperandType.isInt()))) {
+            //type_binary_op
+            throw new ContextualError("Au moins un des opérandes de la comparaison n'est pas de type int ou float. Regle 3.33", this.getLocation());
+        }
+        // Convfloat si les opérandes ne sont pas du même type
+        if(leftOperandType != rightOperandType) {
+            if(leftOperandType.isInt()) {
+                setLeftOperand(new ConvFloat(getLeftOperand()));
+                getLeftOperand().setType(compiler.environmentType.FLOAT);
+            }
+            else {
+                setRightOperand(new ConvFloat(getRightOperand()));
+                getRightOperand().setType(compiler.environmentType.FLOAT);
+            }
+        }
         setType(compiler.environmentType.BOOLEAN);
         return getType();
-    }
-
-    @Override
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        compiler.addInstruction(new CMP(value, target));
     }
 }
