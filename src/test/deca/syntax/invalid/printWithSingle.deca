@@ -1,0 +1,17 @@
+// Description:
+//    print avec ''
+//
+// Resultats:
+//    no token, no LocationException
+
+
+//
+// Historique:
+//    cree le 11/01/2024
+
+
+{
+
+    println('I play Pokemon Go Every Day');
+
+}
