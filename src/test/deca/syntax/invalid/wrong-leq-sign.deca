@@ -1,0 +1,17 @@
+// Description:
+//    Test avec le signe de LEQ mal ordonné
+//    <= au lieu de =<
+//
+// Résultats:
+//    Ligne 15: left-hand side of assignment is not an lvalue
+//    test_lex ne doit pas donner d'erreur.
+//    (le signe =< sera reconnu comme une affectation suivi d'un LT)
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+    if (1 =< 2) {
+        println("je serai jamais imprimé :')");
+    }
+}
