@@ -1,0 +1,15 @@
+// Description:
+//    Test de reconnaisance des tocken de comparaison
+//
+// Resultats:
+//    Erreur du lexer ligne 11
+//
+// Historique:
+//    Cree le 13/01/2024
+
+{
+	5 > 2.0;
+	a <= b;
+	(a <= b) && (c || d);
+	3 != true;
+}

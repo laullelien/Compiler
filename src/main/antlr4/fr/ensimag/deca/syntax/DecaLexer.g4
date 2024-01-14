@@ -77,7 +77,19 @@ fragment NUMHEX: DIGITHEX+;
 fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
  FLOAT: FLOATDEC | FLOATHEX;
 
+// grammar for comparaisons
 
+EQEQ: '==';
+NEQ: '!=';
+GEQ: '>=';
+LEQ: '<=';
+GT: '>';
+LT: '<';
+
+// grammar for binary operators
+
+OR: '||';
+AND: '&&';
 
 // Grammaire des opérations
 

@@ -1,1 +1,0 @@
-stringOuvert.deca:15:

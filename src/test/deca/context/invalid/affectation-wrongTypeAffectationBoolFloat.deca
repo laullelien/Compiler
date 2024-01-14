@@ -1,0 +1,5 @@
+{
+	float i = 5.3;
+    boolean c = true;
+    c = i;
+}

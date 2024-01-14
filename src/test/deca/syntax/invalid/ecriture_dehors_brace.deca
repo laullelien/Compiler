@@ -1,0 +1,12 @@
+// Description:
+//    on ecrit en dehors des braces
+//
+// Resultats:
+//    Erreur du parser ligne 12
+//
+// Historique:
+//    Cree le 09/01/2024
+
+{
+}
+int x = 2;

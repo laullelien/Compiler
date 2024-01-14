@@ -1,0 +1,13 @@
+// Description:
+//    Print avec plusieurs arguments mal formés
+//
+// Résultats attendus:
+//    no viable alternative at input '"World!"'
+
+//
+// Historique:
+//    créé le 11/01/2024
+
+{
+    print("Hello" "World!");
+}
