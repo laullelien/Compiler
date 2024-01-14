@@ -1,0 +1,11 @@
+// test convfloat et unaryminus
+  
+ { 
+    int i = 3;
+    int a = -i;
+    println(a);
+    println(a * -i);
+    print(a + 4.0);
+    }
+    
+    
