@@ -47,10 +47,6 @@ public abstract class AbstractExpr extends AbstractInst {
         return dval;
     }
 
-    public DVal getNegativeDval() {
-        return negDval;
-    }
-
     @Override
     protected void checkDecoration() {
         if (getType() == null) {

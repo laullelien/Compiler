@@ -45,11 +45,6 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
-    public DVal getNegativeDval() {
-        return new ImmediateFloat(-value);
-    }
-
-    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         // regle (3.45)

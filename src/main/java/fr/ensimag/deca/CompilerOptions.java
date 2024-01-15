@@ -111,7 +111,7 @@ public class CompilerOptions {
                     if (maxRegisters < 4 || maxRegisters > 16) {
                         throw new CLIException("Le nombre de registres n'est pas valide (entre 4 et 16)");
                     }
-                    this.maxRegisters = maxRegisters;
+                    this.maxRegisters = maxRegisters - 1;
                 } catch (NumberFormatException | IndexOutOfBoundsException e) {
                     throw new CLIException("Il faut renseigner un nombre de registres entre 4 et 16");
                 }
