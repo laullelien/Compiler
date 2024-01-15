@@ -23,15 +23,10 @@ public class UnaryMinus extends AbstractUnaryExpr {
             ClassDefinition currentClass) throws ContextualError {
         //regle 3.37
         Type typeOperand = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
-        if (typeOperand.isInt()){
-            setType(compiler.environmentType.INT);
-            return getType();
-        }
-        if (typeOperand.isFloat()){
-            setType(compiler.environmentType.FLOAT);
-            return getType();
-        }
-        throw new ContextualError("Le type ne respecte pas la règle 3.37", this.getLocation());
+        if (!(typeOperand.isInt() || typeOperand.isFloat()))
+            throw new ContextualError("Le type ne respecte pas la règle 3.37", this.getLocation());
+        setType(typeOperand);
+        return getType();
     }
 
     @Override
