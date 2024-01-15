@@ -95,10 +95,14 @@ LEQ: '<=';
 GT: '>';
 LT: '<';
 
-// grammar for binary operators
+// grammar for binary boolean operators
 
 OR: '||';
 AND: '&&';
+
+// grammar for unary boolean operator
+
+EXCLAM: '!';
 
 // Grammaire des opérations
 

@@ -1,0 +1,9 @@
+{
+    boolean r = false;
+    boolean s = true;
+    boolean t = false;
+    boolean result5 = !r || (s && !t);
+    if (result5) {
+        println("Test 5: ok");
+    }
+}

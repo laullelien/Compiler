@@ -1,0 +1,8 @@
+{
+    boolean m = true;
+    boolean n = false;
+    boolean result4 = m && !n || (m || !n);
+    if (result4) {
+        println("Test 4: ok");
+    }
+}

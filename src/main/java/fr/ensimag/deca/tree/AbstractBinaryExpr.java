@@ -67,6 +67,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             codeExp(compiler, op.getOperand(), n);
             op.codeGenInstruction(compiler, Register.getR(n), Register.getR(n));
         }
+        else if (e instanceof AbstractOpBool) {
+            ((AbstractOpBool)e).codeGenBool(compiler, n);
+        }
         else if (e instanceof AbstractBinaryExpr) {
             AbstractBinaryExpr op = (AbstractBinaryExpr) e;
             if (op.getRightOperand().getDval() != null) {
