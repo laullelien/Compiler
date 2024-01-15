@@ -26,8 +26,6 @@ public class ReadFloat extends AbstractReadExpr {
         return compiler.environmentType.FLOAT;
     }
 
-
-
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         compiler.addInstruction(new RFLOAT());
@@ -39,14 +37,6 @@ public class ReadFloat extends AbstractReadExpr {
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new RFLOAT());
         compiler.addInstruction(new BOV(new Label("input_error")));
-        compiler.addInstruction(new WINT());
-    }
-
-    @Override
-    protected void codeGenPrintX(DecacCompiler compiler) {
-        compiler.addInstruction(new RFLOAT());
-        compiler.addInstruction(new BOV(new Label("input_error")));
-        compiler.addInstruction(new WFLOATX());
     }
 
     @Override

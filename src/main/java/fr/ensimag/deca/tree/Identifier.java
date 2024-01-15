@@ -213,21 +213,8 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
-        if(getType().isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        }
-        if(getType().isInt()) {
-            compiler.addInstruction(new WINT());
-        }
     }
 
-    protected void codeGenPrintX(DecacCompiler compiler) {
-        if(!this.getType().isFloat()) {
-            throw new RuntimeException("Le paramètre devrait être de type float");
-        }
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
-        compiler.addInstruction(new WFLOATX());
-    }
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(name.toString());

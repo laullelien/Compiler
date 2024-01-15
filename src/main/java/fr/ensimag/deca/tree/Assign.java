@@ -41,41 +41,13 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        if (this.getLeftOperand() instanceof Identifier) {
-            this.getRightOperand().codeGenInst(compiler);
-            compiler.addInstruction(new STORE(Register.R2, ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-        }
-    }
-
-    @Override
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        //codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(value, target));
-        compiler.addInstruction(new STORE(target, ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-    }
-
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(Register.R2, Register.R1));
-        if(getType().isInt()) {
-            compiler.addInstruction(new WINT());
-        }
-        if(getType().isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        }
-    }
-
-    @Override
-    protected void codeGenPrintX(DecacCompiler compiler) {
-        codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(Register.R2, Register.R1));
-        compiler.addInstruction(new WFLOATX());
-    }
-    @Override
     protected String getOperatorName() {
         return "=";
     }
 
+    @Override
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        compiler.addInstruction(new LOAD(value, target));
+        compiler.addInstruction(new STORE(target, ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+    }
 }

@@ -46,16 +46,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        codeGenInst(compiler);
-        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
-        if (getType().isInt())
-            compiler.addInstruction(new WINT());
-        else if (getType().isFloat())
-            compiler.addInstruction(new WFLOAT());
-    }
-
     protected void codeGenInst(DecacCompiler compiler) {
         codeExp(compiler, this, 2);
     }
@@ -64,6 +54,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
      * Génération de code naïve pour expressions arithmétiques
      * donné par les profs
      * cf. diapo étape C, page 12
+     * @param compiler
+     * @param e expression à calculer
+     * @param n numéro de registre où sera stocké le résultat de l'expression
      */
     protected void codeExp(DecacCompiler compiler, AbstractExpr e, int n) {
         // On vérifie que e est un litéral ou une variable

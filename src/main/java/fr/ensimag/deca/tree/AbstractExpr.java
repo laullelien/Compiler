@@ -9,6 +9,8 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -41,7 +43,6 @@ public abstract class AbstractExpr extends AbstractInst {
     }
     private Type type;
     private DVal dval ;
-    private DVal negDval;
 
     public DVal getDval() {
         return dval;
@@ -147,11 +148,8 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    protected void codeGenPrintX(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
     }
 
     @Override
