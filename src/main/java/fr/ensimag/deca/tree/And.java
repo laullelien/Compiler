@@ -29,12 +29,8 @@ public class And extends AbstractOpBool {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        String labelString = "and_label_" + compiler.getLabelId();
-        compiler.incrementLabelId();
-        Label endLabel = new Label(labelString + "_fin");
-
         DVal leftDVal = getLeftOperand().getDval();
-        if(leftDVal != null) {
+        if(leftDVal != null && leftDVal instanceof ImmediateInteger) {
             // true && rightOperand = rightOperand
             if(((ImmediateInteger)leftDVal).getValue() == 1) {
                 getRightOperand().codeGenInst(compiler);
@@ -44,6 +40,10 @@ public class And extends AbstractOpBool {
             compiler.addInstruction(new LOAD(0, compiler.getRegister()));
             return;
         }
+
+        String labelString = "and_label_" + compiler.getLabelId();
+        compiler.incrementLabelId();
+        Label endLabel = new Label(labelString + "_fin");
 
         getLeftOperand().codeGenInst(compiler);
 

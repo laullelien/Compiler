@@ -45,7 +45,7 @@ public class Not extends AbstractUnaryExpr {
         }
 
         DVal operandDVal = getOperand().getDval();
-        if (operandDVal != null) {
+        if (operandDVal != null && operandDVal instanceof ImmediateInteger) {
             if (((ImmediateInteger) operandDVal).getValue() == 1) {
                 compiler.addInstruction(new LOAD(0, compiler.getRegister()));
             } else {
