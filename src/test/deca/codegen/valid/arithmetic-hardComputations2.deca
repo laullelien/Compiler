@@ -1,0 +1,9 @@
+{
+    // Test 2: Opérations avec des variables de différents types
+    int i, j;
+    float x = 3.5;
+
+    if ((((i = j = 10) * 2) >= (2 % 1)) && ((!!true))) {
+        println("le fou");
+    }
+}

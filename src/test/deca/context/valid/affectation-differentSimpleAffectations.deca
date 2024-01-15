@@ -1,0 +1,15 @@
+{
+	int i = 5;
+    int j = 4;
+    boolean c = true;
+    boolean d = false;
+    float a = 3.0;
+    float b;
+    float e;
+    a = b;
+    e = b;
+    i = j;
+    c = d;
+    d = c;
+    c = d;
+}

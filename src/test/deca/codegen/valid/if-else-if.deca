@@ -1,0 +1,23 @@
+// Description:
+//    Programme testant les if
+//
+// Resultats:
+//    NOOOO
+//
+// Historique:
+//    cree le 09/01/2024
+
+{
+	if(false) {
+		println("hello");
+	} else if(false) {
+		println("bye");
+	} else if(true) {
+		println("NOOOO");
+	} else if(false) {
+		println("VVUUUIII");
+	} else {
+		println("FFFIIINN");
+    }
+}
+

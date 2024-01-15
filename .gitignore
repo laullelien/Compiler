@@ -8,4 +8,6 @@
 .project
 .metadata
 .settings
+
 *.ass
+.idea/misc.xml

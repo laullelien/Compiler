@@ -1,0 +1,10 @@
+{
+    // Test 5: Mélange d'opérations et de conditions
+    float i;
+    int a = 5;
+    int b = 10;
+
+    if (((i = 6.0) / 3 == 2) && (3 < 3.001) && (2 > 1.9999)){
+        println("le fou");
+    }
+}

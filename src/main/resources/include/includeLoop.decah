@@ -1,0 +1,11 @@
+// Description:
+//    Programme minimaliste utilisant un include
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 12/01/2024
+
+#include "testIncludeOfTheDeathWhichKill.decah"
+println("Elles sont très bonnes. Il y en a ", a, ".");

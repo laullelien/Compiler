@@ -7,9 +7,13 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.Label;
-import java.io.PrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
+
+import java.io.PrintStream;
 
 /**
  * Expression, i.e. anything that has a value.
@@ -38,12 +42,27 @@ public abstract class AbstractExpr extends AbstractInst {
         this.type = type;
     }
     private Type type;
+    private DVal dval ;
+
+    public DVal getDval() {
+        return dval;
+    }
 
     @Override
     protected void checkDecoration() {
         if (getType() == null) {
             throw new DecacInternalError("Expression " + decompile() + " has no Type decoration");
         }
+    }
+
+    public void verifyExprPrint(DecacCompiler compiler,
+                           EnvironmentExp localEnv, ClassDefinition currentClass)
+            throws ContextualError {
+        // regle 3.31
+         Type returnType = this.verifyExpr(compiler, localEnv, currentClass);
+         if(!(returnType.isString() || returnType.isInt() || returnType.isFloat())) {
+             throw new ContextualError("Le type d'un parametre de print ne respecte pas la règle 3.30", this.getLocation());
+         }
     }
 
     /**
@@ -82,7 +101,18 @@ public abstract class AbstractExpr extends AbstractInst {
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type assignedType = this.verifyExpr(compiler, localEnv, currentClass);
+        setType(assignedType);
+        // règle 3.28
+        if (!(compiler.environmentType.assignCompatible(expectedType, assignedType))) {
+            throw new ContextualError("La règle 3.28 n'est pas respectée : le type n'est pas compatible pour l'affectation", this.getLocation());
+        }
+        if(expectedType.isFloat() && assignedType.isInt()) {
+            AbstractExpr convFloat = new ConvFloat(this);
+            convFloat.setType(compiler.environmentType.FLOAT);
+            return convFloat;
+        }
+        return this;
     }
     
     
@@ -90,7 +120,8 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // regle 3.20
+        verifyExpr(compiler, localEnv, currentClass);
     }
 
     /**
@@ -105,7 +136,10 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Type returnType = this.verifyExpr(compiler, localEnv, currentClass);
+        if(!returnType.isBoolean()) {
+            throw new ContextualError("Le paramètre de l'instruction n'est pas de type boolean : règle (3.29)", this.getLocation());
+        }
     }
 
     /**
@@ -114,19 +148,30 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
 
     @Override
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
         s.print(";");
+    }
+
+    /**
+     * Permet de générer les instructions assembleur d'une expression en spécifiant les registres
+     * utilisés
+     * @param compiler
+     * @param value Position ou valeur à calculer
+     * @param target Position du résultat de l'expression
+     */
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        throw new DecacInternalError("Not yet implemented");
     }
 
     @Override

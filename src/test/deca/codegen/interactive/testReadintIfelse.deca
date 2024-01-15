@@ -1,0 +1,18 @@
+// Description:
+//   Programme indiquant à l'utilisateur s'il a choisi plus ou moins de 5
+//
+// Resultat:
+//  S'il est au dessus de 5 ou non
+//
+// Historique:
+//    cree le 13/01/2024
+
+{
+int m = 5;
+if (ReadInt() >= m){
+println("Tu as choisi un nombre plus grand que 5")
+}
+else {
+println(" Tu as choisi un nombre plus petit que 5")
+}
+}

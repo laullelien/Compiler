@@ -1,0 +1,14 @@
+// Description:
+//   Programme utilisant readFloat et checkant la division par 0.0
+//
+// Resultat:
+// Erreur de division par 0.0 (si 0.0 choisi).
+//
+// Historique:
+//    cree le 13/01/2024
+
+
+{
+   float x =  readFloat();
+   println(2/x);
+}

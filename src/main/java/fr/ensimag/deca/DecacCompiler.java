@@ -12,11 +12,16 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.ImmediateString;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.ERROR;
+import fr.ensimag.ima.pseudocode.instructions.WNL;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -38,7 +43,18 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
-    
+
+    private int nbDeclVar = 0;
+
+    public int generateDeclVarOffset() {
+        nbDeclVar ++;
+        return nbDeclVar;
+    }
+
+    public int getNbDeclVar() {
+        return nbDeclVar;
+    }
+
     /**
      * Portable newline character.
      */
@@ -104,7 +120,7 @@ public class DecacCompiler {
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
     }
-    
+
     /**
      * @see 
      * fr.ensimag.ima.pseudocode.IMAProgram#display()
@@ -112,22 +128,21 @@ public class DecacCompiler {
     public String displayIMAProgram() {
         return program.display();
     }
-    
+
     private final CompilerOptions compilerOptions;
     private final File source;
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
     private final IMAProgram program = new IMAProgram();
- 
 
     /** The global environment for types (and the symbolTable) */
-    public final EnvironmentType environmentType = new EnvironmentType(this);
     public final SymbolTable symbolTable = new SymbolTable();
+    public final EnvironmentType environmentType = new EnvironmentType(this);
 
     public Symbol createSymbol(String name) {
-        return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
-        // return symbolTable.create(name);
+       // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
+        return symbolTable.create(name);
     }
 
     /**
@@ -137,8 +152,6 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        if (!sourceFile.endsWith(".deca"))
-            throw new IllegalArgumentException("Error: The file does not end with \".deca\"");
         String destFile = sourceFile.substring(0, sourceFile.length() - 4);
         destFile += "ass";
         // A FAIRE: calculer le nom du fichier .ass à partir du nom du
@@ -197,21 +210,39 @@ public class DecacCompiler {
             prog.decompile(out);
             return false;
         }
+
+        prog.verifyProgram(this);
+        // TODO a décommenter une fois qu'on applique le défensive programming et décoré l'arbre abstrait
+        // assert(prog.checkAllDecorations());
+
         if (this.compilerOptions.getVerification()){
             return false;
         }
 
-
-//        prog.verifyProgram(this);
-//        assert(prog.checkAllDecorations());
-
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
+
+        addComment("error handling");
+
+        addLabel(new Label("stack_full"));
+        addInstruction(new WSTR(new ImmediateString("La pile est pleine")));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
+
+        addLabel(new Label("division_by_0"));
+        addInstruction(new WSTR("Erreur de division par 0"));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
+
+        addLabel(new Label("input_error"));
+        addInstruction(new WSTR(new ImmediateString("Depassement ou mauvais format")));
+        addInstruction(new WNL());
+        addInstruction(new ERROR());
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
-        FileOutputStream fstream = null;
+        FileOutputStream fstream;
         try {
             fstream = new FileOutputStream(destName);
         } catch (FileNotFoundException e) {
@@ -253,4 +284,16 @@ public class DecacCompiler {
         return parser.parseProgramAndManageErrors(err);
     }
 
+    /*
+     * Used to get different labelId
+     */
+    private int labelId = 0;
+
+    public int getLabelId() {
+        return labelId;
+    }
+
+    public void incrementLabelId() {
+        labelId++;
+    }
 }

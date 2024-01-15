@@ -1,0 +1,17 @@
+//test d'assignation et du convfloat
+
+{
+    int a, b;
+    float x, y;
+    float result;
+
+    a = 5;
+    b = 2;
+    x = 3.14;
+    y = 2.5;
+
+    result = (a + b) / (x * y);
+
+    println(result);
+}
+

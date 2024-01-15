@@ -1,0 +1,13 @@
+// Description:
+//    Déclaration de variables
+//
+// Résultats:
+//    Ligne 12: Le type de l'expression n'est pas valide
+//
+// Historique:
+//    Créé le 10/01/2024
+
+{
+   float b = 3.2;
+   int a = b;
+}

@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -35,13 +36,17 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        // regle 3.8
+        AbstractExpr expr = expression.verifyRValue(compiler, localEnv, currentClass, t);
+        // Ajout de convfloat
+        expression = expr;
     }
 
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        s.print(" = ");
+        expression.decompile(s);
     }
 
     @Override
@@ -53,5 +58,10 @@ public class Initialization extends AbstractInitialization {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         expression.prettyPrint(s, prefix, true);
+    }
+
+    @Override
+    public void codeGenInst(DecacCompiler compiler) {
+        expression.codeGenInst(compiler);
     }
 }

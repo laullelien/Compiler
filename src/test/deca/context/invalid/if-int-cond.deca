@@ -1,0 +1,15 @@
+// Description:
+//    condition du mauvais type
+//
+// Resultats:
+//    Ligne 11: Le paramètre de if n'est pas une condition
+//
+// Historique:
+//    cree le 09/01/2024
+
+{
+    if(5) {
+        print("OK");
+    }
+}
+

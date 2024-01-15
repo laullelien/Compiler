@@ -1,0 +1,10 @@
+{
+    // Test 6: Opérations avec des opérateurs unaires et binaires
+    float a = 3;
+    int b = 2;
+    int c = 1;
+
+    if ((!(a < b)) || ((c = b = c = b) != 100)) {
+        println("le fou");
+    }
+}

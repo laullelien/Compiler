@@ -1,0 +1,33 @@
+// Description:
+//   test des conparaisons avec plusieurs if
+// Historique:
+//    Créé le 12/01/2024
+
+{
+if(42000 < 133700){
+    println("Rerere");
+
+
+    if(7 <= 869){
+        println("Rururu");
+
+
+        if(42 > 24){
+            println("Ryryry");
+
+
+            if(42 > 3.14159){
+                println("Rititi");
+
+
+
+                if(9.87654 >= 2.71828){
+                    println("Rototo");
+
+
+                    if(13.37 == 13.37){
+                        println("Ratata");}
+                        }}}}}
+
+}
+

@@ -1,20 +1,15 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -31,6 +26,11 @@ public class Identifier extends AbstractIdentifier {
         if (getDefinition() == null) {
             throw new DecacInternalError("Identifier " + this.getName() + " has no attached Definition");
         }
+    }
+
+    @Override
+    public DVal getDval() {
+        return getVariableDefinition().getOperand();
     }
 
     @Override
@@ -167,7 +167,13 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        ExpDefinition defIdentifier = localEnv.get(this.getName());
+        if(defIdentifier == null) {
+            throw new ContextualError("La règle 0.1 n'est pas respectée", this.getLocation());
+        }
+        setDefinition(defIdentifier);
+        setType(defIdentifier.getType());
+        return defIdentifier.getType();
     }
 
     /**
@@ -176,7 +182,13 @@ public class Identifier extends AbstractIdentifier {
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        TypeDefinition typeDef = compiler.environmentType.defOfType(this.getName());
+        if (typeDef != null) {
+            setDefinition(typeDef);
+            setType(typeDef.getType());
+            return typeDef.getType();
+        }
+        throw new ContextualError("Le type ne respecte pas la règle 0.2", this.getLocation());
     }
     
     
@@ -191,6 +203,16 @@ public class Identifier extends AbstractIdentifier {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R2));
+    }
+
+    @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
     }
 
     @Override

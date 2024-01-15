@@ -1,0 +1,12 @@
+// Description:
+//    On utilise le mot false comme une variable
+//
+// Resultats:
+//    Erreur du parser ligne 11
+//
+// Historique:
+//    Cree le 09/01/2024
+
+{
+    int false = 3;
+}

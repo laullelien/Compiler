@@ -1,0 +1,28 @@
+// Description:
+//   Programme utilisant readInt() pour le juste prix.
+//
+// Resultat:
+// Jeu du juste prix, si 23 est trouvé.
+//
+// Historique:
+//    cree le 13/01/2024
+
+{
+    int nombreMystere = 23;
+    int guess;
+
+    println("Bienvenue dans le jeu du juste prix!");
+
+    while (true) {
+        println("Devine le nombre : ");
+        guess = readInt();
+
+        if (guess == nombreMystere) {
+            println("Bravo! Tu as deviné le juste prix (23)!");
+        } else if (guess < nombreMystere) {
+            println("Le nombre mystère est plus grand. Essaye encore.");
+        } else {
+            println("Le nombre mystère est plus petit. Essaye encore.");
+        }
+    }
+}

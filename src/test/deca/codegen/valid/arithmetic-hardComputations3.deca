@@ -1,0 +1,9 @@
+{
+    // Test 3: Opérations avec des valeurs négatives et multiplication par une variable
+    int i;
+    int multiplier = 2;
+
+    if ((!!!!!!!!!!!!!!!!false) || ((3 == (i = 100 - 97)) && (i == 3))) {
+        println("le fou");
+    }
+}

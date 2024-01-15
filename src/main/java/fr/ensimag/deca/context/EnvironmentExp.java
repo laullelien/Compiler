@@ -2,6 +2,8 @@ package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
+import java.util.HashMap;
+
 /**
  * Dictionary associating identifier's ExpDefinition to their names.
  * 
@@ -23,11 +25,20 @@ public class EnvironmentExp {
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
+    private HashMap<Symbol, ExpDefinition> environment = new HashMap<>();
 
     EnvironmentExp parentEnvironment;
+
+    public EnvironmentExp getParentEnvironment() {
+        return parentEnvironment;
+    }
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
+    }
+
+    public EnvironmentExp() {
+        this.parentEnvironment = null;
     }
 
     public static class DoubleDefException extends Exception {
@@ -39,7 +50,7 @@ public class EnvironmentExp {
      * symbol is undefined.
      */
     public ExpDefinition get(Symbol key) {
-        throw new UnsupportedOperationException("not yet implemented");
+        return environment.get(key);
     }
 
     /**
@@ -58,7 +69,37 @@ public class EnvironmentExp {
      *
      */
     public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        throw new UnsupportedOperationException("not yet implemented");
+        if (this.environment.containsKey(name)) {
+            throw new DoubleDefException();
+        }
+        this.environment.put(name, def);
+    }
+
+    public HashMap<Symbol, ExpDefinition> getEnvironment(){
+        return this.environment;
+    }
+
+    /**
+     * Stack two environment with env1 having the priority.
+     * If env2 is null, an environment with the definitions from env1 is returned.
+     *
+     * @param env1
+     *          the environment stacked on env2
+     * @param env2
+     *          the environment with env1 stacked onto it
+     *
+    */
+    public EnvironmentExp stackEnvironment(EnvironmentExp env1, EnvironmentExp env2) {
+        EnvironmentExp res = new EnvironmentExp(null);
+        if (env2 == null) {
+            res.environment.putAll(env1.environment);
+        } else {
+            res.environment.putAll(env2.environment);
+            for (Symbol name : env1.environment.keySet()) {
+                res.environment.put(name, env1.environment.get(name));
+            }
+        }
+        return res;
     }
 
 }

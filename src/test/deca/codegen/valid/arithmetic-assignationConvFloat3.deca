@@ -1,0 +1,16 @@
+//assignation et results encore plus bizarres
+
+{
+    int a, b;
+    float x, y;
+    float result;
+
+    a = 10;
+    b = 3;
+    x = 2.5;
+    y = 1.5;
+
+    result = (((a * b) + (a % b)) * x) / (y + 1);
+    println(result);
+}
+
