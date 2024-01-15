@@ -506,6 +506,7 @@ class_extension returns[AbstractIdentifier tree]
         }
     | /* epsilon */ {
             $tree = getDecacCompiler().environmentType.objectClassIdentifier;
+            $tree.setLocation(Location.BUILTIN);
         }
     ;
 

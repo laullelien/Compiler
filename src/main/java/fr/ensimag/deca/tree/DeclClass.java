@@ -26,7 +26,17 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        s.print("class ");
+        this.name.decompile(s);
+        s.print(" extends ");
+        this.nameSuperClass.decompile(s);
+        s.println(" {");
+        s.indent();
+        this.fields.decompile(s);
+        this.methods.decompile(s);
+        s.println("");
+        s.unindent();
+        s.print("}");
     }
 
     @Override
@@ -71,7 +81,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        name.iter(f);
+        nameSuperClass.iter(f);
+        methods.iter(f);
+        fields.iter(f);
     }
 
 }

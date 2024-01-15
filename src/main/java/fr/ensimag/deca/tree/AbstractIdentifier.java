@@ -41,7 +41,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
         TypeDefinition objectClassDefinition = compiler.environmentType.defOfType(compiler.createSymbol("Object"));
         this.setDefinition(objectClassDefinition);
         this.setType(compiler.environmentType.OBJECT);
-        setLocation(Location.BUILTIN);
     }
 
     /**
