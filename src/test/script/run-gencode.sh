@@ -30,8 +30,9 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
         then
             echo "    [WARNING] Fichier $source_ima n'existe pas, impossible de tester la compilation de $filename"
         else
-            res_decac="$(decac "$source" 2>&1)"
-            err_decac="$(cat "source_ima")"
+            decac "$source" 2>&1
+            res_decac="$()"
+            err_decac="$(cat "$source_ima")"
             if echo "$res_decac" | grep -q -e "$err_decac"
             then
                 echo "    [OK] Echec attendu pour $filename"
