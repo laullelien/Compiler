@@ -25,22 +25,42 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
     for source in "$source_path"/*.deca
     do
         source_ima="${source%.deca}.ima"
+        source_ass="${source%.deca}.ass"
+        source_error="${source%.deca}.err"
         filename="$(basename "$source")"
         if [ ! -f "$source_ima" ]
         then
             echo "    [WARNING] Fichier $source_ima n'existe pas, impossible de tester la compilation de $filename"
         else
-            decac "$source" 2>&1
-            res_decac="$()"
-            err_decac="$(cat "$source_ima")"
-            if echo "$res_decac" | grep -q -e "$err_decac"
+            rm -f "$source_ass" 2> /dev/null
+            decac "$source" 2> "$source_error"
+            # on vérifie si la taille de source.err est supérieur à 0
+            # celà signifie que decac a rencontré une erreur dans la compilation
+            if [ -s "$source_error" ]
             then
-                echo "    [OK] Echec attendu pour $filename"
+                echo "    [ERREUR] Echec inattendu de decac pour $filename"
+                echo "    [DEBUG] decac a reporté l'erreur suivant:"
+                cat "$source_error"
+                rm -f "$source_error"
+                exit 1
+            fi
+            if [ ! -f "$source_ass" ]
+            then
+                echo "    [ERREUR] Fichier $filename.ass non généré."
+                exit 1
+            fi
+            output_ima="${source%.deca}.out"
+            ima "$source_ass" > "$output_ima" 2> "$source_error"
+            rm -f "$source_ass"
+            if diff "$output_ima" "$source_ima"
+            then
+                echo "    [OK] Echec attendu de ima pour $filename"
+                rm -f "$output_ima"
+                rm -f "$source_error"
             else
-                echo "    [ERREUR] Succès inattendu ou erreur non détectée par decac pour $filename"
-                echo "    [DEBUG] Erreur attendu: $err_decac"
-                echo "    [DEBUG] Sortie de decac:"
-                echo "$res_decac"
+                echo "    [OK] Succès inattendu de ima pour $filename"
+                rm -f "$output_ima"
+                rm -f "$source_error"
                 exit 1
             fi
         fi
