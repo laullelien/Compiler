@@ -214,42 +214,40 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!-- TODO decommenter une fois l'US déclaration et instanciations des types fait -->
-                    <!-- <execution> -->
+                    <execution>
                         <!-- run a unit test by defining our own class with a main
                         function -->
                         <!-- warning: java assertions are not enabled -->
-                    <!--     <id>unit-test-symbol</id> -->
-                    <!--     <configuration> -->
-                    <!--         <mainClass>fr.ensimag.deca.tools.ManualTestSymbol</mainClass> -->
-                    <!--         <classpathScope>test</classpathScope> -->
-                    <!--     </configuration> -->
-                    <!--     <phase>test</phase> -->
-                    <!--     <goals> -->
-                    <!--         <goal>java</goal> -->
-                    <!--     </goals> -->
-                    <!-- </execution> -->
-                    <!-- TODO decommenter une fois qu'on a fini le sprint2 -->
-                    <!-- <execution> -->
-                    <!--     <id>basic-context</id> -->
-                    <!--     <configuration> -->
-                    <!--         <executable>./src/test/script/basic-context.sh</executable> -->
-                    <!--     </configuration> -->
-                    <!--     <phase>test</phase> -->
-                    <!--     <goals> -->
-                    <!--         <goal>exec</goal> -->
-                    <!--     </goals> -->
-                    <!-- </execution> -->
-                    <!-- <execution> -->
-                    <!--     <id>basic-gencode</id> -->
-                    <!--     <configuration> -->
-                    <!--         <executable>./src/test/script/basic-gencode.sh</executable> -->
-                    <!--     </configuration> -->
-                    <!--     <phase>test</phase> -->
-                    <!--     <goals> -->
-                    <!--         <goal>exec</goal> -->
-                    <!--     </goals> -->
-                    <!-- </execution> -->
+                        <id>unit-test-symbol</id>
+                        <configuration>
+                            <mainClass>fr.ensimag.deca.tools.ManualTestSymbol</mainClass>
+                            <classpathScope>test</classpathScope>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-context</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-context.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>basic-gencode</id>
+                        <configuration>
+                            <executable>./src/test/script/basic-gencode.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
                     <execution>
                         <id>basic-decac</id>
                         <configuration>
@@ -260,17 +258,16 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <!-- TODO décommenter au début du sprint3 -->
-                    <!-- <execution> -->
-                    <!--     <id>common-tests</id> -->
-                    <!--     <configuration> -->
-                    <!--         <executable>./src/test/script/common-tests.sh</executable> -->
-                    <!--     </configuration> -->
-                    <!--     <phase>test</phase> -->
-                    <!--     <goals> -->
-                    <!--         <goal>exec</goal> -->
-                    <!--     </goals> -->
-                    <!-- </execution> -->
+                    <execution>
+                    <id>common-tests</id>
+                    <configuration>
+                    <executable>./src/test/script/common-tests.sh</executable>
+                    </configuration>
+                    <phase>test</phase>
+                    <goals>
+                    <goal>exec</goal>
+                    </goals>
+                    </execution>
                     <execution>
                         <id>run-lex</id>
                         <configuration>
