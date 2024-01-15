@@ -30,4 +30,6 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         return getType();
     }
 
+    abstract protected void codeGenBool(DecacCompiler compiler, int n);
+
 }

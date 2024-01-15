@@ -1,6 +1,14 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
+
 /**
  *
  * @author gl38
@@ -17,5 +25,19 @@ public class Or extends AbstractOpBool {
         return "||";
     }
 
+    @Override
+    protected void codeGenBool(DecacCompiler compiler, int n) {
+        String labelString = "or_label_" + compiler.getLabelId();
+        compiler.incrementLabelId();
+        Label endLabel = new Label(labelString + "_fin");
 
+        codeExp(compiler, getLeftOperand(), n);
+
+        compiler.addInstruction(new CMP(1, Register.getR(n)));
+        compiler.addInstruction(new BEQ(endLabel));
+
+        codeExp(compiler, getRightOperand(), n);
+
+        compiler.addLabel(endLabel);
+    }
 }
