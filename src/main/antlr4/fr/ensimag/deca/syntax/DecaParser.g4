@@ -26,8 +26,8 @@ options {
 @header {
     import fr.ensimag.deca.tools.*;
     import fr.ensimag.deca.tree.*;
+    import fr.ensimag.deca.context.*;
     import java.io.PrintStream;
-
 }
 
 @members {
@@ -505,7 +505,7 @@ class_extension returns[AbstractIdentifier tree]
             setLocation($tree, $ident.start);
         }
     | /* epsilon */ {
-            $tree = new Identifier(getDecacCompiler().symbolTable.create("object"));
+            $tree = getDecacCompiler().environmentType.objectClassIdentifier;
         }
     ;
 

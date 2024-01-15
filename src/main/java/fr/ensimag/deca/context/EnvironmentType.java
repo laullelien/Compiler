@@ -4,6 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import java.util.HashMap;
 import java.util.Map;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
@@ -15,6 +17,7 @@ import fr.ensimag.deca.tree.Location;
  * @date 01/01/2024
  */
 public class EnvironmentType {
+
     public EnvironmentType(DecacCompiler compiler) {
         
         envTypes = new HashMap<Symbol, TypeDefinition>();
@@ -39,10 +42,15 @@ public class EnvironmentType {
         STRING = new StringType(stringSymb);
         // not added to envTypes, it's not visible for the user.
 
-        Symbol objectSymbol = compiler.createSymbol("object");
+        Symbol objectSymbol = compiler.createSymbol("Object");
         OBJECT = new ClassType(objectSymbol);
-        envTypes.put(objectSymbol, new ClassDefinition(OBJECT, Location.BUILTIN, null));
-        
+        ClassDefinition objectDefinition = new ClassDefinition(OBJECT, Location.BUILTIN, null);
+        envTypes.put(objectSymbol, objectDefinition);
+        this.objectClassIdentifier = new Identifier(objectSymbol);
+    }
+
+    public static class DoubleDefException extends Exception {
+        private static final long serialVersionUID = -2733379901827316441L;
     }
 
     private final Map<Symbol, TypeDefinition> envTypes;
@@ -58,6 +66,12 @@ public class EnvironmentType {
         }
         return false;
     }
+    public void declare(Symbol classSymbol, ClassDefinition classDefinition) throws DoubleDefException {
+        if (envTypes.containsKey(classSymbol)) {
+            throw new DoubleDefException();
+        }
+        envTypes.put(classSymbol, classDefinition);
+    }
 
     public final VoidType    VOID;
     public final IntType     INT;
@@ -65,4 +79,5 @@ public class EnvironmentType {
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
     public final ClassType OBJECT;
+    public final AbstractIdentifier objectClassIdentifier;
 }

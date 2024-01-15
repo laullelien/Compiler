@@ -1,8 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -32,27 +31,42 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        TypeDefinition typeParentClass = compiler.environmentType.defOfType(this.nameSuperClass.getName());
+        if (typeParentClass == null || !(typeParentClass instanceof ClassDefinition)) {
+            throw new ContextualError("La superclass n'est pas dans l'environnement ou n'est pas un identificateur de classe. La règle (1.3) n'est pas respectée.", this.getLocation());
+        }
+        ClassType typeNewClass = new ClassType(this.name.getName(), this.getLocation(), (ClassDefinition) typeParentClass);
+        ClassDefinition newClassDefinition = new ClassDefinition(typeNewClass, this.getLocation(), (ClassDefinition) typeParentClass);
+        try{
+            compiler.environmentType.declare(this.name.getName(), newClassDefinition);
+        }
+        catch(EnvironmentType.DoubleDefException e){
+            throw new ContextualError("Il y a double définition de classe. La règle (1.3) n'est pas respectée", this.getLocation());
+        }
+        this.name.setType(typeNewClass);
+        this.name.setDefinition(newClassDefinition);
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for (AbstractDeclField field : this.fields.getList()){
+        }
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        for (AbstractDeclMethod method : this.methods.getList()){
+        }
     }
 
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        name.prettyPrint(s, prefix, true);
-        nameSuperClass.prettyPrint(s, prefix, true);
+        name.prettyPrint(s, prefix, false);
+        nameSuperClass.prettyPrint(s, prefix, false);
         methods.prettyPrint(s, prefix, false);
-        fields.prettyPrint(s, prefix, false);
+        fields.prettyPrint(s, prefix, true);
     }
 
     @Override
