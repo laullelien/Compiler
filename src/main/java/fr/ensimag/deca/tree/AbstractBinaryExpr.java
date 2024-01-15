@@ -1,7 +1,11 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -42,12 +46,62 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
+    protected void codeGenInst(DecacCompiler compiler) {
+        codeExp(compiler, this, 2);
+    }
+
     /**
-     * Détermine si l'opération ne contient que des feuilles en opérande
-     * @return True si l'opérande à droite et à gauche sont des feuilles (ex: des litéraux)
+     * Génération de code naïve pour expressions arithmétiques
+     * donné par les profs
+     * cf. diapo étape C, page 12
+     * @param compiler
+     * @param e expression à calculer
+     * @param n numéro de registre où sera stocké le résultat de l'expression
      */
-    protected boolean isLastOperation() {
-        return getLeftOperand().isTerminal() && getRightOperand().isTerminal();
+    protected void codeExp(DecacCompiler compiler, AbstractExpr e, int n) {
+        // On vérifie que e est un litéral ou une variable
+        if (e.getDval() != null)
+            compiler.addInstruction(new LOAD(e.getDval(), Register.getR(n)));
+        else if (e instanceof AbstractUnaryExpr) {
+            AbstractUnaryExpr op = (AbstractUnaryExpr) e;
+            codeExp(compiler, op.getOperand(), n);
+            op.codeGenInstruction(compiler, Register.getR(n), Register.getR(n));
+        }
+        else if (e instanceof AbstractBinaryExpr) {
+            AbstractBinaryExpr op = (AbstractBinaryExpr) e;
+            if (op.getRightOperand().getDval() != null) {
+                codeExp(compiler, op.getLeftOperand(), n);
+                op.codeGenInstruction(compiler, op.getRightOperand().getDval(), Register.getR(n));
+            }
+            else {
+                if (n < compiler.getCompilerOptions().getMaxRegisters()) {
+                    codeExp(compiler, op.getLeftOperand(), n);
+                    codeExp(compiler, op.getRightOperand(), n + 1);
+                    op.codeGenInstruction(compiler, Register.getR(n + 1), Register.getR(n));
+                }
+                else {
+                    codeExp(compiler, op.getLeftOperand(), n);
+                    compiler.addInstruction(new PUSH(Register.getR(n)));
+                    codeExp(compiler, op.getRightOperand(), n + 1);
+                    compiler.addInstruction(new LOAD(Register.getR(n), Register.R0));
+                    compiler.addInstruction(new POP(Register.getR(n)));
+                    op.codeGenInstruction(compiler, Register.R0, Register.getR(n));
+                }
+            }
+        }
+        else {
+            // fix temporaire pour toute autre expression
+            if (n == 2)
+                // le retour du calcul de notre opérande se trouve directement dans le registre attendu
+                e.codeGenInst(compiler);
+            else {
+                // sinon on stocke temporairement ce qu'il y a dans R2 pour calculer notre opérande
+                compiler.addInstruction(new PUSH(Register.getR(2)));
+                e.codeGenInst(compiler);
+                compiler.addInstruction(new LOAD(Register.getR(2), Register.getR(n)));
+                compiler.addInstruction(new POP(Register.getR(2)));
+            }
+        }
     }
 
     @Override

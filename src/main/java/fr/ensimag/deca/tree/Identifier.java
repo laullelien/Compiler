@@ -7,6 +7,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -25,6 +26,11 @@ public class Identifier extends AbstractIdentifier {
         if (getDefinition() == null) {
             throw new DecacInternalError("Identifier " + this.getName() + " has no attached Definition");
         }
+    }
+
+    @Override
+    public DVal getDval() {
+        return getVariableDefinition().getOperand();
     }
 
     @Override
@@ -178,6 +184,8 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDef = compiler.environmentType.defOfType(this.getName());
         if (typeDef != null) {
+            setDefinition(typeDef);
+            setType(typeDef.getType());
             return typeDef.getType();
         }
         throw new ContextualError("Le type ne respecte pas la règle 0.2", this.getLocation());
@@ -199,27 +207,14 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R0));
+        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R2));
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
-        if(getType().isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        }
-        if(getType().isInt()) {
-            compiler.addInstruction(new WINT());
-        }
     }
 
-    protected void codeGenPrintX(DecacCompiler compiler) {
-        if(!this.getType().isFloat()) {
-            throw new RuntimeException("Le paramètre devrait être de type float");
-        }
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
-        compiler.addInstruction(new WFLOATX());
-    }
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(name.toString());

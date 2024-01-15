@@ -1,0 +1,26 @@
+{int counter = 1;
+
+println("Jouons à 1 2 3 soleil");
+while (counter < 4) {
+    
+
+    if (counter  == 1) {
+        println("1");
+    } else if (counter == 2) {
+        println("2");
+    }
+
+      else if (counter == 3) {
+        println("3");
+    }
+
+    counter = counter + 1;
+}
+
+println("SOLEIL");
+}
+
+
+
+
+

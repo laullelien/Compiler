@@ -1,0 +1,10 @@
+// test assignation and convfloat
+   
+   {int a, b;
+    int i;
+    a = b = 3;
+    i = 9 + 2 * a;
+    println(b);
+    println(7.0 + a);
+    println(i);
+    }

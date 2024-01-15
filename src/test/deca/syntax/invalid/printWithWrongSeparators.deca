@@ -1,0 +1,15 @@
+// Description:
+//    Paranthèse du print ouverte
+//
+// Resultats:
+//    extraneous input ',' expecting {INT, 'true', 'false', IDENT, STRING, '(', FLOAT, '-', EXCLAM, READINT, READFLOAT, NEW, THIS, NULL}
+
+
+//
+// Historique:
+//    cree le 11/01/2024
+
+
+{
+    println("hello",,"I love sing");
+}

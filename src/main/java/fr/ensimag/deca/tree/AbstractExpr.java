@@ -8,6 +8,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
@@ -27,8 +30,6 @@ public abstract class AbstractExpr extends AbstractInst {
         return false;
     }
 
-    protected boolean isTerminal() { return false; }
-
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).
      */
@@ -42,17 +43,9 @@ public abstract class AbstractExpr extends AbstractInst {
     }
     private Type type;
     private DVal dval ;
-    private DVal negDval;
 
     public DVal getDval() {
         return dval;
-        // TODO refactor codeGenPrint de AbstractPrint qui dépend encore de cet attribut
-        // qui est encore nul ici
-        // throw new DecacInternalError("getDval() should not be called from AbstractExpr");
-    }
-
-    public DVal getNegativeDval() {
-        return negDval;
     }
 
     @Override
@@ -114,7 +107,11 @@ public abstract class AbstractExpr extends AbstractInst {
         if (!(compiler.environmentType.assignCompatible(expectedType, assignedType))) {
             throw new ContextualError("La règle 3.28 n'est pas respectée : le type n'est pas compatible pour l'affectation", this.getLocation());
         }
-        // ConvFloat à ajouter si besoin
+        if(expectedType.isFloat() && assignedType.isInt()) {
+            AbstractExpr convFloat = new ConvFloat(this);
+            convFloat.setType(compiler.environmentType.FLOAT);
+            return convFloat;
+        }
         return this;
     }
     
@@ -151,11 +148,8 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
-    }
-
-    protected void codeGenPrintX(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(Register.getR(2), Register.R1));
     }
 
     @Override
@@ -167,6 +161,17 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
         s.print(";");
+    }
+
+    /**
+     * Permet de générer les instructions assembleur d'une expression en spécifiant les registres
+     * utilisés
+     * @param compiler
+     * @param value Position ou valeur à calculer
+     * @param target Position du résultat de l'expression
+     */
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        throw new DecacInternalError("Not yet implemented");
     }
 
     @Override

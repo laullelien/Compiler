@@ -38,7 +38,12 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 TRUE: 'true';
 FALSE: 'false';
 
-// fragment LETTER useful for INCLUDE and IDENTIFIER
+// grammar for readInt
+
+READINT : 'readInt';
+READFLOAT : 'readFloat';
+
+// grammar for identifiers
 
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
 
@@ -55,6 +60,7 @@ IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 COMMENT: '//' .*? '\n' {skip();};
+STARCOMMENT : '/*' .*? '*/' {skip();};
 SEMI: ';';
 OBRACE: '{';
 CBRACE: '}';
@@ -80,7 +86,19 @@ fragment NUMHEX: DIGITHEX+;
 fragment FLOATHEX: ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN_OR_EMPTY? NUM ('F' | 'f' | ) ;
  FLOAT: FLOATDEC | FLOATHEX;
 
+// grammar for comparaisons
 
+EQEQ: '==';
+NEQ: '!=';
+GEQ: '>=';
+LEQ: '<=';
+GT: '>';
+LT: '<';
+
+// grammar for binary operators
+
+OR: '||';
+AND: '&&';
 
 // Grammaire des opérations
 

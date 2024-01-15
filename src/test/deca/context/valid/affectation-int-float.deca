@@ -1,0 +1,16 @@
+// Description:
+//    Affectation d'une expression de type int à une variable de type float
+//
+// Résultats:
+//    3.2
+//    2.0
+//
+// Historique:
+//    Créé le 11/01/2024
+
+{
+    float b = 3.2;
+    println(b);
+    b = 2;
+    println(b);
+}

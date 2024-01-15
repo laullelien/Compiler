@@ -1,0 +1,21 @@
+{
+	int i = 5;
+    int j = 4;
+    boolean c = true;
+    boolean d = false;
+    float a = 3.0;
+    float b;
+    float e;
+    a = b;
+    a = 2.9;
+    e = b;
+    i = j;
+    c = d;
+    d = c;
+    c = d;
+    b = 1.9090;
+    println(i);
+    println(j);
+    println(a);
+    println(b);
+}

@@ -1,0 +1,16 @@
+// Description:
+//   test des comparaisons avec plusieurs if/else  on doit voir que le premier print
+// Historique:
+//    Créé le 12/01/2024
+
+{
+if(4 <5){
+    println("On doit pas me voir");
+    }
+    else {
+    if (4>3){
+    println("moi non plus");
+    }
+    }
+    }
+

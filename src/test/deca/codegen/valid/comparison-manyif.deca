@@ -1,0 +1,38 @@
+// Description:
+//    Programme avec plusieurs if
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 10/01/2024
+
+
+{
+if(42000 > 1337){
+    println("Rerere");
+
+
+    if(7 >= 5){
+        println("Rururu");
+
+
+        if(42 > 24){
+            println("Ryryry");
+
+
+            if(42 > 3.14159){
+                println("Rititi");
+
+
+
+                if(9.87654 >= 2.71828){
+                    println("Rototo");
+
+
+                    if(13.37 == 13.37){
+                        println("Ratata");}
+                        }}}}}
+
+}
+

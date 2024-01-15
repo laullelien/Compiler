@@ -32,11 +32,6 @@ public class IntLiteral extends AbstractExpr {
     }
 
     @Override
-    protected boolean isTerminal() {
-        return true;
-    }
-
-    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         // regle (3.44)
@@ -49,11 +44,6 @@ public class IntLiteral extends AbstractExpr {
         return new ImmediateInteger(value);
     }
 
-    public DVal getNegativeDval() {
-        return new ImmediateInteger(-value);
-    }
-
-
     @Override
     String prettyPrintNode() {
         return "Int (" + getValue() + ")";
@@ -61,12 +51,12 @@ public class IntLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getDval(),Register.getR(2)));
+        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.R2));
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new WINT());
+        compiler.addInstruction(new LOAD(new ImmediateInteger(value), Register.R1));
     }
 
     @Override

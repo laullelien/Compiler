@@ -1,0 +1,17 @@
+// Description:
+//    Paranthèse du string ouverte
+//
+// Resultats:
+//    token recognition error at: '"Madara Uchiwa);\n'
+
+
+//
+// Historique:
+//    cree le 11/01/2024
+
+
+{
+
+println("Madara Uchiwa);
+
+}

@@ -36,10 +36,12 @@ public class DeclVar extends AbstractDeclVar {
                                  EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         Type typeVariable = type.verifyType(compiler);
+        // règle 3.17
         if (typeVariable.isVoid()) {
             throw new ContextualError("Une variable de type void est invalide : la règle (3.17) n'est pas respectée", this.getLocation());
         }
         initialization.verifyInitialization(compiler, typeVariable, localEnv.stackEnvironment(localEnv, localEnv.getParentEnvironment()), currentClass);
+        // ajout de la VariableDefinition dans localEnv
         try {
             ExpDefinition def = new VariableDefinition(typeVariable, this.getLocation());
             localEnv.declare(this.varName.getName(), def);
@@ -82,7 +84,7 @@ public class DeclVar extends AbstractDeclVar {
     public void codeGenDeclVar(DecacCompiler compiler) {
         initialization.codeGenInst(compiler);
         if (initialization instanceof Initialization) {
-            compiler.addInstruction(new STORE(Register.R0, varName.getVariableDefinition().getOperand()));
+            compiler.addInstruction(new STORE(Register.R2, varName.getVariableDefinition().getOperand()));
         }
     }
 }

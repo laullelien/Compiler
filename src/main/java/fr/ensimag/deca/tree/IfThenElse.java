@@ -48,6 +48,7 @@ public class IfThenElse extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass, Type returnType)
             throws ContextualError {
+        // règle 3.22
         condition.verifyCondition(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
@@ -62,7 +63,7 @@ public class IfThenElse extends AbstractInst {
 
         condition.codeGenInst(compiler);
 
-        compiler.addInstruction(new CMP(0, Register.R0));
+        compiler.addInstruction(new CMP(0, Register.R2));
         compiler.addInstruction(new BEQ(elseLabel));
 
         thenBranch.codeGenListInst(compiler);

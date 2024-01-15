@@ -23,11 +23,6 @@ public class BooleanLiteral extends AbstractExpr {
         this.value = value;
     }
 
-    @Override
-    protected boolean isTerminal() {
-        return true;
-    }
-
     public boolean getValue() {
         return value;
     }
@@ -43,9 +38,9 @@ public class BooleanLiteral extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         if (value) {
-            compiler.addInstruction(new LOAD(1, Register.R0));
+            compiler.addInstruction(new LOAD(1, Register.R2));
         } else {
-            compiler.addInstruction(new LOAD(0, Register.R0));
+            compiler.addInstruction(new LOAD(0, Register.R2));
         }
     }
 
