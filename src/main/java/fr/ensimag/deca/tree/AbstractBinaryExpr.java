@@ -69,20 +69,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         // On vérifie que e est un litéral ou une variable
         if (e.getDval() != null)
             compiler.addInstruction(new LOAD(e.getDval(), Register.getR(n)));
-        else if (!(e instanceof AbstractBinaryExpr)) {
-            if (n == 2)
-                // le retour du calcul de notre opérande se trouve directement dans le registre attendu
-                e.codeGenInst(compiler);
-            else {
-                // sinon on stocke temporairement ce qu'il y a dans R2 pour calculer notre opérande
-                compiler.addInstruction(new PUSH(Register.getR(2)));
-                e.codeGenInst(compiler);
-                compiler.addInstruction(new LOAD(Register.getR(2), Register.getR(n)));
-                compiler.addInstruction(new POP(Register.getR(2)));
-            }
+        else if (e instanceof AbstractUnaryExpr) {
+            AbstractUnaryExpr op = (AbstractUnaryExpr) e;
+            codeExp(compiler, op.getOperand(), n);
+            op.codeGenInstruction(compiler, Register.getR(n), Register.getR(n));
         }
-        else {
-            // e est donc une opération binaire
+        else if (e instanceof AbstractBinaryExpr) {
             AbstractBinaryExpr op = (AbstractBinaryExpr) e;
             if (op.getRightOperand().getDval() != null) {
                 codeExp(compiler, op.getLeftOperand(), n);
@@ -102,6 +94,19 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     compiler.addInstruction(new POP(Register.getR(n)));
                     op.codeGenInstruction(compiler, Register.R0, Register.getR(n));
                 }
+            }
+        }
+        else {
+            // fix temporaire pour toute autre expression
+            if (n == 2)
+                // le retour du calcul de notre opérande se trouve directement dans le registre attendu
+                e.codeGenInst(compiler);
+            else {
+                // sinon on stocke temporairement ce qu'il y a dans R2 pour calculer notre opérande
+                compiler.addInstruction(new PUSH(Register.getR(2)));
+                e.codeGenInst(compiler);
+                compiler.addInstruction(new LOAD(Register.getR(2), Register.getR(n)));
+                compiler.addInstruction(new POP(Register.getR(2)));
             }
         }
     }

@@ -44,11 +44,6 @@ public class IntLiteral extends AbstractExpr {
         return new ImmediateInteger(value);
     }
 
-    public DVal getNegativeDval() {
-        return new ImmediateInteger(-value);
-    }
-
-
     @Override
     String prettyPrintNode() {
         return "Int (" + getValue() + ")";
