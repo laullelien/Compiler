@@ -1,0 +1,9 @@
+{
+    boolean x = true;
+    boolean y = true;
+    boolean z = false;
+    boolean result2 = x || (y && !z);
+    if (result2) {
+        println("Test 2: ok");
+    }
+}
