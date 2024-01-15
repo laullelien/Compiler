@@ -25,17 +25,18 @@ public class And extends AbstractOpBool {
 
 
     @Override
-    protected void codeGenBool(DecacCompiler compiler, int n) {
+    protected void codeGenBinary(DecacCompiler compiler) {
+        int n = 3;
         String labelString = "and_label_" + compiler.getLabelId();
         compiler.incrementLabelId();
         Label endLabel = new Label(labelString + "_fin");
 
-        codeExp(compiler, getLeftOperand(), n);
+        //codeExp(compiler, getLeftOperand(), n);
 
         compiler.addInstruction(new CMP(0, Register.getR(n)));
         compiler.addInstruction(new BEQ(endLabel));
 
-        codeExp(compiler, getRightOperand(), n);
+        //codeExp(compiler, getRightOperand(), n);
 
         compiler.addLabel(endLabel);
     }

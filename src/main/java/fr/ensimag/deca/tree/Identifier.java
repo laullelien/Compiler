@@ -207,7 +207,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R2));
+        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), compiler.getRegister()));
     }
 
     @Override

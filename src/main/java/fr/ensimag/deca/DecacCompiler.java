@@ -8,11 +8,8 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.*;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -24,6 +21,7 @@ import fr.ensimag.ima.pseudocode.instructions.WNL;
 import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 /**
@@ -43,6 +41,42 @@ import org.apache.log4j.Logger;
  */
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
+
+    /**
+     * ID of the first available Register for code generation
+     */
+    private int regId = 2;
+
+    public GPRegister getRegister() {
+        return Register.getR(regId);
+    }
+
+    public void incrementRegister() {
+        regId++;
+        Validate.isTrue(regId <= compilerOptions.getMaxRegisters());
+    }
+
+    public void decrementRegister() {
+        regId--;
+    }
+
+    public boolean isRegisterAvailable() {
+        return regId < compilerOptions.getMaxRegisters();
+    }
+
+    /**
+     * DVal used for binary operations, in code generation
+     */
+
+    private DVal dval;
+
+    public DVal getDVal() {
+        return dval;
+    }
+
+    public void setDval(DVal dval) {
+        this.dval = dval;
+    }
 
     private int nbDeclVar = 0;
 
