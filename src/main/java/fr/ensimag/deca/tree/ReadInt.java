@@ -35,7 +35,6 @@ public class ReadInt extends AbstractReadExpr {
     protected void codeGenPrint(DecacCompiler compiler) {
         compiler.addInstruction(new RINT());
         compiler.addInstruction(new BOV(new Label("input_error")));
-        compiler.addInstruction(new WINT());
     }
 
     @Override
