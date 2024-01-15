@@ -1,6 +1,6 @@
 {
     // Test 5: Mélange d'opérations et de conditions
-    int i;
+    float i;
     int a = 5;
     int b = 10;
 
