@@ -38,6 +38,12 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        //opti : !!exp = exp;
+        if(getOperand() instanceof Not) {
+            ((Not) getOperand()).getOperand().codeGenInst(compiler);
+            return;
+        }
+
         DVal operandDVal = getOperand().getDval();
         if (operandDVal != null) {
             if (((ImmediateInteger) operandDVal).getValue() == 1) {

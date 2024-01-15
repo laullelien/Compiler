@@ -58,6 +58,7 @@ public class DecacCompiler {
 
     public void decrementRegister() {
         regId--;
+        Validate.isTrue(regId >= 2);
     }
 
     public boolean isRegisterAvailable() {

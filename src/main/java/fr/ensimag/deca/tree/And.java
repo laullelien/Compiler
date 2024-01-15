@@ -2,10 +2,13 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  *
@@ -25,18 +28,29 @@ public class And extends AbstractOpBool {
 
 
     @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        int n = 3;
+    protected void codeGenInst(DecacCompiler compiler) {
         String labelString = "and_label_" + compiler.getLabelId();
         compiler.incrementLabelId();
         Label endLabel = new Label(labelString + "_fin");
 
-        //codeExp(compiler, getLeftOperand(), n);
+        DVal leftDVal = getLeftOperand().getDval();
+        if(leftDVal != null) {
+            // true && rightOperand = rightOperand
+            if(((ImmediateInteger)leftDVal).getValue() == 1) {
+                getRightOperand().codeGenInst(compiler);
+                return;
+            }
+            // false && rightOperand = false
+            compiler.addInstruction(new LOAD(0, compiler.getRegister()));
+            return;
+        }
 
-        compiler.addInstruction(new CMP(0, Register.getR(n)));
+        getLeftOperand().codeGenInst(compiler);
+
+        compiler.addInstruction(new CMP(0, compiler.getRegister()));
         compiler.addInstruction(new BEQ(endLabel));
 
-        //codeExp(compiler, getRightOperand(), n);
+        getRightOperand().codeGenInst(compiler);
 
         compiler.addLabel(endLabel);
     }
