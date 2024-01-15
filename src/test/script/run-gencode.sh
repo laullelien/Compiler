@@ -114,4 +114,4 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
         fi
     done
 fi
-
+echo "Fin tests codegen"
