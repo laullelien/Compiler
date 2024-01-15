@@ -13,6 +13,17 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public class DeclClass extends AbstractDeclClass {
+    private AbstractIdentifier name;
+    private AbstractIdentifier nameSuperClass;
+    private ListDeclMethod methods;
+    private ListDeclField fields;
+    public DeclClass(AbstractIdentifier name, AbstractIdentifier nameSuperClass, ListDeclMethod methods,
+                             ListDeclField fields) {
+        this.name = name;
+        this.nameSuperClass = nameSuperClass;
+        this.methods = methods;
+        this.fields = fields;
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -38,7 +49,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        throw new UnsupportedOperationException("Not yet supported");
+        name.prettyPrint(s, prefix, true);
+        nameSuperClass.prettyPrint(s, prefix, true);
+        methods.prettyPrint(s, prefix, false);
+        fields.prettyPrint(s, prefix, false);
     }
 
     @Override

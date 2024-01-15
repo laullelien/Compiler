@@ -43,6 +43,11 @@ FALSE: 'false';
 READINT : 'readInt';
 READFLOAT : 'readFloat';
 
+// grammar for classes
+
+CLASS: 'class';
+EXTENDS: 'extends';
+
 // grammar for identifiers
 
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
