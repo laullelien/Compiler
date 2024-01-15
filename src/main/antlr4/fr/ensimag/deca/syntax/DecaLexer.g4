@@ -49,8 +49,10 @@ fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;
 IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
 
 // Deca lexer rules for strings & println.
+fragment EOL: '\\n' ;
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
+MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
 COMMENT: '//' .*? '\n' {skip();};
 STARCOMMENT : '/*' .*? '*/' {skip();};
 SEMI: ';';
