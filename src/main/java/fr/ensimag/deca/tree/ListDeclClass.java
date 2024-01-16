@@ -26,6 +26,9 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClass: start");
+        // To add decorations
+        compiler.environmentType.objectClassIdentifier.verifyObjectClass(compiler);
+        // rule 1.2
         for (AbstractDeclClass c : this.getList()) {
             c.verifyClass(compiler);
         }
@@ -42,7 +45,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         }
         LOG.debug("verify listClassMembers: end");
     }
-    
+
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
@@ -54,5 +57,25 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         LOG.debug("verify listClassBody: end");
     }
 
+    /**
+     * Pass 1 of [Gencode]
+     */
+    public void codeGenListClassVTables(DecacCompiler compiler) {
+        LOG.debug("codeGen listClassVTables: start");
+        for (AbstractDeclClass c : this.getList()) {
+            // TODO
+        }
+        LOG.debug("codeGen listClassVTables: end");
+    }
 
+    /**
+     * Pass 2 of [Gencode]
+     */
+    public void codeGenListClassBody(DecacCompiler compiler) {
+        LOG.debug("codeGen listClassBody: start");
+        for (AbstractDeclClass c : this.getList()) {
+            // TODO
+        }
+        LOG.debug("codeGen listClassBody: end");
+    }
 }

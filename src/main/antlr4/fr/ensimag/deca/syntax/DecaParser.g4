@@ -26,8 +26,8 @@ options {
 @header {
     import fr.ensimag.deca.tools.*;
     import fr.ensimag.deca.tree.*;
+    import fr.ensimag.deca.context.*;
     import java.io.PrintStream;
-
 }
 
 @members {
@@ -489,31 +489,43 @@ list_classes returns[ListDeclClass tree]
     }
     :
       (c1=class_decl {
+            $tree.add($c1.tree);
         }
       )*
     ;
 
-class_decl
+class_decl returns[AbstractDeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
+            $tree = new DeclClass($name.tree, $superclass.tree, $class_body.treeM, $class_body.treeF);
+            setLocation($tree, $CLASS);
         }
     ;
 
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
+            $tree = $ident.tree;
+            setLocation($tree, $ident.start);
         }
     | /* epsilon */ {
+            $tree = getDecacCompiler().environmentType.objectClassIdentifier;
+            $tree.setLocation(Location.BUILTIN);
         }
     ;
 
-class_body
-    : (m=decl_method {
+class_body returns[ListDeclMethod treeM, ListDeclField treeF]
+    @init {
+        $treeM = new ListDeclMethod();
+        $treeF = new ListDeclField();
+    }
+    :(m=decl_method {
+            $treeM.add($m.tree);
         }
-      | decl_field_set
+      | decl_field_set[$treeF]
       )*
     ;
 
-decl_field_set
-    : v=visibility t=type list_decl_field
+decl_field_set[ListDeclField treeF]
+    : v=visibility t=type list_decl_field[$treeF]
       SEMI
     ;
 
@@ -524,13 +536,17 @@ visibility
         }
     ;
 
-list_decl_field
-    : dv1=decl_field
-        (COMMA dv2=decl_field
+list_decl_field[ListDeclField treeF]
+    : dv1=decl_field {
+        $treeF.add($dv1.tree);
+    }
+        (COMMA dv2=decl_field {
+            $treeF.add($dv2.tree);
+        }
       )*
     ;
 
-decl_field
+decl_field returns[AbstractDeclField tree]
     : i=ident {
         }
       (EQUALS e=expr {
@@ -539,7 +555,7 @@ decl_field
         }
     ;
 
-decl_method
+decl_method returns[AbstractDeclMethod tree]
 @init {
 }
     : type ident OPARENT params=list_params CPARENT (block {

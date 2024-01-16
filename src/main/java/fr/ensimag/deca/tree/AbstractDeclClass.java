@@ -11,6 +11,10 @@ import fr.ensimag.deca.context.ContextualError;
  */
 public abstract class AbstractDeclClass extends Tree {
 
+    protected void setDefinition(DecacCompiler compiler){
+        
+    }
+
     /**
      * Pass 1 of [SyntaxeContextuelle]. Verify that the class declaration is OK
      * without looking at its content.
