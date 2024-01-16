@@ -7,6 +7,11 @@ import java.io.PrintStream;
 public class AbstractDeclMethod extends Tree {
     private AbstractIdentifier methodReturnType;
     private AbstractIdentifier methodName;
+
+    public AbstractIdentifier getMethodName() {
+        return methodName;
+    }
+
     private ListDeclParam methodParameters;
     private AbstractMethodBody methodBody;
 

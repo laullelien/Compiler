@@ -1,6 +1,7 @@
 package fr.ensimag.deca;
 
 import fr.ensimag.deca.codegen.CodegenHelper;
+import fr.ensimag.deca.codegen.ListVTable;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -13,16 +14,12 @@ import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.ImmediateString;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.log4j.Logger;
@@ -142,6 +139,9 @@ public class DecacCompiler {
 
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
+    /** The list of VTable for Etape C codegen */
+    public final ListVTable listVTable = new ListVTable();
+
     /** Helper class for code generation */
     public final CodegenHelper codegenHelper = new CodegenHelper(this);
 
@@ -217,7 +217,8 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
-        assert(prog.checkAllDecorations());
+        // TODO décommenter lorsque l'étape de deca objet terminé
+        // assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;

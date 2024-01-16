@@ -62,8 +62,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     public void codeGenListClassVTables(DecacCompiler compiler) {
         LOG.debug("codeGen listClassVTables: start");
+        // creation de la VTable de Object
+        compiler.listVTable.codeGenVTable(compiler, "Object", null, null);
         for (AbstractDeclClass c : this.getList()) {
-            // TODO
+            c.codeGenClassVTable(compiler);
         }
         LOG.debug("codeGen listClassVTables: end");
     }
@@ -73,8 +75,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     public void codeGenListClassBody(DecacCompiler compiler) {
         LOG.debug("codeGen listClassBody: start");
+        // on commence par générer la méthode equals de Object
+        compiler.codegenHelper.codeGenObjectEquals();
         for (AbstractDeclClass c : this.getList()) {
-            // TODO
+            c.codeGenClassBody(compiler);
         }
         LOG.debug("codeGen listClassBody: end");
     }
