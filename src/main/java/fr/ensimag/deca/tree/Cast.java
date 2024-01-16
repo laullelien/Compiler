@@ -30,20 +30,16 @@ public class Cast extends AbstractUnaryExpr {
         DVal dval;
         Type typeOperand = this.getOperand().getType();
         Type typeAfterCast = this.typeAfterCast.getType();
-        if (getOperand().getDval() != null) {
+        if (getOperand().getDval() != null) 
             dval = this.getOperand().getDval();
-            if (typeOperand.isInt() && typeAfterCast.isFloat()) {
-                compiler.addInstruction(new FLOAT(dval, compiler.getRegister()));
-            } else if (typeOperand.isFloat() && typeAfterCast.isInt()) {
-                compiler.addInstruction(new INT(dval, compiler.getRegister()));
-            }
-        }
         else {
             getOperand().codeGenInst(compiler);
-            if (typeOperand.isInt() && typeAfterCast.isFloat()) {
-                compiler.addInstruction(new FLOAT(compiler.getRegister(), compiler.getRegister()));
+            dval = compiler.getRegister();
+        }
+        if (typeOperand.isInt() && typeAfterCast.isFloat()) {
+            compiler.addInstruction(new FLOAT(dval, compiler.getRegister()));
             } else if (typeOperand.isFloat() && typeAfterCast.isInt()) {
-                compiler.addInstruction(new INT(compiler.getRegister(), compiler.getRegister()));
+                compiler.addInstruction(new INT(dval, compiler.getRegister()));
             }
         }
     }
