@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -43,5 +44,9 @@ public abstract class AbstractDeclMethod extends Tree {
         methodName.iter(f);
         methodParameters.iter(f);
         methodBody.iter(f);
+    }
+
+    public void verifyMethod(DecacCompiler compiler) {
+
     }
 }

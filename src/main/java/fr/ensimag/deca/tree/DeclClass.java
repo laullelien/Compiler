@@ -63,14 +63,29 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
-        for (AbstractDeclField field : this.fields.getList()){
+        EnvironmentExp envExpFields = fields.verifyListDeclField(compiler);
+        EnvironmentExp envExpMethods = methods.verifyListDeclMethod(compiler);
+        TypeDefinition superClassDefinition = compiler.environmentType.defOfType(this.nameSuperClass.getName());
+        if (superClassDefinition == null) {
+            throw new ContextualError("La classe utilisée n'a pas été déclarée, la règle (2.3) n'est pas respectée.", this.getLocation());
         }
+        if (!(superClassDefinition.isClass())) {
+            throw new ContextualError("L'identificateur de la super classe ne définit pas une classe, la règle (2.3) n'est pas respectée.", this.getLocation());
+        }
+        ClassDefinition newDef = new ClassDefinition(this.name.getClassDefinition().getType(), this.getLocation(), this.nameSuperClass.getClassDefinition());
+        try {
+            envExpMethods.declare(envExpFields);
+            newDef.getMembers().stackEnvironment(envExpMethods, this.name.getClassDefinition().getMembers().getParentEnvironment());
+        }
+        catch(EnvironmentExp.DoubleDefException e){
+            throw new ContextualError("Des attributs et des méthodes ont le même nom. La règle (2.3) n'est pas respectée.", this.getLocation());
+        }
+        compiler.environmentType.stackOneClass(this.name.getName(), newDef);
+        this.name.setDefinition(newDef);
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        for (AbstractDeclMethod method : this.methods.getList()){
-        }
     }
 
 

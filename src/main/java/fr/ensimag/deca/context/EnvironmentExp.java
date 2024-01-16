@@ -102,4 +102,12 @@ public class EnvironmentExp {
         return res;
     }
 
+    public void declare(EnvironmentExp env) throws DoubleDefException {
+        for (Symbol s : env.getEnvironment().keySet()){
+            this.declare(s, env.get(s));
+        }
+    }
+
+
+
 }
