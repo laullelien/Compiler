@@ -42,11 +42,14 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeParentClass = compiler.environmentType.defOfType(this.nameSuperClass.getName());
-        if (typeParentClass == null || !(typeParentClass instanceof ClassDefinition)) {
-            throw new ContextualError("La superclass n'est pas dans l'environnement ou n'est pas un identificateur de classe. La règle (1.3) n'est pas respectée.", this.getLocation());
+        if (typeParentClass == null) {
+            throw new ContextualError("La superclass n'est pas dans l'environnement. La règle (1.3) n'est pas respectée.", this.getLocation());
+        }
+        if(!(typeParentClass.isClass())) {
+            throw new ContextualError("La superclass n'est pas un identificateur de classe. La règle (1.3) n'est pas respectée.", this.getLocation());
         }
         ClassType typeNewClass = new ClassType(this.name.getName(), this.getLocation(), (ClassDefinition) typeParentClass);
-        ClassDefinition newClassDefinition = new ClassDefinition(typeNewClass, this.getLocation(), (ClassDefinition) typeParentClass);
+        ClassDefinition newClassDefinition = typeNewClass.getDefinition();
         try{
             compiler.environmentType.declare(this.name.getName(), newClassDefinition);
         }

@@ -78,6 +78,7 @@ public class ClassDefinition extends TypeDefinition {
         this.members = environmentObject;
         this.superClass = null;
     }
+
     public ClassDefinition(ClassType type, Location location, ClassDefinition superClass) {
         super(type, location);
         EnvironmentExp parent;
