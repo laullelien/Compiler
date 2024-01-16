@@ -1,5 +1,4 @@
 class A extends Boobs {
-	
 }
 {
 	int i = 3;
