@@ -4,7 +4,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-public class AbstractDeclMethod extends Tree {
+public abstract class AbstractDeclMethod extends Tree {
     private AbstractIdentifier methodReturnType;
     private AbstractIdentifier methodName;
     private ListDeclParam methodParameters;
@@ -19,16 +19,34 @@ public class AbstractDeclMethod extends Tree {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        methodReturnType.decompile(s);
+        s.print(" ");
+        methodName.decompile(s);
+        s.print(" (");
+        methodParameters.decompile(s);
+        s.print(" )");
+        s.println("{");
+        s.indent();
+        methodBody.decompile(s);
+        s.unindent();
+        s.print("}");
+        s.println("");
+        s.println("");
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        methodReturnType.prettyPrint(s, prefix, false);
+        methodName.prettyPrint(s, prefix, false);
+        methodParameters.prettyPrint(s, prefix, false);
+        methodBody.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        methodReturnType.iter(f);
+        methodName.iter(f);
+        methodParameters.iter(f);
+        methodBody.iter(f);
     }
 }

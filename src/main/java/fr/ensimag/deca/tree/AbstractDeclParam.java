@@ -15,16 +15,20 @@ public class AbstractDeclParam extends Tree{
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        paramType.decompile(s);
+        s.print(" ");
+        paramName.decompile(s);
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        paramType.prettyPrint(s, prefix, false);
+        paramName.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        paramType.iter(f);
+        paramName.iter(f);
     }
 }

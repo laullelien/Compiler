@@ -8,7 +8,6 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclMethod method : this.getList()){
             method.decompile(s);
-            s.println("");
         }
     }
 }
