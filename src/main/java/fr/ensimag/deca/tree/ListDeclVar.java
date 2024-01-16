@@ -39,9 +39,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     }
 
     public void codeGenListDeclVar(DecacCompiler compiler){
-        compiler.addInstruction(new TSTO(compiler.getNbDeclVar()));
-        compiler.addInstruction(new BOV(new Label("stack_full")));
-        compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
+        compiler.codegenHelper.codeGenTSTO();
         for (AbstractDeclVar declVar : this.getList()) {
             declVar.codeGenDeclVar(compiler);
         }

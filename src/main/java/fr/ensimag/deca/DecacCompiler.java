@@ -1,5 +1,6 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.CodegenHelper;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -141,6 +142,9 @@ public class DecacCompiler {
 
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
+    /** Helper class for code generation */
+    public final CodegenHelper codegenHelper = new CodegenHelper(this);
+
     public Symbol createSymbol(String name) {
        // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
@@ -213,8 +217,7 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
-        // TODO a décommenter une fois qu'on applique le défensive programming et décoré l'arbre abstrait
-        // assert(prog.checkAllDecorations());
+        assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;
@@ -224,22 +227,6 @@ public class DecacCompiler {
         prog.codeGenProgram(this);
         addComment("end main program");
 
-        addComment("error handling");
-
-        addLabel(new Label("stack_full"));
-        addInstruction(new WSTR(new ImmediateString("La pile est pleine")));
-        addInstruction(new WNL());
-        addInstruction(new ERROR());
-
-        addLabel(new Label("division_by_0"));
-        addInstruction(new WSTR("Erreur de division par 0"));
-        addInstruction(new WNL());
-        addInstruction(new ERROR());
-
-        addLabel(new Label("input_error"));
-        addInstruction(new WSTR(new ImmediateString("Depassement ou mauvais format")));
-        addInstruction(new WNL());
-        addInstruction(new ERROR());
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

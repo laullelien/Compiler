@@ -55,5 +55,25 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         LOG.debug("verify listClassBody: end");
     }
 
+    /**
+     * Pass 1 of [Gencode]
+     */
+    public void codeGenListClassVTables(DecacCompiler compiler) {
+        LOG.debug("codeGen listClassVTables: start");
+        for (AbstractDeclClass c : this.getList()) {
+            // TODO
+        }
+        LOG.debug("codeGen listClassVTables: end");
+    }
 
+    /**
+     * Pass 2 of [Gencode]
+     */
+    public void codeGenListClassBody(DecacCompiler compiler) {
+        LOG.debug("codeGen listClassBody: start");
+        for (AbstractDeclClass c : this.getList()) {
+            // TODO
+        }
+        LOG.debug("codeGen listClassBody: end");
+    }
 }
