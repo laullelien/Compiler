@@ -47,6 +47,13 @@ public class EnvironmentType {
         return envTypes.get(s);
     }
 
+    public boolean castCompatible(Type initialType, Type finalType){
+        if (!(initialType.isVoid())) {
+            return  (assignCompatible(initialType, finalType) || assignCompatible(finalType, initialType));
+        }
+        return false;
+    }
+
     public boolean assignCompatible(Type t1, Type t2) {
         // gestion des sous-classes à implémenter
         if (t1.isFloat() && t2.isInt() || t1 == t2) {

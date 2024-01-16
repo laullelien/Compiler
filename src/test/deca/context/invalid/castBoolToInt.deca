@@ -1,0 +1,12 @@
+// Description:
+//    Programme minimaliste utilisant un cast d'un boolean en int
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 11/01/2024
+
+{
+    int b = (int) (true);
+}
