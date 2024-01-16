@@ -525,33 +525,45 @@ class_body returns[ListDeclMethod treeM, ListDeclField treeF]
     ;
 
 decl_field_set[ListDeclField treeF]
-    : v=visibility t=type list_decl_field[$treeF]
+    : v=visibility t=type list_decl_field[treeF, $v.tree, $t.tree]
       SEMI
     ;
 
-visibility
+visibility returns[Visibility v]
     : /* epsilon */ {
+        $v = Visibility.PUBLIC;
         }
     | PROTECTED {
+        $v = Visibility.PROTECTED;
         }
     ;
 
-list_decl_field[ListDeclField treeF]
-    : dv1=decl_field {
+list_decl_field[ListDeclField treeF, Visibility v, AbstractIdentifier t]
+    : dv1=decl_field[v, t] {
         $treeF.add($dv1.tree);
     }
-        (COMMA dv2=decl_field {
+        (COMMA dv2=decl_field[v, t] {
             $treeF.add($dv2.tree);
         }
       )*
     ;
 
-decl_field returns[AbstractDeclField tree]
+decl_field[Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
     : i=ident {
+            Boolean init = false;
         }
       (EQUALS e=expr {
+            init = true;
         }
       )? {
+            if(init) {
+                Initialization init = new Initialization($e.tree);
+                setLocation(init, $e.start);
+            } else {
+                Initialization init = new NoInitialization();
+            }
+            $tree = new DeclField(v, t.tree, $i.tree, init);
+            setLocation($tree, $i.start);
         }
     ;
 
