@@ -1,3 +1,3 @@
 {
-    float b = (float) (2);
+	float b = (float) (2);
 }
