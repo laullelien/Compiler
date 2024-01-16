@@ -1,14 +1,22 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 
 import java.io.PrintStream;
 
-public class AbstractDeclField extends Tree {
+abstract public class AbstractDeclField extends Tree {
     private Visibility fieldVisibility;
     private AbstractIdentifier fieldType;
     private AbstractIdentifier fieldName;
     private AbstractInitialization fieldInitialization;
+    private Type type;
+    private ExpDefinition definition;
 
     public AbstractDeclField(Visibility fieldVisibility, AbstractIdentifier fieldType, AbstractIdentifier fieldName,
                              AbstractInitialization fieldInitialization) {
@@ -34,6 +42,8 @@ public class AbstractDeclField extends Tree {
         return fieldInitialization;
     }
 
+    abstract public EnvironmentExp verifyDeclField(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, SymbolTable.Symbol className) throws ContextualError;
+
     @Override
     public void decompile(IndentPrintStream s) {
 
@@ -47,5 +57,21 @@ public class AbstractDeclField extends Tree {
     @Override
     protected void iterChildren(TreeFunction f) {
 
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public ExpDefinition getDefinition() {
+        return definition;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public void setDefinition(ExpDefinition definition) {
+        this.definition = definition;
     }
 }
