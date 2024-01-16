@@ -1,0 +1,3 @@
+class Useless{
+    private int privVar;
+}
