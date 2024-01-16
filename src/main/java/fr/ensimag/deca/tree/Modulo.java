@@ -38,13 +38,12 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-
+    protected void codeGenBinary(DecacCompiler compiler) {
         if (!compiler.getCompilerOptions().getNocheck()) {
-            compiler.addInstruction(new LOAD(value, Register.R1));
+            compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
             compiler.addInstruction(new CMP(0, Register.R1));
             compiler.addInstruction(new BEQ(new Label("division_by_0")));
         }
-        compiler.addInstruction(new REM(value, target)); // division entière
+        compiler.addInstruction(new REM(compiler.getDVal(), compiler.getRegister())); // division entière
     }
 }
