@@ -34,7 +34,6 @@ public class DeclClass extends AbstractDeclClass {
         s.indent();
         this.fields.decompile(s);
         this.methods.decompile(s);
-        s.println("");
         s.unindent();
         s.print("}");
     }

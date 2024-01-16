@@ -7,7 +7,6 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclField field : this.getList()){
             field.decompile(s);
-            s.println("");
         }
     }
 }

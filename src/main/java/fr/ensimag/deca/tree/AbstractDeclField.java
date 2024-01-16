@@ -18,6 +18,22 @@ public class AbstractDeclField extends Tree {
         this.fieldInitialization = fieldInitialization;
     }
 
+    public Visibility getFieldVisibility() {
+        return fieldVisibility;
+    }
+
+    public AbstractIdentifier getFieldType() {
+        return fieldType;
+    }
+
+    public AbstractIdentifier getFieldName() {
+        return fieldName;
+    }
+
+    public AbstractInitialization getFieldInitialization() {
+        return fieldInitialization;
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
 
