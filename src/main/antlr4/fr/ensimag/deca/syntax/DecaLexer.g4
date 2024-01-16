@@ -48,6 +48,10 @@ READFLOAT : 'readFloat';
 CLASS: 'class';
 EXTENDS: 'extends';
 
+// grammar for asm instruction
+
+ASM: 'asm';
+
 // grammar for identifiers
 
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;

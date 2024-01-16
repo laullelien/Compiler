@@ -24,14 +24,9 @@ public abstract class AbstractDeclMethod extends Tree {
         methodName.decompile(s);
         s.print(" (");
         methodParameters.decompile(s);
-        s.print(" )");
-        s.println("{");
-        s.indent();
+        s.print(") ");
         methodBody.decompile(s);
-        s.unindent();
-        s.print("}");
-        s.println("");
-        s.println("");
+        s.println();
     }
 
     @Override
