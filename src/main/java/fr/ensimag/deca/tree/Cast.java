@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.INT;
@@ -26,18 +27,22 @@ public class Cast extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        DVal dval;
+        Type typeOperand = this.getOperand().getType();
+        Type typeAfterCast = this.typeAfterCast.getType();
         if (getOperand().getDval() != null) {
-            if (this.getOperand().getType().isInt() && this.typeAfterCast.getType().isFloat()) {
-                compiler.addInstruction(new FLOAT(getOperand().getDval(), compiler.getRegister()));
-            } else if (this.getOperand().getType().isFloat() && this.typeAfterCast.getType().isInt()) {
-                compiler.addInstruction(new INT(getOperand().getDval(), compiler.getRegister()));
+            dval = this.getOperand().getDval();
+            if (typeOperand.isInt() && typeAfterCast.isFloat()) {
+                compiler.addInstruction(new FLOAT(dval, compiler.getRegister()));
+            } else if (typeOperand.isFloat() && typeAfterCast.isInt()) {
+                compiler.addInstruction(new INT(dval, compiler.getRegister()));
             }
         }
         else {
             getOperand().codeGenInst(compiler);
-            if (this.getOperand().getType().isInt() && this.typeAfterCast.getType().isFloat()) {
+            if (typeOperand.isInt() && typeAfterCast.isFloat()) {
                 compiler.addInstruction(new FLOAT(compiler.getRegister(), compiler.getRegister()));
-            } else if (this.getOperand().getType().isFloat() && this.typeAfterCast.getType().isInt()) {
+            } else if (typeOperand.isFloat() && typeAfterCast.isInt()) {
                 compiler.addInstruction(new INT(compiler.getRegister(), compiler.getRegister()));
             }
         }

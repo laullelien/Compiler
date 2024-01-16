@@ -49,9 +49,7 @@ public class EnvironmentType {
 
     public boolean castCompatible(Type initialType, Type finalType){
         if (!(initialType.isVoid())) {
-            if (assignCompatible(initialType, finalType) || assignCompatible(finalType, initialType)){
-                return true;
-            }
+            return  (assignCompatible(initialType, finalType) || assignCompatible(finalType, initialType));
         }
         return false;
     }
