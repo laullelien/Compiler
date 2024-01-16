@@ -54,23 +54,9 @@ public class Not extends AbstractUnaryExpr {
             return;
         }
 
-        String labelString = "not_label_" + compiler.getLabelId();
-        compiler.incrementLabelId();
-        Label endLabel = new Label(labelString + "_fin");
-        Label isTrueLabel = new Label(labelString + "_vrai");
-
         getOperand().codeGenInst(compiler);
 
         compiler.addInstruction(new CMP(1, compiler.getRegister()));
-        compiler.addInstruction(new BEQ(isTrueLabel));
-
-        compiler.addInstruction(new LOAD(1, compiler.getRegister()));
-
-        compiler.addInstruction(new BRA(endLabel));
-        compiler.addLabel(isTrueLabel);
-
-        compiler.addInstruction(new LOAD(0, compiler.getRegister()));
-
-        compiler.addLabel(endLabel);
+        compiler.addInstruction(new SNE(compiler.getRegister()));
     }
 }
