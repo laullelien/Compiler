@@ -43,8 +43,12 @@ public class EnvironmentType {
         // not added to envTypes, it's not visible for the user.
 
         Symbol objectSymbol = compiler.createSymbol("Object");
+        Symbol equalSymbol = compiler.createSymbol("equals");
         OBJECT = new ClassType(objectSymbol);
-        ClassDefinition objectDefinition = new ClassDefinition(OBJECT, Location.BUILTIN, null);
+        Signature equalsSignature = new Signature();
+        equalsSignature.add(OBJECT);
+        MethodDefinition equalsMethodDefinition = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
+        ClassDefinition objectDefinition = new ClassDefinition(OBJECT, Location.BUILTIN, equalSymbol,equalsMethodDefinition);
         envTypes.put(objectSymbol, objectDefinition);
         this.objectClassIdentifier = new Identifier(objectSymbol);
     }
