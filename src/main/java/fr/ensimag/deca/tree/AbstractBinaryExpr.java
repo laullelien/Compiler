@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -61,6 +62,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 codeGenBinary(compiler);
             } else {
                 getLeftOperand().codeGenInst(compiler);
+                compiler.addInstruction(new TSTO(1));
+                compiler.addInstruction(new BOV(new Label("stack_full")));
                 compiler.addInstruction(new PUSH(compiler.getRegister()));
                 getRightOperand().codeGenInst(compiler);
                 compiler.addInstruction(new LOAD(compiler.getRegister(), Register.R0));
