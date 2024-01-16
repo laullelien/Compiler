@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import java.io.PrintStream;
+import fr.ensimag.deca.tools.IndentPrintStream;
 
 /**
  * Visibility of a field.
@@ -10,22 +11,12 @@ import java.io.PrintStream;
  */
 
 
-import java.io.PrintStream;
 
 public enum Visibility {
     PUBLIC {
         @Override
         public boolean isProtected() {
             return false;
-        }
-
-        @Override
-        public void prettyPrint(PrintStream s, String prefix, boolean last) {
-            s.print(prefix);
-            s.print("visibility: ");
-            s.print(this);
-            s.println();
-
         }
 
         @Override
@@ -40,14 +31,6 @@ public enum Visibility {
         }
 
         @Override
-        public void prettyPrint(PrintStream s, String prefix, boolean last) {
-            s.print(prefix);
-            s.print("visibility: ");
-            s.print(this);
-            s.println();
-        }
-
-        @Override
         public String toString() {
             return "protected";
         }
@@ -55,5 +38,16 @@ public enum Visibility {
 
     public abstract boolean isProtected();
 
-    public abstract void prettyPrint(PrintStream s, String prefix, boolean last);
+    public void prettyPrint(PrintStream s, String prefix, boolean last){
+        s.print(prefix);
+        s.print("visibility: ");
+        s.print(this);
+        s.println();
+    };
+
+    public void decompile(IndentPrintStream s){
+        if (isProtected()){
+            s.print("protected ");
+        }
+    }
 }
