@@ -15,6 +15,44 @@ abstract public class AbstractDeclField extends Tree {
     private Type type;
     private ExpDefinition definition;
 
+    @Override
+    String printNodeLine(PrintStream s, String prefix, boolean last,
+                         boolean inlist, String nodeName) {
+        s.print(prefix);
+        if (inlist) {
+            s.print("[]>");
+        } else if (last) {
+            s.print("`>");
+        } else {
+            s.print("+>");
+        }
+        if (getLocation() != null) {
+            s.print(" " + getLocation().toString());
+        }
+        if (getFieldVisibility() != null){
+            s.print(" " + getFieldVisibility().toString());
+        }
+        s.print(" ");
+        s.print(nodeName);
+        s.println();
+        String newPrefix;
+        if (last) {
+            if (inlist) {
+                newPrefix = prefix + "    ";
+            } else {
+                newPrefix = prefix + "   ";
+            }
+        } else {
+            if (inlist) {
+                newPrefix = prefix + "||  ";
+            } else {
+                newPrefix = prefix + "|  ";
+            }
+        }
+        prettyPrintType(s, newPrefix);
+        return newPrefix;
+    }
+
     public AbstractDeclField(Visibility fieldVisibility, AbstractIdentifier fieldType, AbstractIdentifier fieldName,
                              AbstractInitialization fieldInitialization) {
         this.fieldVisibility = fieldVisibility;
@@ -73,4 +111,6 @@ abstract public class AbstractDeclField extends Tree {
     public void setDefinition(ExpDefinition definition) {
         this.definition = definition;
     }
+
+    public void setFieldVisibility(Visibility v) {this.fieldVisibility = v;}
 }

@@ -19,13 +19,13 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         // rule 2.4
         EnvironmentExp env = new EnvironmentExp();
         for(AbstractDeclField decl: getList()) {
-            env.declare(decl.verifyDeclField(compiler, superClassSymbol, classDef));
+            //env.declare(decl.verifyDeclField(compiler, superClassSymbol, classDef));
         }
         return env;
     }
 
     public void verifyListDeclField(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError {
-        //rule 3.7
+        //rule 3.6
         for(AbstractDeclField decl: getList()) {
             decl.verifyDeclField(compiler, env, classDef);
         }

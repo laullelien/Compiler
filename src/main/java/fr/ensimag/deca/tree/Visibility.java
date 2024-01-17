@@ -21,7 +21,7 @@ public enum Visibility {
 
         @Override
         public String toString() {
-            return "public";
+            return "[visibility=PUBLIC]";
         }
     },
     PROTECTED {
@@ -32,22 +32,16 @@ public enum Visibility {
 
         @Override
         public String toString() {
-            return "protected";
+            return "[visibility=PROTECTED]";
         }
     };
 
     public abstract boolean isProtected();
-
-    public void prettyPrint(PrintStream s, String prefix, boolean last){
-        s.print(prefix);
-        s.print("visibility: ");
-        s.print(this);
-        s.println();
-    };
 
     public void decompile(IndentPrintStream s){
         if (isProtected()){
             s.print("protected ");
         }
     }
+
 }
