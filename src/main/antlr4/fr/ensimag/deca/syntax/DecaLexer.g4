@@ -47,6 +47,8 @@ READFLOAT : 'readFloat';
 
 CLASS: 'class';
 EXTENDS: 'extends';
+INSTANCEOF: 'instanceof';
+
 
 // grammar for identifiers
 
