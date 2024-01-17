@@ -62,12 +62,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 codeGenBinary(compiler);
             } else {
                 getLeftOperand().codeGenInst(compiler);
-                compiler.addInstruction(new TSTO(1));
-                compiler.addInstruction(new BOV(new Label("stack_full")));
                 compiler.addInstruction(new PUSH(compiler.getRegister()));
+                compiler.codegenHelper.incPushDepth();
                 getRightOperand().codeGenInst(compiler);
                 compiler.addInstruction(new LOAD(compiler.getRegister(), Register.R0));
                 compiler.addInstruction(new POP(compiler.getRegister()));
+                compiler.codegenHelper.decPushDepth();
                 compiler.setDval(Register.R0);
                 codeGenBinary(compiler);
             }
