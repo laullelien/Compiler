@@ -36,4 +36,14 @@ public abstract class AbstractDeclClass extends Tree {
     protected abstract void verifyClassBody(DecacCompiler compiler)
             throws ContextualError;
 
+    /**
+     * Pass 1 of [Codegen]. Generate the VTable of the class and append the instructions
+     */
+    protected abstract void codeGenClassVTable(DecacCompiler compiler);
+
+    /**
+     * Pass 2 of [Codegen]. Generate the instructions for field initialization and methods body
+     */
+    protected abstract void codeGenClassBody(DecacCompiler compiler);
+
 }
