@@ -47,6 +47,8 @@ READFLOAT : 'readFloat';
 
 CLASS: 'class';
 EXTENDS: 'extends';
+NEW: 'new';
+PROTECTED: 'protected';
 
 // grammar for asm instruction
 

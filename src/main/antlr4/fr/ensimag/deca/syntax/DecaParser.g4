@@ -421,6 +421,8 @@ primary_expr returns[AbstractExpr tree]
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
+            $tree = $ident.tree;
+            setLocation($tree, $NEW);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
             assert($type.tree != null);
@@ -527,33 +529,47 @@ class_body returns[ListDeclMethod treeM, ListDeclField treeF]
     ;
 
 decl_field_set[ListDeclField treeF]
-    : v=visibility t=type list_decl_field[$treeF]
+    : v=visibility t=type list_decl_field[treeF, $v.vis, $t.tree]
       SEMI
     ;
 
-visibility
+visibility returns[Visibility vis]
     : /* epsilon */ {
+        $vis = Visibility.PUBLIC;
         }
     | PROTECTED {
+        $vis = Visibility.PROTECTED;
         }
     ;
 
-list_decl_field[ListDeclField treeF]
-    : dv1=decl_field {
+list_decl_field[ListDeclField treeF, Visibility v, AbstractIdentifier t]
+    : dv1=decl_field[v, t] {
         $treeF.add($dv1.tree);
     }
-        (COMMA dv2=decl_field {
+        (COMMA dv2=decl_field[v, t] {
             $treeF.add($dv2.tree);
         }
       )*
     ;
 
-decl_field returns[AbstractDeclField tree]
+decl_field[Visibility v, AbstractIdentifier t] returns[AbstractDeclField tree]
     : i=ident {
+            Boolean hasInit = false;
         }
       (EQUALS e=expr {
+            hasInit = true;
         }
       )? {
+            AbstractInitialization init;
+            if(hasInit) {
+                init = new Initialization($e.tree);
+                setLocation(init, $e.start);
+            } else {
+                init = new NoInitialization();
+            }
+            $tree = new DeclField(v, t, $i.tree, init);
+            setLocation($tree, $i.start);
+            setVisibility($tree, $v);
         }
     ;
 
