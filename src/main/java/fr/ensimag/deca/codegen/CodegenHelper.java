@@ -13,6 +13,8 @@ public class CodegenHelper {
 
     private TSTO mainTSTO;
 
+    private ADDSP mainADDSP;
+
     private int maxPushDepth;
 
     private int pushDepth;
@@ -42,13 +44,15 @@ public class CodegenHelper {
     public void codeGenTSTO() {
         // The number for TSTO will be modified later
         mainTSTO = new TSTO(0);
+        mainADDSP = new ADDSP(0);
         compiler.addInstruction(mainTSTO);
         compiler.addInstruction(new BOV(new Label("stack_full")));
-        compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
+        compiler.addInstruction(mainADDSP);
     }
 
-    public void setMainTSTO() {
+    public void setMainInst() {
         mainTSTO.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + maxPushDepth + compiler.listVTable.getOffset()));
+        mainADDSP.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + compiler.listVTable.getOffset()));
     }
 
     public void incPushDepth() {

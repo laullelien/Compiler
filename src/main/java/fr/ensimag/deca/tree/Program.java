@@ -52,6 +52,7 @@ public class Program extends AbstractProgram {
         compiler.codegenHelper.codeGenTSTO();
         classes.codeGenListClassVTables(compiler); // Etape C, passe 1
         main.codeGenMain(compiler); // Etape C, passe 2 pour le programme principal
+        compiler.codegenHelper.setMainInst();
         compiler.addInstruction(new HALT());
         classes.codeGenListClassBody(compiler); // Etape C, passe 2 pour les classes
         compiler.codegenHelper.codeGenListError();
