@@ -32,13 +32,12 @@ debug() {
     # diff "$output_ima" "$source_expected"
 }
 
-test_gencode() {
+gencode_exec() {
     source="$1"
-    decac_options="$2 $3"
-    decac_options_no_debug="$3"
-    ima_options="$4"
-    ok_message="$5"
-    ext_expected="$6"
+    ext_expected="$2"
+    decac_options="$3 $4"
+    decac_options_no_debug="$4"
+    ima_options="$5"
     ext_output="ass"
     source_expected="${source%.deca}.$ext_expected"
     source_output="${source%.deca}.$ext_output"
@@ -85,7 +84,7 @@ test_gencode() {
             then
                 debug "$source_expected" "$output_ima" "$decac_options_no_debug" "$ima_options"
             fi
-            echo "    [OK] $filename: $ok_message attendu de decac $decac_options_no_debug"
+            echo "    [OK] decac $decac_options_no_debug $filename"
             rm -f "$output_ima"
             rm -f "$source_error"
         else
@@ -105,19 +104,16 @@ test_gencode_options() {
     source_options="${source%.deca}.options"
     if [ "$type" = "invalid" ]
     then
-        ok_message="Echec"
         ext_expected="ima"
     else
-        # par défaut nous essayons un test valid
-        ok_message="Succès"
         ext_expected="res"
     fi
-    test_gencode "$source" "$debug_options" "" "" "$ok_message" "$ext_expected"
+    gencode_exec "$source" "$ext_expected" "$debug_options"
     if [ -f "$source_options" ] && [ -s "$source_options" ]
     then
         while read -r decac_opt; read -r ima_opt
         do
-            test_gencode "$source" "$debug_options" "$decac_opt" "$ima_opt" "$ok_message" "$ext_expected"
+            gencode_exec "$source" "$ext_expected" "$debug_options" "$decac_opt" "$ima_opt"
         done < "$source_options"
     fi
 }
