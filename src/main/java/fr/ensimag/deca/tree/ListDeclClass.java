@@ -51,6 +51,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClassBody: start");
+        // rule 3.5
         for (AbstractDeclClass c : this.getList()) {
             c.verifyClassBody(compiler);
         }

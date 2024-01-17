@@ -102,6 +102,12 @@ public class EnvironmentExp {
         return res;
     }
 
+    public void stackEnvironment(EnvironmentExp env) {
+        for (Symbol s : env.getEnvironment().keySet()){
+            this.environment.put(s, env.get(s));
+        }
+    }
+
     public void declare(EnvironmentExp env) throws DoubleDefException {
         for (Symbol s : env.getEnvironment().keySet()){
             this.declare(s, env.get(s));

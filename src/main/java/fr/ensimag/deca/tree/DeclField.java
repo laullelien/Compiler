@@ -18,14 +18,13 @@ public class DeclField extends AbstractDeclField {
         // rule 2.5
         EnvironmentExp env = new EnvironmentExp();
         Type fieldType = getFieldType().verifyType(compiler);
-
         if(fieldType.isVoid()) {
             throw new ContextualError("Field de type void. Cela ne respecte pas la regle 2.5", this.getLocation());
         }
-
         TypeDefinition superEnv = compiler.environmentType.defOfType(superClassSymbol);
         if(superEnv != null && superEnv.isClass()) {
-            if(!((ClassDefinition)superEnv).getMembers().get(getFieldName().getName()).isField()) {
+            ExpDefinition newField = ((ClassDefinition)superEnv).getMembers().get(getFieldName().getName());
+            if(!(newField == null || (newField != null && newField.isField()))) {
                 throw new ContextualError("Cette variable apparait dans la classe super mais n'est pas un field. Cela ne respecte pas la regle 2.5", this.getLocation());
             }
         }
@@ -33,7 +32,6 @@ public class DeclField extends AbstractDeclField {
             throw new ContextualError("La règle (2.3) n'est pas respectée car la super classe n'est pas définie correctement.", this.getLocation());
         }
 
-        classDef.incNumberOfFields();
         ExpDefinition def = new FieldDefinition(fieldType, this.getLocation(), getFieldVisibility(), classDef, classDef.getNumberOfFields());
 
         try {
@@ -42,14 +40,14 @@ public class DeclField extends AbstractDeclField {
             throw new RuntimeException("Cela devrait etre impossible, que s'est il passe?");
         }
 
-        setType(fieldType);
-        setDefinition(def);
+        this.getFieldName().setDefinition(def);
+        this.getFieldName().setType(fieldType);
 
         return env;
     }
 
     @Override
-    public void verifyDeclField(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError {
+    public void verifyDeclFieldPass3(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError {
         // rule 3.7
         getFieldInitialization().verifyInitialization(compiler, getFieldType().verifyType(compiler), env, classDef);
     }

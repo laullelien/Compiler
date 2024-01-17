@@ -53,8 +53,21 @@ public abstract class AbstractDeclMethod extends Tree {
         Type returnType = methodReturnType.verifyType(compiler);
         Signature paramsSignature = methodParameters.verifyListDeclParam(compiler);
         TypeDefinition defSuperClass = compiler.environmentType.defOfType(superClassSymbol);
-        if (defSuperClass == null || defSuperClass.isClass()) {
+        if (defSuperClass == null || !(defSuperClass.isClass())) {
             throw new ContextualError("La règle (2.3) n'est pas respectée... Pas de Super Classe", this.getLocation());
+        }
+        ExpDefinition methodDefinitionInSuperClass = ((ClassDefinition) defSuperClass).getMembers().get(this.methodName.getName());
+        if (!(methodDefinitionInSuperClass == null || (methodDefinitionInSuperClass != null && methodDefinitionInSuperClass.isMethod()))){
+            throw new ContextualError("L'identificateur de la méthode à déclarée existe dans la super classe mais ne définit pas une méthode : la règle (2.7) n'est pas respectée.", this.getLocation());
+        }
+        if (methodDefinitionInSuperClass != null){
+            Signature paramSignatureReDef = ((MethodDefinition) methodDefinitionInSuperClass).getSignature();
+            if (!paramsSignature.equals(paramSignatureReDef)) {
+                throw new ContextualError("La redéfinition est mauvaise et la règle (2.7) n'est pas respectée.", this.getLocation());
+            }
+            if (!((ClassType) returnType).isSubClassOf((ClassType) methodDefinitionInSuperClass.getType())) {
+                throw new ContextualError("La redéfinition est mauvaise (problème de sous-type) et la règle (2.7) n'est pas respectée.", this.getLocation());
+            }
         }
         EnvironmentExp methodEnvExp = new EnvironmentExp();
         ExpDefinition methodDef = new MethodDefinition(returnType, this.getLocation(), paramsSignature, currentClass.getNumberOfMethods());
@@ -63,22 +76,9 @@ public abstract class AbstractDeclMethod extends Tree {
         } catch (EnvironmentExp.DoubleDefException e) {
             throw new ContextualError("Cette exception ne sera jamais levée alors je peux mettre ce que je veux... Joyeux Anniversaire !", this.getLocation());
         }
-        ExpDefinition envExpSuper = ((ClassDefinition) defSuperClass).getMembers().get(this.methodName.getName());
-        if (envExpSuper == null) {
-            return methodEnvExp;
-        }
-        if (!envExpSuper.isMethod()) {
-            throw new ContextualError("La redéfinition est mauvaise (pas une méthode) et la règle (2.7) n'est pas respectée.", this.getLocation());
-        }
-        Signature paramSignatureReDef = ((MethodDefinition) envExpSuper).getSignature();
-        if (!paramsSignature.equals(paramSignatureReDef)) {
-            throw new ContextualError("La redéfinition est mauvaise et la règle (2.7) n'est pas respectée.", this.getLocation());
-        }
-        if (!((ClassType) returnType).isSubClassOf((ClassType) envExpSuper.getType())) {
-            throw new ContextualError("La redéfinition est mauvaise (problème de sous-type) et la règle (2.7) n'est pas respectée.", this.getLocation());
-        }
-        this.methodName.setDefinition(methodDef);
-        this.methodName.setType(returnType);
+
+        methodName.setDefinition(methodDef);
+        methodName.setType(returnType);
         return methodEnvExp;
     }
 

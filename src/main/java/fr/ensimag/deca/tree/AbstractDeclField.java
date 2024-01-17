@@ -7,7 +7,7 @@ import fr.ensimag.deca.tools.SymbolTable;
 
 import java.io.PrintStream;
 
-abstract public class AbstractDeclField extends Tree {
+public abstract class AbstractDeclField extends Tree {
     private Visibility fieldVisibility;
     private AbstractIdentifier fieldType;
     private AbstractIdentifier fieldName;
@@ -79,7 +79,7 @@ abstract public class AbstractDeclField extends Tree {
 
     abstract public EnvironmentExp verifyDeclField(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, ClassDefinition classDef) throws ContextualError;
 
-    abstract public void verifyDeclField(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError;
+    abstract public void verifyDeclFieldPass3(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError;
 
     @Override
     public void decompile(IndentPrintStream s) {
