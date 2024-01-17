@@ -2,6 +2,8 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 public class CodegenHelper {
@@ -39,7 +41,12 @@ public class CodegenHelper {
     public void codeGenObjectEquals() {
         compiler.addComment("Classe Object");
         compiler.addLabel(new Label("code.Object.equals"));
-        compiler.addInstruction(new WSTR("TODO"));
+        // Enregistrer this dans R0
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0 ));
+        // Enregistrer le parametre dans R1
+        compiler.addInstruction(new LOAD(new RegisterOffset(-3, Register.LB), Register.R1 ));
+        compiler.addInstruction(new CMP(Register.R0, Register.R1));
+        compiler.addInstruction(new SEQ(Register.R0));
         compiler.addInstruction(new RTS());
     }
 }

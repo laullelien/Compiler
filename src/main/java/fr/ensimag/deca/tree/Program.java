@@ -50,22 +50,10 @@ public class Program extends AbstractProgram {
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         classes.codeGenListClassVTables(compiler); // Etape C, passe 1
-        codeGenEquals(compiler);
         main.codeGenMain(compiler); // Etape C, passe 2 pour le programme principal
         compiler.addInstruction(new HALT());
         classes.codeGenListClassBody(compiler); // Etape C, passe 2 pour les classes
         compiler.codegenHelper.codeGenListError();
-    }
-
-    private void codeGenEquals(DecacCompiler compiler) {
-        compiler.addLabel(new Label("code.Object.equals"));
-        // Enregistrer this dans R0
-        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0 ));
-        // Enregistrer le parametre dans R1
-        compiler.addInstruction(new LOAD(new RegisterOffset(-3, Register.LB), Register.R1 ));
-        compiler.addInstruction(new CMP(Register.R0, Register.R1));
-        compiler.addInstruction(new SEQ(Register.R0));
-        compiler.addInstruction(new RTS());
     }
 
     @Override
