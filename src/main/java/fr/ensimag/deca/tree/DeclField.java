@@ -14,7 +14,7 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public EnvironmentExp verifyDeclField(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, SymbolTable.Symbol className) throws ContextualError {
+    public EnvironmentExp verifyDeclField(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, ClassDefinition classDef) throws ContextualError {
         // rule 2.5
         EnvironmentExp env = new EnvironmentExp();
         Type fieldType = getFieldType().verifyType(compiler);
@@ -30,14 +30,8 @@ public class DeclField extends AbstractDeclField {
             }
         }
 
-        TypeDefinition definition = compiler.environmentType.defOfType(className);
-        if(!definition.isClass()) {
-            throw new RuntimeException("Cela devrait etre impossible, que s'est il passe?");
-        }
-
-        ClassDefinition classDefinition = ((ClassDefinition)definition);
-        classDefinition.incNumberOfFields();
-        ExpDefinition def = new FieldDefinition(fieldType, this.getLocation(), getFieldVisibility(), classDefinition, classDefinition.getNumberOfFields());
+        classDef.incNumberOfFields();
+        ExpDefinition def = new FieldDefinition(fieldType, this.getLocation(), getFieldVisibility(), classDef, classDef.getNumberOfFields());
 
         try {
             env.declare(getFieldName().getName(), def);
@@ -49,6 +43,12 @@ public class DeclField extends AbstractDeclField {
         setDefinition(def);
 
         return env;
+    }
+
+    @Override
+    public void verifyDeclField(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError {
+        // rule 3.7
+        getFieldInitialization().verifyInitialization(compiler, getFieldType().verifyType(compiler), env, classDef);
     }
 
     @Override
