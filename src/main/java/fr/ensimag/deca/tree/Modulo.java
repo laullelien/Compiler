@@ -41,7 +41,6 @@ public class Modulo extends AbstractOpArith {
     protected void codeGenBinary(DecacCompiler compiler) {
         if (!compiler.getCompilerOptions().getNocheck()) {
             compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
-            compiler.addInstruction(new CMP(0, Register.R1));
             compiler.addInstruction(new BEQ(new Label("division_by_0")));
         }
         compiler.addInstruction(new REM(compiler.getDVal(), compiler.getRegister())); // division entière

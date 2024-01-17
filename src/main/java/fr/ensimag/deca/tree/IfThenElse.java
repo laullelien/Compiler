@@ -63,7 +63,6 @@ public class IfThenElse extends AbstractInst {
 
         condition.codeGenInst(compiler);
 
-        compiler.addInstruction(new CMP(0, Register.R2));
         compiler.addInstruction(new BEQ(elseLabel));
 
         thenBranch.codeGenListInst(compiler);
