@@ -4,10 +4,10 @@
 # Version initiale : 01/01/2024
 
 # Script de test de la génération de code pour ima pour les sources dans codegen
-PWD="$(pwd)"
 
 # On se place dans le répertoire du projet (quel que soit le
 # répertoire d'où est lancé le script) :
+terminal_path="$PWD"
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:./src/main/bin:"$PATH"
@@ -61,6 +61,8 @@ test_gencode_invalid() {
 }
 
 test_gencode_valid() {
+    source="$1"
+    debug_option="$2"
     source_res="${source%.deca}.res"
     source_ass="${source%.deca}.ass"
     source_error="${source%.deca}.err"
@@ -70,7 +72,7 @@ test_gencode_valid() {
         echo "    [WARNING] Fichier $source_res n'existe pas, impossible de tester la compilation de $filename"
     else
         rm -f "$source_ass" 2> /dev/null
-        decac "$source" 2> "$source_error"
+        decac $debug_option "$source" 2> "$source_error"
         # on vérifie si la taille de source.err est supérieur à 0
         # celà signifie que decac a rencontré une erreur dans la compilation
         if [ -s "$source_error" ]
@@ -102,6 +104,13 @@ test_gencode_valid() {
         fi
         if diff "$output_ima" "$source_res" > /dev/null 2>&1
         then
+            if [ "$debug_option" ]
+            then
+                echo "    [DEBUG] Sortie attendu:"
+                cat "$source_res"
+                echo "    [DEBUG] Sortie de ima:"
+                cat "$output_ima"
+            fi
             echo "    [OK] Résultat attendu de $filename"
             rm -f "$output_ima"
             rm -f "$source_error"
@@ -121,35 +130,49 @@ test_gencode_valid() {
     fi
 }
 
-if [ "$#" -eq 1 ]
+if [ "$#" -gt 0 ]
 then
-    source="$PWD/$1"
-    echo "$source"
-    if [ ! -f "$source" ]
-    then
-        echo "Fichier $source introuvable ou n'est pas un fichier"
-        exit 1
-    fi
-    if [ ! -r "$source" ]
-    then
-        echo "Impossible de lire $source"
-    fi
-    test_gencode_valid "$source"
-else
-    echo "Début tests codegen"
-    for folder in 'invalid' 'valid'
+    for param
     do
-        source_path="$DIR/$folder"
-        echo "Section $source_path"
-        if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
+        if [ "$param" = '-d' ]
+        then
+            debug_option='-d -d -d -d'
+        else
+            source="$terminal_path/$param"
+            if [ ! \( -f "$source" -a -r "$source" \) ]
             then
-                echo "    [WARNING] Pas de fichier a tester"
-            else
-            for source in "$source_path"/*.deca
-            do
-                test_gencode_"$folder" "$source"
-            done
+                echo "Fichier $source introuvable ou inaccessible"
+                echo "Usage: $0 [-d] <fichier deca>..."
+                exit 1
+            fi
+            dirname="${source%/*}"
+            folder="${dirname##*/}"
+            echo "Section $source"
+            if [ ! \( "$folder" = 'valid' -o "$folder" = 'invalid' \) ]
+            then
+                echo "    [WARNING] Impossible de déterminer si le test est valid ou invalid"
+                echo "    [WARNING] Test valid executé par défaut"
+                folder="valid"
+            fi
+            test_gencode_"$folder" "$source" "$debug_option"
+            exit 0
         fi
     done
-    echo "Fin tests codegen"
 fi
+
+echo "Début tests codegen"
+for folder in 'invalid' 'valid'
+do
+    source_path="$DIR/$folder"
+    echo "Section $source_path"
+    if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
+        then
+            echo "    [WARNING] Pas de fichier a tester"
+        else
+        for source in "$source_path"/*.deca
+        do
+            test_gencode_"$folder" "$source"
+        done
+    fi
+done
+echo "Fin tests codegen"
