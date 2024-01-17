@@ -1,8 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
@@ -13,10 +15,16 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler) {
+    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol) throws ContextualError {
+        EnvironmentExp envExpListMethods = new EnvironmentExp();
         for (AbstractDeclMethod a : this.getList()) {
-            a.verifyMethod(compiler);
+            EnvironmentExp envExpMethod = a.verifyMethod(compiler, superClassSymbol);
+            try {
+                envExpListMethods.declare(envExpMethod);
+            } catch (EnvironmentExp.DoubleDefException e) {
+                throw new ContextualError("Des méthodes ont été déclarées avec le même nom, la règle (2.6) n'est pas respectée", this.getLocation());
+            }
         }
-        return null;
+        return envExpListMethods;
     }
 }

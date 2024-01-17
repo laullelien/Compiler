@@ -1,5 +1,8 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -30,5 +33,13 @@ public class AbstractDeclParam extends Tree{
     protected void iterChildren(TreeFunction f) {
         paramType.iter(f);
         paramName.iter(f);
+    }
+
+    public Type verifyDeclParam(DecacCompiler compiler) throws ContextualError {
+        Type typeParam = this.paramType.verifyType(compiler);
+        if (typeParam.isVoid()){
+            throw new ContextualError("Le type du paramètre est void : la règle (2.9) n'est pas respectée", this.getLocation());
+        }
+        return typeParam;
     }
 }

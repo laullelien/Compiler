@@ -64,7 +64,7 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler)
             throws ContextualError {
         EnvironmentExp envExpFields = fields.verifyListDeclField(compiler);
-        EnvironmentExp envExpMethods = methods.verifyListDeclMethod(compiler);
+        EnvironmentExp envExpMethods = methods.verifyListDeclMethod(compiler, this.nameSuperClass.getName());
         TypeDefinition superClassDefinition = compiler.environmentType.defOfType(this.nameSuperClass.getName());
         if (superClassDefinition == null) {
             throw new ContextualError("La classe utilisée n'a pas été déclarée, la règle (2.3) n'est pas respectée.", this.getLocation());
