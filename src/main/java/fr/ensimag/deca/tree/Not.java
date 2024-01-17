@@ -56,6 +56,7 @@ public class Not extends AbstractUnaryExpr {
 
         getOperand().codeGenInst(compiler);
 
-        compiler.addInstruction(new SEQ(compiler.getRegister()));
+        compiler.addInstruction(new CMP(1, compiler.getRegister()));
+        compiler.addInstruction(new SNE(compiler.getRegister()));
     }
 }

@@ -4,7 +4,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.ObjectUtils;
@@ -45,7 +44,8 @@ public class Or extends AbstractOpBool {
 
         getLeftOperand().codeGenInst(compiler);
 
-        compiler.addInstruction(new BNE(endLabel));
+        compiler.addInstruction(new CMP(1, compiler.getRegister()));
+        compiler.addInstruction(new BEQ(endLabel));
 
         getRightOperand().codeGenInst(compiler);
 

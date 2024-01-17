@@ -27,6 +27,7 @@ public class Divide extends AbstractOpArith {
         if (getType().isInt()) {
             if (!compiler.getCompilerOptions().getNocheck()) {
                 compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
+                compiler.addInstruction(new CMP(0, Register.R1));
                 compiler.addInstruction(new BEQ(new Label("division_by_0")));
             }
             compiler.addInstruction(new QUO(compiler.getDVal(), compiler.getRegister())); // division entière
@@ -34,6 +35,7 @@ public class Divide extends AbstractOpArith {
         else {
             if (!compiler.getCompilerOptions().getNocheck()) {
                 compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
+                compiler.addInstruction(new CMP(new ImmediateFloat(0), Register.R1));
                 compiler.addInstruction(new BEQ(new Label("division_by_0")));
             }
             compiler.addInstruction(new DIV(compiler.getDVal(), compiler.getRegister()));
