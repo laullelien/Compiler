@@ -163,17 +163,6 @@ public abstract class AbstractExpr extends AbstractInst {
         s.print(";");
     }
 
-    /**
-     * Permet de générer les instructions assembleur d'une expression en spécifiant les registres
-     * utilisés
-     * @param compiler
-     * @param value Position ou valeur à calculer
-     * @param target Position du résultat de l'expression
-     */
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        throw new DecacInternalError("Not yet implemented");
-    }
-
     @Override
     protected void prettyPrintType(PrintStream s, String prefix) {
         Type t = getType();
