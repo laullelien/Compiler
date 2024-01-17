@@ -86,6 +86,15 @@ public class DeclClass extends AbstractDeclClass {
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
+        TypeDefinition superClassDefinition = compiler.environmentType.defOfType(this.nameSuperClass.getName());
+        if (superClassDefinition == null) {
+            throw new ContextualError("La classe utilisée n'a pas été déclarée, la règle (2.3) n'est pas respectée.", this.getLocation());
+        }
+        if (!(superClassDefinition.isClass())) {
+            throw new ContextualError("L'identificateur de la super classe ne définit pas une classe, la règle (2.3) n'est pas respectée.", this.getLocation());
+        }
+        // règle 3.5
+        methods.verifyListDeclMethodPass3(compiler, this.name.getClassDefinition());
     }
 
 
