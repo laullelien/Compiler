@@ -35,4 +35,11 @@ public class CodegenHelper {
         compiler.addInstruction(new BOV(new Label("stack_full")));
         compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
     }
+
+    public void codeGenObjectEquals() {
+        compiler.addComment("Classe Object");
+        compiler.addLabel(new Label("code.Object.equals"));
+        compiler.addInstruction(new WSTR("TODO"));
+        compiler.addInstruction(new RTS());
+    }
 }
