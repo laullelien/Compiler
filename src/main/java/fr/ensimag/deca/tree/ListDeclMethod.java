@@ -16,10 +16,11 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol) throws ContextualError {
+    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, ClassDefinition currentClass) throws ContextualError {
         EnvironmentExp envExpListMethods = new EnvironmentExp();
         for (AbstractDeclMethod a : this.getList()) {
-            EnvironmentExp envExpMethod = a.verifyMethod(compiler, superClassSymbol);
+            EnvironmentExp envExpMethod = a.verifyMethod(compiler, superClassSymbol, currentClass);
+            currentClass.incNumberOfMethods();
             try {
                 envExpListMethods.declare(envExpMethod);
             } catch (EnvironmentExp.DoubleDefException e) {

@@ -13,24 +13,6 @@ public abstract class AbstractDeclMethod extends Tree {
     private AbstractIdentifier methodName;
     private ListDeclParam methodParameters;
     private AbstractMethodBody methodBody;
-    private Type returnType;
-    private Definition definition;
-
-    public Type getReturnType() {
-        return returnType;
-    }
-
-    public void setReturnType(Type returnType) {
-        this.returnType = returnType;
-    }
-
-    public Definition getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(Definition definition) {
-        this.definition = definition;
-    }
 
     public AbstractDeclMethod(AbstractIdentifier methodReturnType, AbstractIdentifier methodName, ListDeclParam methodParameters, AbstractMethodBody methodBody) {
         this.methodReturnType = methodReturnType;
@@ -67,19 +49,15 @@ public abstract class AbstractDeclMethod extends Tree {
         methodBody.iter(f);
     }
 
-    public EnvironmentExp verifyMethod(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol) throws ContextualError {
+    public EnvironmentExp verifyMethod(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, ClassDefinition currentClass) throws ContextualError {
         Type returnType = methodReturnType.verifyType(compiler);
-        this.returnType = returnType;
         Signature paramsSignature = methodParameters.verifyListDeclParam(compiler);
         TypeDefinition defSuperClass = compiler.environmentType.defOfType(superClassSymbol);
         if (defSuperClass == null || defSuperClass.isClass()) {
             throw new ContextualError("La règle (2.3) n'est pas respectée... Pas de Super Classe", this.getLocation());
         }
         EnvironmentExp methodEnvExp = new EnvironmentExp();
-        int misteryIndex = 0;
-        ExpDefinition methodDef = new MethodDefinition(returnType, this.getLocation(), paramsSignature, misteryIndex);
-        this.returnType = returnType;
-        this.definition = methodDef;
+        ExpDefinition methodDef = new MethodDefinition(returnType, this.getLocation(), paramsSignature, currentClass.getNumberOfMethods());
         try {
             methodEnvExp.declare(methodName.getName(), methodDef);
         } catch (EnvironmentExp.DoubleDefException e) {
@@ -99,6 +77,8 @@ public abstract class AbstractDeclMethod extends Tree {
         if (!((ClassType) returnType).isSubClassOf((ClassType) envExpSuper.getType())) {
             throw new ContextualError("La redéfinition est mauvaise (problème de sous-type) et la règle (2.7) n'est pas respectée.", this.getLocation());
         }
+        this.methodName.setDefinition(methodDef);
+        this.methodName.setType(returnType);
         return methodEnvExp;
     }
 
