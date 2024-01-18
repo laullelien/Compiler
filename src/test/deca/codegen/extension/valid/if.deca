@@ -9,7 +9,8 @@
 
 {
     int v = 4;
-    if (false) {
+    boolean b = false;
+    if (b) {
     } else {
         v = 2;
     }
