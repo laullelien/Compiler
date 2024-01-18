@@ -135,16 +135,15 @@ then
             fi
             dirname="${source%/*}"
             folder="${dirname##*/}"
-            echo "Section $source"
             if [ ! "$folder" = 'valid' ] && [ ! "$folder" = 'invalid' ]
             then
                 echo "    [WARNING] Impossible de déterminer si le test est valid ou invalid"
                 echo "    [WARNING] Test valid executé par défaut"
             fi
             test_gencode_options "$source" "$folder" "$debug_options"
-            exit 0
         fi
     done
+    exit 0
 fi
 
 echo "Début tests codegen"
