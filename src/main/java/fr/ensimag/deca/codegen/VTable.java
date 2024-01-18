@@ -29,6 +29,10 @@ public class VTable {
         this.declaredMethod = new ArrayList<>();
     }
 
+    public DAddr getDAddr() {
+        return new RegisterOffset(addressGB, Register.GB);
+    }
+
     /**
      * Ajoute tous les labels hérités de la classe mère dans la VTable
      * @param parentVTable

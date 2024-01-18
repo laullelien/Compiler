@@ -22,13 +22,12 @@ public class New extends AbstractUnaryExpr{
     protected void codeGenInst(DecacCompiler compiler) {
         int instanceSize = classDefinition.getNumberOfFields() + 1;
         compiler.addInstruction(new NEW(instanceSize, compiler.getRegister()));
-        compiler.addInstruction(new LEA());
+        compiler.addInstruction(new LEA(compiler.listVTable.getVTable(getType().getName().getName()).getDAddr(), Register.R0));
         compiler.addInstruction(new BOV(new Label("heap_full")));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
         compiler.addInstruction(new PUSH(compiler.getRegister()));
-        compiler.addInstruction(new BSR());
+        compiler.addInstruction(new BSR(new Label("init." + getType().getName())));
         compiler.addInstruction(new POP(compiler.getRegister()));
-
     }
 
     @Override
