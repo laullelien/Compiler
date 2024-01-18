@@ -84,6 +84,10 @@ public class EnvironmentType {
         envTypes.put(classSymbol, classDefinition);
     }
 
+    public void stackOneElement(Symbol symbol, ClassDefinition def){
+        this.envTypes.put(symbol, def);
+    }
+
     public final VoidType    VOID;
     public final IntType     INT;
     public final FloatType   FLOAT;
