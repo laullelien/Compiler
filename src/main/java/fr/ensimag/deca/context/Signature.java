@@ -31,8 +31,11 @@ public class Signature {
             return false;
         }
         Signature sigToCompare = (Signature) sig;
+        if(this.args.size() != sigToCompare.size()) {
+            return false;
+        }
         for (int i = 0; i < sigToCompare.args.size(); i++){
-            if (this.args.size() <= i || this.paramNumber(i) != sigToCompare.paramNumber(i)){
+            if (this.paramNumber(i) != sigToCompare.paramNumber(i)){
                 return false;
             }
         }
