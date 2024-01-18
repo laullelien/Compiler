@@ -41,4 +41,9 @@ public class This extends AbstractExpr{
     protected void iterChildren(TreeFunction f) {
         // leaf node => nothing to do
     }
+
+    @Override
+    String prettyPrintNode() {
+        return "This";
+    }
 }

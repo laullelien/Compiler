@@ -49,6 +49,7 @@ CLASS: 'class';
 EXTENDS: 'extends';
 INSTANCEOF: 'instanceof';
 THIS: 'this';
+DOT: '.';
 
 // grammar for identifiers
 
