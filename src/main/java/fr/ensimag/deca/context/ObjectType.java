@@ -22,7 +22,7 @@ public class ObjectType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        return this.equals(otherType);
+        return this.getName().equals(otherType.getName());
     }
 
 

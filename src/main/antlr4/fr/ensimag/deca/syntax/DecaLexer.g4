@@ -38,6 +38,10 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 TRUE: 'true';
 FALSE: 'false';
 
+// grammar for null
+
+NULL: 'null';
+
 // grammar for readInt
 
 READINT : 'readInt';

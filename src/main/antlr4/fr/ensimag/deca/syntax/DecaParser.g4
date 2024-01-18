@@ -473,6 +473,7 @@ literal returns[AbstractExpr tree]
     | THIS {
         }
     | NULL {
+        $tree = new Null();
         }
     ;
 
