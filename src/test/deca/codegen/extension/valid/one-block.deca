@@ -1,0 +1,13 @@
+// Description:
+//    Test d'affichage d'un CFG avec un seul basic block
+//
+// Resultats:
+//    5
+//
+// Historique:
+//    cree le 18/01/2024
+
+{
+    int v = 5;
+    println(v);
+}

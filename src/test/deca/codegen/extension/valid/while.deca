@@ -1,0 +1,39 @@
+// Description:
+//    Test d'affichage d'un CFG avec une instruction while
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 18/01/2024
+
+{
+    int v0 = 8;
+    int value = v0;
+    int v1 = 1;
+    int result = v1;
+    int v3 = value;
+    int i = v3;
+    int v4;
+    int v5;
+    int v6;
+    int v7;
+    int v8;
+    int v9;
+    int v10;
+    int v11;
+    while(i > 0) {
+        v4 = result;
+        v5 = i;
+        v6 = v4 * v5;
+        result = v6;
+        v7 = i;
+        v8 = 1;
+        v9 = v7 - v8;
+        i = v9;
+    }
+    v10 = result;
+    println(v10);
+    v11 = 0;
+}
+
