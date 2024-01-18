@@ -38,6 +38,10 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 TRUE: 'true';
 FALSE: 'false';
 
+// grammar for null
+
+NULL: 'null';
+
 // grammar for readInt
 
 READINT : 'readInt';
@@ -48,7 +52,12 @@ READFLOAT : 'readFloat';
 CLASS: 'class';
 EXTENDS: 'extends';
 INSTANCEOF: 'instanceof';
+NEW: 'new';
+PROTECTED: 'protected';
 
+// grammar for asm instruction
+
+ASM: 'asm';
 
 // grammar for identifiers
 

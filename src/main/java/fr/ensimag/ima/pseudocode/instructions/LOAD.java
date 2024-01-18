@@ -8,6 +8,12 @@ import fr.ensimag.ima.pseudocode.*;
  */
 public class LOAD extends BinaryInstructionDValToReg {
 
+    private GPRegister reg;
+
+    public GPRegister getReg() {
+        return reg;
+    }
+
     public LOAD(DVal op1, GPRegister op2) {
         super(op1, op2);
     }

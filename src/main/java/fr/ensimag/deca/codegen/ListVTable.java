@@ -13,6 +13,14 @@ public class ListVTable {
      /** Dernier emplacement utilisé depuis GB */
     private int offset;
 
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setOffset(int offset) {
+        this.offset = offset;
+    }
+
     private Map<String, VTable> vTableMap;
 
     public ListVTable() {
