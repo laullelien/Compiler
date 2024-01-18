@@ -29,6 +29,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         // To add decorations
         compiler.environmentType.objectClassIdentifier.verifyObjectClass(compiler);
         // rule 1.2
+
         for (AbstractDeclClass c : this.getList()) {
             c.verifyClass(compiler);
         }

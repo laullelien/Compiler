@@ -4,7 +4,7 @@ class A {
         y = 3 + 2;
         isTrue = false;
     }
-    void rienAFaire(float a){
+    boolean rienAFaire(float a){
         a = 3 + 2.0 + 4;
     }
 }
@@ -25,7 +25,7 @@ class D extends C {
     int m;
     float n;
     protected int x = 10000;
-    int rienAFaire(int a){
-        a = 10000;
+    boolean rienAFaire(float a){
+        a = 100000;
     }
 }

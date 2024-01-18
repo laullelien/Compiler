@@ -84,7 +84,7 @@ public class EnvironmentType {
         envTypes.put(classSymbol, classDefinition);
     }
 
-    public void stackOneClass(Symbol symbol, ClassDefinition def){
+    public void stackOneElement(Symbol symbol, ClassDefinition def){
         this.envTypes.put(symbol, def);
     }
 

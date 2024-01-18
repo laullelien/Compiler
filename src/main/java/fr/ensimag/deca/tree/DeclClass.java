@@ -44,6 +44,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeParentClass = compiler.environmentType.defOfType(this.nameSuperClass.getName());
+        nameSuperClass.setDefinition(typeParentClass);
         if (typeParentClass == null) {
             throw new ContextualError("La superclass n'est pas dans l'environnement. La règle (1.3) n'est pas respectée.", this.getLocation());
         }
@@ -83,12 +84,7 @@ public class DeclClass extends AbstractDeclClass {
         catch(EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Des attributs et des méthodes ont le même nom. La règle (2.3) n'est pas respectée.", this.getLocation());
         }
-        System.out.println();
-        for(SymbolTable.Symbol s : newDef.getMembers().getEnvironment().keySet()){
-            System.out.println(s.getName());
-        }
-        System.out.println();
-        compiler.environmentType.stackOneClass(this.name.getName(), newDef);
+        compiler.environmentType.stackOneElement(this.name.getName(), newDef);
         this.name.setDefinition(newDef);
     }
     

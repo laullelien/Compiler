@@ -57,7 +57,7 @@ public abstract class AbstractDeclMethod extends Tree {
             throw new ContextualError("La règle (2.3) n'est pas respectée... Pas de Super Classe", this.getLocation());
         }
         ExpDefinition methodDefinitionInSuperClass = ((ClassDefinition) defSuperClass).getMembers().get(this.methodName.getName());
-        if (!(methodDefinitionInSuperClass == null || (methodDefinitionInSuperClass != null && methodDefinitionInSuperClass.isMethod()))){
+        if (!(methodDefinitionInSuperClass == null || methodDefinitionInSuperClass.isMethod())){
             throw new ContextualError("L'identificateur de la méthode à déclarée existe dans la super classe mais ne définit pas une méthode : la règle (2.7) n'est pas respectée.", this.getLocation());
         }
         System.out.println(methodDefinitionInSuperClass == null);
@@ -66,7 +66,7 @@ public abstract class AbstractDeclMethod extends Tree {
             if (!paramsSignature.equals(paramSignatureReDef)) {
                 throw new ContextualError("La signature n'est pas la même et la règle (2.7) n'est pas respectée.", this.getLocation());
             }
-            if (!((ClassType) returnType).isSubClassOf((ClassType) methodDefinitionInSuperClass.getType())) {
+            if (!(returnType.isSubType(methodDefinitionInSuperClass.getType()))) {
                 throw new ContextualError("La redéfinition est mauvaise (problème de sous-type) et la règle (2.7) n'est pas respectée.", this.getLocation());
             }
         }
