@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.LinkedList;
@@ -12,6 +14,12 @@ import java.util.LinkedList;
  */
 public class IMAProgram {
     private final LinkedList<AbstractLine> lines = new LinkedList<AbstractLine>();
+
+    private Boolean lastIsLoad = false;
+
+    public Boolean lastIsLoad() {
+        return lastIsLoad;
+    }
 
     public void add(AbstractLine line) {
         lines.add(line);
@@ -30,6 +38,12 @@ public class IMAProgram {
     }
 
     public void addInstruction(Instruction i, String s) {
+        if(i instanceof LOAD) {
+            lastIsLoad = true;
+        }
+        else {
+            lastIsLoad = false;
+        }
         lines.add(new Line(null, i, s));
     }
 
