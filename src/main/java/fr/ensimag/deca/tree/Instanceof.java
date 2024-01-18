@@ -1,10 +1,14 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.*;
+
+import java.util.Objects;
 
 public class Instanceof extends AbstractBinaryExpr{
     public Instanceof(AbstractExpr leftOperand, AbstractExpr rightOperand) {
@@ -13,7 +17,52 @@ public class Instanceof extends AbstractBinaryExpr{
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        //On verra plus tard
+        String labelString = "label_" + compiler.getLabelId();
+        compiler.incrementLabelId();
+        Label returnTrue = new Label(labelString + "return_true");
+        Label returnFalse = new Label(labelString + "return_false");
+        Label whileStart = new Label(labelString + "while_start");
+        Label instanceofEnd = new Label(labelString + "end_instanceof");
+
+        getLeftOperand().codeGenInst(compiler);
+        // une instance de classe se trouve dans compiler.gerRegister()
+        String parentClassName = getRightOperand().getType().getName().getName();
+
+        DAddr nullClassDAddr = new RegisterOffset(1, Register.GB);
+        DAddr parentClassDAddr = compiler.listVTable.getVTable(parentClassName).getDAddr();
+
+        // on enregistre l'adresse de null dans R0
+        compiler.addInstruction(new LEA(nullClassDAddr, Register.R0));
+
+        // on enregistre l'adresse de la classe de leftOperand dans R1
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, compiler.getRegister()), Register.R1));
+
+        // on enregistre l'adresse de la classe de rightOperand dans getRegister()
+        compiler.addInstruction(new LEA(parentClassDAddr, compiler.getRegister()));
+
+        compiler.addLabel(whileStart);
+
+        //On a atteint null
+        compiler.addInstruction(new CMP(Register.R1, Register.R0));
+
+        compiler.addInstruction(new BEQ(returnFalse));
+
+        compiler.addInstruction(new CMP(Register.R1, compiler.getRegister()));
+        compiler.addInstruction(new BEQ(returnTrue));
+
+        //leftOperand = *leftOperand
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R1), Register.R1));
+
+        compiler.addInstruction(new BRA(whileStart));
+
+        compiler.addLabel(returnFalse);
+        compiler.addInstruction(new LOAD(0, compiler.getRegister()));
+        compiler.addInstruction(new BRA(instanceofEnd));
+
+        compiler.addLabel(returnTrue);
+        compiler.addInstruction(new LOAD(0, compiler.getRegister()));
+
+        compiler.addLabel(instanceofEnd);
     }
 
     @Override
