@@ -142,6 +142,7 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
+        lastInstruction = instruction;
         program.addInstruction(instruction);
     }
 
@@ -152,6 +153,20 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
+    }
+
+    private Instruction lastInstruction;
+
+    public Instruction getLastInstruction() {
+        return lastInstruction;
+    }
+
+    /**
+     *
+     * @return true if and only if the last instruction is a load instruction
+     */
+    public Boolean lastIsLoad() {
+        return program.lastIsLoad();
     }
 
     /**
