@@ -27,14 +27,14 @@ public class Selection extends AbstractLValue {
             throw new ContextualError("Cela ne respecte pas 3.65 et 3.66. Le type de l'expression n'est pas une classe.", getLocation());
         }
         FieldDefinition fieldIdent = (FieldDefinition) (this.identifier.verifyField(compiler, localEnv));
-//        if (fieldIdent.getVisibility() == Visibility.PROTECTED) {
-//            if (!exprClassTypeDefinition.isSubClassOf(currentClass)) {
-//                throw new ContextualError("Cela ne respecte pas 3.66. Le type de l'expression n'est pas un sous-type du type de la classe actuelle.", getLocation());
-//            }
-//            if (!currentClass.isSubClassOf(((ClassType) (fieldIdent.getType()))) {
-//                throw new ContextualError("Cela ne respecte pas 3.66. Le type de la classe actuelle n'est pas un sous-type du type du field.", getLocation());
-//            }
-//        }
+        if (fieldIdent.getVisibility() == Visibility.PROTECTED) {
+            if (!exprType.isSubType(currentClass.getType())) {
+                throw new ContextualError("Cela ne respecte pas 3.66. Le type de l'expression n'est pas un sous-type du type de la classe actuelle.", getLocation());
+            }
+            if (!( currentClass.getType().isSubClassOf(((ClassType) (fieldIdent.getType()))))) {
+                throw new ContextualError("Cela ne respecte pas 3.66. Le type de la classe actuelle n'est pas un sous-type du type du field.", getLocation());
+            }
+        }
         setType(fieldIdent.getType());
         return fieldIdent.getType();
     }
