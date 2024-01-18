@@ -83,6 +83,11 @@ public class DeclClass extends AbstractDeclClass {
         catch(EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Des attributs et des méthodes ont le même nom. La règle (2.3) n'est pas respectée.", this.getLocation());
         }
+        System.out.println();
+        for(SymbolTable.Symbol s : newDef.getMembers().getEnvironment().keySet()){
+            System.out.println(s.getName());
+        }
+        System.out.println();
         compiler.environmentType.stackOneClass(this.name.getName(), newDef);
         this.name.setDefinition(newDef);
     }

@@ -103,8 +103,8 @@ public class EnvironmentExp {
     }
 
     public void stackEnvironment(EnvironmentExp env) {
-        for (Symbol s : env.getEnvironment().keySet()){
-            this.environment.put(s, env.get(s));
+        for (Symbol s : this.getEnvironment().keySet()){
+            env.getEnvironment().put(s, this.getEnvironment().get(s));
         }
     }
 
