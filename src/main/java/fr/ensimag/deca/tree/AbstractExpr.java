@@ -142,6 +142,8 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
+    void verifyRvalueStar
+
     /**
      * Generate code to print the expression
      *

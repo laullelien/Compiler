@@ -24,6 +24,7 @@ public class Signature {
     public int size() {
         return args.size();
     }
+
     @Override
     public boolean equals(Object sig){
         if (!(sig instanceof Signature)){
@@ -37,4 +38,8 @@ public class Signature {
         }
         return true;
     }
+
+
+    public List<Type> getList() {return args;}
+
 }

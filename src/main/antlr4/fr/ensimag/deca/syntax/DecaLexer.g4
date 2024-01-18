@@ -57,6 +57,9 @@ PROTECTED: 'protected';
 // grammar for asm instruction
 
 ASM: 'asm';
+INSTANCEOF: 'instanceof';
+THIS: 'this';
+DOT: '.';
 
 // grammar for identifiers
 
