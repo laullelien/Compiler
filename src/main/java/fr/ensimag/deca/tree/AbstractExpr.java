@@ -141,7 +141,7 @@ public abstract class AbstractExpr extends AbstractInst {
             throw new ContextualError("Le paramètre de l'instruction n'est pas de type boolean : règle (3.29)", this.getLocation());
         }
     }
-    
+
 
     /**
      * Generate code to print the expression
