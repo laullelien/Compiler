@@ -37,12 +37,20 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        // TODO décommenter une fois qu'on implémente Deca "objet;
         classes.verifyListClass(compiler); // Etape B, passe 1
         classes.verifyListClassMembers(compiler); // Etape B, passe 2
         classes.verifyListClassBody(compiler); // Etape B, passe 3 pour les classes
         main.verifyMain(compiler); // Etape B, passe 3 pour le programme principal
         LOG.debug("verify program: end");
+    }
+
+    @Override
+    public void optimizeProgram(DecacCompiler compiler) {
+        // TODO 1: Construction des Basics blocs
+        // TODO 2: Construction du Control Flow Graph
+        // TODO 3: CFG -> SSA form
+        // TODO 4: Implémenter les algorithmes d'optimisation
+        // TODO 5: unSSA
     }
 
     @Override

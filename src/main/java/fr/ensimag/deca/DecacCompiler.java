@@ -274,6 +274,10 @@ public class DecacCompiler {
             return false;
         }
 
+        if (this.compilerOptions.getOptim()) {
+            prog.optimizeProgram(this);
+        }
+
         addComment("start main program");
         prog.codeGenProgram(this);
         addComment("end main program");
