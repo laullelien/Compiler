@@ -42,6 +42,10 @@ FALSE: 'false';
 
 NULL: 'null';
 
+// grammar for return
+
+RETURN: 'return';
+
 // grammar for readInt
 
 READINT : 'readInt';
