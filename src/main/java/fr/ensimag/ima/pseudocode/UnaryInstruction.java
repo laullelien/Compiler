@@ -27,4 +27,8 @@ public abstract class UnaryInstruction extends Instruction {
         return operand;
     }
 
+    public void setOperand(Operand operand) {
+        this.operand = operand;
+    }
+
 }
