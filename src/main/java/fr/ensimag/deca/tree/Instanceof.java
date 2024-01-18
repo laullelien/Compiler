@@ -12,7 +12,7 @@ public class Instanceof extends AbstractBinaryExpr{
     }
 
     @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
+    protected void codeGenInst(DecacCompiler compiler) {
         //On verra plus tard
     }
 

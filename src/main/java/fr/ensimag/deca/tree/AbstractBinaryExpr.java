@@ -74,7 +74,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
     }
 
-    abstract protected void codeGenBinary(DecacCompiler compiler);
+    protected void codeGenBinary(DecacCompiler compiler) {
+        throw new RuntimeException("Not yet implemented");
+    }
 
     @Override
     public void decompile(IndentPrintStream s) {
