@@ -1,0 +1,5 @@
+class A {
+    void voidMethod(){
+        int a = 5;
+    }
+}

@@ -4,3 +4,4 @@ class A extends Object {
 	protected int poisson = 1;
 	int chocolat = 9;
 }
+

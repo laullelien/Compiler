@@ -60,7 +60,6 @@ public abstract class AbstractDeclMethod extends Tree {
         if (!(methodDefinitionInSuperClass == null || methodDefinitionInSuperClass.isMethod())){
             throw new ContextualError("L'identificateur de la méthode à déclarée existe dans la super classe mais ne définit pas une méthode : la règle (2.7) n'est pas respectée.", this.getLocation());
         }
-        System.out.println(methodDefinitionInSuperClass == null);
         if (methodDefinitionInSuperClass != null){
             Signature paramSignatureReDef = ((MethodDefinition) methodDefinitionInSuperClass).getSignature();
             if (!paramsSignature.equals(paramSignatureReDef)) {
