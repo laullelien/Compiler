@@ -65,18 +65,18 @@ public class MethodCall extends AbstractExpr {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         if (expr != null) {
-            expr.prettyPrintChildren(s, prefix);
+            expr.prettyPrint(s, prefix, false);
         }
-        identifier.prettyPrintChildren(s, prefix);
-        listArgs.prettyPrintChildren(s, prefix);
+        identifier.prettyPrint(s, prefix, false);
+        listArgs.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
         if (expr != null) {
-            expr.iterChildren(f);
+            expr.iter(f);
         }
-        identifier.iterChildren(f);
-        listArgs.iterChildren(f);
+        identifier.iter(f);
+        listArgs.iter(f);
     }
 }

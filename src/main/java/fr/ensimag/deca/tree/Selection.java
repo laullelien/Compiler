@@ -48,13 +48,13 @@ public class Selection extends AbstractLValue {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        thisExpr.prettyPrintChildren(s, prefix);
-        identifier.prettyPrintChildren(s,prefix);
+        thisExpr.prettyPrint(s, prefix, false);
+        identifier.prettyPrint(s,prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        thisExpr.iterChildren(f);
-        identifier.iterChildren(f);
+        thisExpr.iter(f);
+        identifier.iter(f);
     }
 }
