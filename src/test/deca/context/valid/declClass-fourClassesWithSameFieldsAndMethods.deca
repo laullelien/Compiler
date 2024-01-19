@@ -15,7 +15,7 @@ class C extends B {
     int r = 4;
     float v = 2.000;
     protected float c = 100;
-    int rere(int y, boolean isTrue){
+    float rere(int y, boolean isTrue){
         y = 1000;
         isTrue = true;
     }
