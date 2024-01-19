@@ -53,7 +53,19 @@ public class MethodBody extends AbstractMethodBody {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        declVar.codeGenListDeclVar(compiler);
         inst.codeGenListInst(compiler);
+    }
+
+    @Override
+    public void codeGenDecl(DecacCompiler compiler) {
+        declVar.codeGenListDeclVar(compiler);
+    }
+
+    @Override
+    public void setLocalOperand() {
+        int nbDeclVar = declVar.size();
+        for(int i = 0; i < nbDeclVar; i++) {
+            declVar.getList().get(i).setLocalOperand(i + 1);
+        }
     }
 }

@@ -15,4 +15,8 @@ public abstract class AbstractMethodBody extends Tree {
     abstract protected void codeGenInst(DecacCompiler compiler);
 
     abstract public int getVarNb();
+
+    void setLocalOperand() {}
+
+    public void codeGenDecl(DecacCompiler compiler) {}
 }

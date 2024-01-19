@@ -16,26 +16,34 @@ public class DeclMethod extends AbstractDeclMethod{
         //enregister le programme que l'on a utilisé jusque la
         IMAProgram untilNowProg = compiler.getProgram();
         // nouveau programme que l'on utilise seulement pour cette methode, pour les TSTO, ADDSP et enregistrement de registres
+        IMAProgram varProg = new IMAProgram();
         IMAProgram methodProg = new IMAProgram();
-        compiler.setProgram(methodProg);
 
         compiler.codegenHelper.reset();
         compiler.resetMaxReg();
 
+        getMethodBody().setLocalOperand();
+
+        compiler.setProgram(varProg);
+        getMethodBody().codeGenDecl(compiler);
+
+        compiler.setProgram(methodProg);
         getMethodBody().codeGenInst(compiler);
 
         //code qui se situe en première position. A lire a l'envers car on ajoute au début
         int nbDeclVar = getMethodBody().getVarNb();
         int maxReg = compiler.getMaxReg();
-        for(int i = maxReg; i >= 2; i--) {
-            compiler.getProgram().addFirst(new PUSH(Register.getR(i)));
-        }
+
         if(nbDeclVar != 0) {
-            compiler.getProgram().addFirst(new ADDSP(nbDeclVar));
+            varProg.addFirst(new ADDSP(nbDeclVar));
         }
-        compiler.getProgram().addFirst(new BOV(new Label("stack_full")));
-        compiler.getProgram().addFirst(new TSTO(nbDeclVar + compiler.codegenHelper.getMaxPushDepth() + maxReg - 1));
-        compiler.getProgram().addFirstLabel(new Label("code." + className + "." + getMethodName().getName().getName()));
+        varProg.addFirst(new BOV(new Label("stack_full")));
+        varProg.addFirst(new TSTO(nbDeclVar + compiler.codegenHelper.getMaxPushDepth() + maxReg - 1));
+        varProg.addFirstLabel(new Label("code." + className + "." + getMethodName().getName().getName()));
+
+        for(int i = maxReg; i >= 2; i--) {
+            methodProg.addFirst(new PUSH(Register.getR(i)));
+        }
 
         // on n'a pas croisé de return
         if(!getMethodReturnType().getType().isVoid()) {
@@ -48,6 +56,7 @@ public class DeclMethod extends AbstractDeclMethod{
         }
         compiler.addInstruction(new RTS());
 
+        untilNowProg.append(varProg);
         untilNowProg.append(methodProg);
         compiler.setProgram(untilNowProg);
     }
