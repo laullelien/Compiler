@@ -1,0 +1,11 @@
+class A {
+    int coco;
+
+    void manger() {
+    }
+}
+
+{
+    A a;
+    a.manger();
+}

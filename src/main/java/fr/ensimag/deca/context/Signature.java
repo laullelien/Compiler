@@ -24,17 +24,25 @@ public class Signature {
     public int size() {
         return args.size();
     }
+
     @Override
     public boolean equals(Object sig){
         if (!(sig instanceof Signature)){
             return false;
         }
         Signature sigToCompare = (Signature) sig;
+        if(this.args.size() != sigToCompare.size()) {
+            return false;
+        }
         for (int i = 0; i < sigToCompare.args.size(); i++){
-            if (this.args.size() <= i || this.paramNumber(i) != sigToCompare.paramNumber(i)){
+            if (this.paramNumber(i) != sigToCompare.paramNumber(i)){
                 return false;
             }
         }
         return true;
     }
+
+
+    public List<Type> getList() {return args;}
+
 }

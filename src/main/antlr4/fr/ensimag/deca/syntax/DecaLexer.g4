@@ -54,6 +54,8 @@ EXTENDS: 'extends';
 INSTANCEOF: 'instanceof';
 NEW: 'new';
 PROTECTED: 'protected';
+THIS: 'this';
+DOT: '.';
 
 // grammar for asm instruction
 
