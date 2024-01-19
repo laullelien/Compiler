@@ -47,12 +47,17 @@ public class VTable {
      * @param methodName Nom de la méthode
      */
     public void createLabel(String methodName) {
-        if (declaredMethod.contains(methodName)) {
+        Label label = new Label("code." + className + "." + methodName);
+        int labelIndex = declaredMethod.indexOf(methodName);
+        if (labelIndex > 0) {
             // la méthode est redéfini
-            labelsTable.remove("code." + parentVTable.className + "." + methodName);
+            labelsTable.remove(labelIndex);
+            labelsTable.add(labelIndex, label);
         }
-        else declaredMethod.add(methodName);
-        labelsTable.add(new Label("code." + className + "." + methodName));
+        else {
+            declaredMethod.add(methodName);
+            labelsTable.add(label);
+        }
     }
 
     /**
