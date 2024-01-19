@@ -47,7 +47,9 @@ public class And extends AbstractOpBool {
 
         getLeftOperand().codeGenInst(compiler);
 
-        compiler.addInstruction(new CMP(0, compiler.getRegister()));
+        if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
+            compiler.addInstruction(new CMP(0, compiler.getRegister()));
+        }
         compiler.addInstruction(new BEQ(endLabel));
 
         getRightOperand().codeGenInst(compiler);

@@ -1,6 +1,7 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -9,6 +10,14 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 public class CodegenHelper {
 
     private DecacCompiler compiler;
+
+    private TSTO mainTSTO;
+
+    private ADDSP mainADDSP;
+
+    private int maxPushDepth;
+
+    private int pushDepth;
 
     public CodegenHelper(DecacCompiler compiler) {
         this.compiler = compiler;
@@ -39,9 +48,35 @@ public class CodegenHelper {
     }
 
     public void codeGenTSTO() {
-        compiler.addInstruction(new TSTO(compiler.getNbDeclVar()));
+        // The number for TSTO will be modified later
+        mainTSTO = new TSTO(0);
+        mainADDSP = new ADDSP(0);
+        compiler.addInstruction(mainTSTO);
         compiler.addInstruction(new BOV(new Label("stack_full")));
-        compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
+        compiler.addInstruction(mainADDSP);
+    }
+
+
+    public void setMainInst() {
+        mainTSTO.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + maxPushDepth + compiler.listVTable.getOffset()));
+        mainADDSP.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + compiler.listVTable.getOffset()));
+    }
+
+
+
+    public void setMainTSTO() {
+        mainTSTO.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + maxPushDepth + compiler.listVTable.getOffset()));
+    }
+
+    public void incPushDepth() {
+        pushDepth++;
+        if(pushDepth > maxPushDepth) {
+            maxPushDepth = pushDepth;
+        }
+    }
+
+    public void decPushDepth() {
+        pushDepth--;
     }
 
     public void codeGenObjectEquals() {
