@@ -46,6 +46,10 @@ public class DeclField extends AbstractDeclField {
         return env;
     }
 
+    protected void codeGenInit(DecacCompiler compiler) {
+        getFieldInitialization().codeGenInst(compiler);
+    }
+
     @Override
     public void verifyDeclFieldPass3(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError {
         // rule 3.7

@@ -4,6 +4,8 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -110,13 +112,52 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void codeGenClassBody(DecacCompiler compiler) {
         codeGenInit(compiler);
-        for(AbstractDeclMethod method: ListDeclMethod) {
+        for(AbstractDeclMethod method: methods.getList()) {
             method.codeGenMethod(compiler);
         }
     }
 
-    private void codeGenInit(DecacCompiler compiler) {
 
+    protected void codeGenInit(DecacCompiler compiler) {
+        compiler.addLabel(new Label("init." + name.getName()));
+
+        //object adress
+        compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+
+        //init own fields to 0
+        for(AbstractDeclField field : fields.getList()) {
+            if(field.getType().isInt() || field.getType().isBoolean()) {
+                compiler.addInstruction(new LOAD(0, Register.R1));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
+            }
+            if(field.getType().isFloat()) {
+                compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
+            }
+            if(field.getType().isClass()) {
+                compiler.addInstruction(new LOAD(new NullOperand(), Register.R1));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
+            }
+        }
+
+        //init inherited fields
+        if(nameSuperClass.getName() != compiler.environmentType.OBJECT.getName()) {
+            compiler.addInstruction(new TSTO(3));
+            compiler.addInstruction(new BOV(new Label("stack_full")));
+            compiler.addInstruction(new PUSH(Register.R0));
+            compiler.addInstruction(new BSR(new Label("init." + nameSuperClass.getName().getName())));
+        }
+
+        compiler.addInstruction(new SUBSP(1));
+
+        //init own fields
+        for(AbstractDeclField field: fields.getList()) {
+            field.codeGenInit(compiler);
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
+        }
+
+        compiler.addInstruction(new RTS());
     }
 
     @Override

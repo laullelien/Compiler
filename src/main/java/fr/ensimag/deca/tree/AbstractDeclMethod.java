@@ -94,5 +94,5 @@ public abstract class AbstractDeclMethod extends Tree {
         methodBody.verifyMethodBodyPass3(compiler, envExpParam, currentClass, returnType);
     }
 
-    abstract protected void codeGenMethod(DecacCompiler);
+    abstract protected void codeGenMethod(DecacCompiler compiler);
 }

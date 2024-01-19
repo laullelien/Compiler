@@ -22,12 +22,12 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         EnvironmentExp env = new EnvironmentExp();
         for(AbstractDeclField decl: getList()) {
             try{
+                classDef.incNumberOfFields();
                 env.declare(decl.verifyDeclField(compiler, superClassSymbol, classDef));
             }
             catch (EnvironmentExp.DoubleDefException e){
                 throw new ContextualError("Double définition d'un champ : la règle (2.4) n'est pas respectée", this.getLocation());
             }
-            classDef.incNumberOfFields();
         }
         return env;
     }

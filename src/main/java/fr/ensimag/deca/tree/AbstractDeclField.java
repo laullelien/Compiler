@@ -113,4 +113,7 @@ public abstract class AbstractDeclField extends Tree {
     }
 
     public void setFieldVisibility(Visibility v) {this.fieldVisibility = v;}
+
+    //saves the result of the initialization in compiler.getRegister()
+    abstract void codeGenInit(DecacCompiler compiler);
 }
