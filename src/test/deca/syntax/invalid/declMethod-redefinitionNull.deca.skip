@@ -1,9 +1,0 @@
-class A {
-    A coco() {
-    }
-}
-
-class B extends A {
-    null coco() {
-    }
-}
