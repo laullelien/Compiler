@@ -36,4 +36,5 @@ public class MethodAsmBody extends AbstractMethodBody {
     public void verifyMethodBodyPass3(DecacCompiler compiler, EnvironmentExp envExpParam, ClassDefinition currentClass, Type returnType) throws ContextualError {
         this.assemblyCode.verifyExpr(compiler, envExpParam, currentClass);
     }
+
 }

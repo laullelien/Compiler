@@ -51,15 +51,15 @@ READFLOAT : 'readFloat';
 
 CLASS: 'class';
 EXTENDS: 'extends';
+INSTANCEOF: 'instanceof';
 NEW: 'new';
 PROTECTED: 'protected';
+THIS: 'this';
+DOT: '.';
 
 // grammar for asm instruction
 
 ASM: 'asm';
-INSTANCEOF: 'instanceof';
-THIS: 'this';
-DOT: '.';
 
 // grammar for identifiers
 
