@@ -109,7 +109,14 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenClassBody(DecacCompiler compiler) {
-        // TODO
+        codeGenInit(compiler);
+        for(AbstractDeclMethod method: ListDeclMethod) {
+            method.codeGenMethod(compiler);
+        }
+    }
+
+    private void codeGenInit(DecacCompiler compiler) {
+
     }
 
     @Override

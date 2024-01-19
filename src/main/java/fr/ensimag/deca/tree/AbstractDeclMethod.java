@@ -93,4 +93,6 @@ public abstract class AbstractDeclMethod extends Tree {
         EnvironmentExp envExpParam = methodParameters.verifyListDeclParamPass3(compiler);
         methodBody.verifyMethodBodyPass3(compiler, envExpParam, currentClass, returnType);
     }
+
+    abstract protected void codeGenMethod(DecacCompiler);
 }
