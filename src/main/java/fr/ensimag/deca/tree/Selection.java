@@ -26,7 +26,8 @@ public class Selection extends AbstractLValue {
         if (!exprClassTypeDefinition.isClass()) {
             throw new ContextualError("Cela ne respecte pas 3.65 et 3.66. Le type de l'expression n'est pas une classe.", getLocation());
         }
-        FieldDefinition fieldIdent = (FieldDefinition) (this.identifier.verifyField(compiler, localEnv));
+        EnvironmentExp envClass = ((ClassType) exprType).getDefinition().getMembers();
+        FieldDefinition fieldIdent = (FieldDefinition) (this.identifier.verifyField(compiler, envClass));
         if (fieldIdent.getVisibility() == Visibility.PROTECTED) {
             if (!exprType.isSubType(currentClass.getType())) {
                 throw new ContextualError("Cela ne respecte pas 3.66. Le type de l'expression n'est pas un sous-type du type de la classe actuelle.", getLocation());

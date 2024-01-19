@@ -54,15 +54,14 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("La superclass n'est pas un identificateur de classe. La règle (1.3) n'est pas respectée.", this.getLocation());
         }
         ClassType typeNewClass = new ClassType(this.name.getName(), this.getLocation(), (ClassDefinition) typeParentClass);
-        ClassDefinition newClassDefinition = new ClassDefinition(typeNewClass, this.getLocation(), (ClassDefinition) typeParentClass);
         try{
-            compiler.environmentType.declare(this.name.getName(), newClassDefinition);
+            compiler.environmentType.declare(this.name.getName(), typeNewClass.getDefinition());
         }
         catch(EnvironmentType.DoubleDefException e){
             throw new ContextualError("Il y a double définition de classe. La règle (1.3) n'est pas respectée", this.getLocation());
         }
         this.name.setType(typeNewClass);
-        this.name.setDefinition(newClassDefinition);
+        this.name.setDefinition(typeNewClass.getDefinition());
     }
 
     @Override
@@ -77,17 +76,16 @@ public class DeclClass extends AbstractDeclClass {
         if (!(superClassDefinition.isClass())) {
             throw new ContextualError("L'identificateur de la super classe ne définit pas une classe, la règle (2.3) n'est pas respectée.", this.getLocation());
         }
-        ClassDefinition newDef = new ClassDefinition(this.name.getClassDefinition().getType(), this.getLocation(), this.nameSuperClass.getClassDefinition());
         try {
             envExpMethods.declare(envExpFields);
             envExpMethods.stackEnvironment(this.name.getClassDefinition().getMembers().getParentEnvironment());
-            newDef.getMembers().stackEnvironment(envExpMethods);
+            this.name.getClassDefinition().getMembers().stackEnvironment(envExpMethods);
         }
         catch(EnvironmentExp.DoubleDefException e){
             throw new ContextualError("Des attributs et des méthodes ont le même nom. La règle (2.3) n'est pas respectée.", this.getLocation());
         }
-        compiler.environmentType.stackOneElement(this.name.getName(), newDef);
-        this.name.setDefinition(newDef);
+        compiler.environmentType.stackOneElement(this.name.getName(), this.name.getClassDefinition());
+        this.name.setDefinition(this.name.getClassDefinition());
     }
     
     @Override
