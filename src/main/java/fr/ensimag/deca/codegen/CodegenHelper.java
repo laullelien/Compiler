@@ -39,6 +39,15 @@ public class CodegenHelper {
         compiler.addInstruction(new WSTR("Depassement ou mauvais format"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("return_error"));
+        compiler.addInstruction(new WSTR("Une méthode de type de retour non void n'a rien retourné"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+    }
+
+    public int getMaxPushDepth() {
+        return maxPushDepth;
     }
 
     public void codeGenTSTO() {
@@ -83,5 +92,10 @@ public class CodegenHelper {
         compiler.addInstruction(new CMP(Register.R0, Register.R1));
         compiler.addInstruction(new SEQ(Register.R0));
         compiler.addInstruction(new RTS());
+    }
+
+    public void reset() {
+        pushDepth = 0;
+        maxPushDepth = 0;
     }
 }

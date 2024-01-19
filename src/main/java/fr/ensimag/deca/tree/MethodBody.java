@@ -18,6 +18,10 @@ public class MethodBody extends AbstractMethodBody {
         this.inst = inst;
     }
 
+    public int getVarNb() {
+        return declVar.size();
+    }
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         declVar.prettyPrint(s, prefix, false);
@@ -45,5 +49,11 @@ public class MethodBody extends AbstractMethodBody {
                                         throws ContextualError {
         declVar.verifyListDeclVariable(compiler, envExpParam, currentClass);
         inst.verifyListInst(compiler, envExpParam, currentClass, returnType);
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        declVar.codeGenListDeclVar(compiler);
+        inst.codeGenListInst(compiler);
     }
 }

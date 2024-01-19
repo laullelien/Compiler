@@ -10,6 +10,11 @@ import java.io.PrintStream;
 
 public abstract class AbstractDeclMethod extends Tree {
     private AbstractIdentifier methodReturnType;
+
+    public AbstractIdentifier getMethodReturnType() {
+        return methodReturnType;
+    }
+
     private AbstractIdentifier methodName;
 
     public AbstractIdentifier getMethodName() {
@@ -92,5 +97,11 @@ public abstract class AbstractDeclMethod extends Tree {
         Type returnType = methodReturnType.verifyType(compiler);
         EnvironmentExp envExpParam = methodParameters.verifyListDeclParamPass3(compiler);
         methodBody.verifyMethodBodyPass3(compiler, envExpParam, currentClass, returnType);
+    }
+
+    abstract protected void codeGenMethod(DecacCompiler compiler, String className);
+
+    public AbstractMethodBody getMethodBody() {
+        return methodBody;
     }
 }
