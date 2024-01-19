@@ -48,6 +48,10 @@ READFLOAT : 'readFloat';
 CLASS: 'class';
 EXTENDS: 'extends';
 
+// grammar for new
+
+NEW: 'new';
+
 // grammar for identifiers
 
 fragment LETTER: 'a' .. 'z' | 'A' .. 'Z' ;

@@ -1,0 +1,9 @@
+class A {
+    int method(){
+        int y = 3;
+    }
+}
+
+{
+    A a = new A();
+}
