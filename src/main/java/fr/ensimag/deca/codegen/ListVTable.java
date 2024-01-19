@@ -29,6 +29,10 @@ public class ListVTable {
         offset = 0;
     }
 
+    public VTable getVTable(String s) {
+        return vTableMap.get(s);
+    }
+
     /**
      * Crée la Virtual Table d'une classe et l'ajoute à la liste
      * @param compiler
