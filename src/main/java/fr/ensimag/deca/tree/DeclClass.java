@@ -151,8 +151,6 @@ public class DeclClass extends AbstractDeclClass {
         //init own fields
         for(AbstractDeclField field: fields.getList()) {
             field.codeGenInit(compiler);
-            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
         }
 
         compiler.addInstruction(new RTS());
