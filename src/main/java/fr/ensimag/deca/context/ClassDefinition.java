@@ -89,7 +89,6 @@ public class ClassDefinition extends TypeDefinition {
         }
         members = new EnvironmentExp(parent);
         this.superClass = superClass;
-        this.numberOfFields = superClass.getNumberOfFields();
     }
     
 }

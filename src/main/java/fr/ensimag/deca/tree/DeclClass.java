@@ -124,17 +124,17 @@ public class DeclClass extends AbstractDeclClass {
 
         //init own fields to 0
         for(AbstractDeclField field : fields.getList()) {
-            if(field.getType().isInt() || field.getType().isBoolean()) {
+            if(field.getFieldName().getType().isInt() || field.getFieldName().getType().isBoolean()) {
                 compiler.addInstruction(new LOAD(0, Register.R1));
-                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((field.getFieldName().getFieldDefinition())).getIndex(), Register.R0)));
             }
-            if(field.getType().isFloat()) {
+            if(field.getFieldName().getType().isFloat()) {
                 compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
-                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((field.getFieldName().getFieldDefinition())).getIndex(), Register.R0)));
             }
-            if(field.getType().isClass()) {
+            if(field.getFieldName().getType().isClass()) {
                 compiler.addInstruction(new LOAD(new NullOperand(), Register.R1));
-                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((FieldDefinition)(field.getDefinition())).getIndex(), Register.R0)));
+                compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((field.getFieldName().getFieldDefinition())).getIndex(), Register.R0)));
             }
         }
 

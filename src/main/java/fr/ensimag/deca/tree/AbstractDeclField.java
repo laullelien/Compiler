@@ -12,8 +12,6 @@ public abstract class AbstractDeclField extends Tree {
     private AbstractIdentifier fieldType;
     private AbstractIdentifier fieldName;
     private AbstractInitialization fieldInitialization;
-    private Type type;
-    private ExpDefinition definition;
 
     @Override
     String printNodeLine(PrintStream s, String prefix, boolean last,
@@ -95,23 +93,6 @@ public abstract class AbstractDeclField extends Tree {
     protected void iterChildren(TreeFunction f) {
 
     }
-
-    public Type getType() {
-        return type;
-    }
-
-    public ExpDefinition getDefinition() {
-        return definition;
-    }
-
-    public void setType(Type type) {
-        this.type = type;
-    }
-
-    public void setDefinition(ExpDefinition definition) {
-        this.definition = definition;
-    }
-
     public void setFieldVisibility(Visibility v) {this.fieldVisibility = v;}
 
     //saves the result of the initialization in compiler.getRegister()

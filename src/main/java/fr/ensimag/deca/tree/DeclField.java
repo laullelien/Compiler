@@ -46,7 +46,6 @@ public class DeclField extends AbstractDeclField {
 
         this.getFieldName().setDefinition(def);
         this.getFieldName().setType(fieldType);
-
         return env;
     }
 
@@ -54,7 +53,7 @@ public class DeclField extends AbstractDeclField {
         if(getFieldInitialization() instanceof Initialization) {
             getFieldInitialization().codeGenInst(compiler);
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((FieldDefinition)(getDefinition())).getIndex(), Register.R0)));
+            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset((this.getFieldName().getFieldDefinition().getIndex()), Register.R0)));
         }
     }
 
