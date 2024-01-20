@@ -1,0 +1,8 @@
+class A {
+    int nbCoco;
+
+    int NbCoco(int dcoco) {
+        return dcoco;
+    }
+}
+
