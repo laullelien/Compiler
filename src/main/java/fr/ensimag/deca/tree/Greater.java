@@ -19,9 +19,9 @@ public class Greater extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        super.codeGenInstruction(compiler, value, target);
-        compiler.addInstruction(new SGT(target));
+    protected void codeGenBinary(DecacCompiler compiler) {
+        super.codeGenBinary(compiler);
+        compiler.addInstruction(new SGT(compiler.getRegister()));
     }
 
     @Override

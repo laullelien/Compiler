@@ -190,8 +190,20 @@ public class Identifier extends AbstractIdentifier {
         }
         throw new ContextualError("Le type ne respecte pas la règle 0.2", this.getLocation());
     }
-    
-    
+
+    @Override
+    public ExpDefinition verifyField(DecacCompiler compiler, EnvironmentExp env) throws ContextualError {
+        this.verifyExpr(compiler,env,null);
+        return env.get(this.getName());
+    }
+
+    @Override
+    public ExpDefinition verifyMethod(DecacCompiler compiler, EnvironmentExp env) throws ContextualError {
+        this.verifyExpr(compiler,env,null);
+        return env.get(this.getName());
+    }
+
+
     private Definition definition;
 
 
@@ -207,7 +219,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R2));
+        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), compiler.getRegister()));
     }
 
     @Override

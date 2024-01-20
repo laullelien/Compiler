@@ -6,10 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -41,26 +38,27 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        //opti : !!exp = exp;
+        if(getOperand() instanceof Not) {
+            ((Not) getOperand()).getOperand().codeGenInst(compiler);
+            return;
+        }
+
+        DVal operandDVal = getOperand().getDval();
+        if (operandDVal != null && operandDVal instanceof ImmediateInteger) {
+            if (((ImmediateInteger) operandDVal).getValue() == 1) {
+                compiler.addInstruction(new LOAD(0, compiler.getRegister()));
+            } else {
+                compiler.addInstruction(new LOAD(1, compiler.getRegister()));
+            }
+            return;
+        }
+
         getOperand().codeGenInst(compiler);
-        codeGenInstruction(compiler, Register.getR(2), Register.getR(2));
-    }
-    @Override
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        String labelString = "not_label_" + compiler.getLabelId();
-        compiler.incrementLabelId();
-        Label endLabel = new Label(labelString + "_fin");
-        Label isTrueLabel = new Label(labelString + "_vrai");
 
-        compiler.addInstruction(new CMP(1, target));
-        compiler.addInstruction(new BEQ(isTrueLabel));
-
-        compiler.addInstruction(new LOAD(1, target));
-
-        compiler.addInstruction(new BRA(endLabel));
-        compiler.addLabel(isTrueLabel);
-
-        compiler.addInstruction(new LOAD(0, target));
-
-        compiler.addLabel(endLabel);
+        if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
+            compiler.addInstruction(new CMP(0, compiler.getRegister()));
+        }
+        compiler.addInstruction(new SEQ(compiler.getRegister()));
     }
 }

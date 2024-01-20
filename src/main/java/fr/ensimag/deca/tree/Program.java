@@ -1,10 +1,15 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.instructions.*;
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.*;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -35,10 +40,10 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        // TODO décommenter une fois qu'on implémente Deca "objet"
-        // classes.verifyListClass(compiler); // Etape B, passe 1
-        // classes.verifyListClassMembers(compiler); // Etape B, passe 2
-        // classes.verifyListClassBody(compiler); // Etape B, passe 3 pour les classes
+        // TODO décommenter une fois qu'on implémente Deca "objet;
+        classes.verifyListClass(compiler); // Etape B, passe 1
+        classes.verifyListClassMembers(compiler); // Etape B, passe 2
+        classes.verifyListClassBody(compiler); // Etape B, passe 3 pour les classes
         main.verifyMain(compiler); // Etape B, passe 3 pour le programme principal
         LOG.debug("verify program: end");
     }
@@ -47,8 +52,13 @@ public class Program extends AbstractProgram {
     public void codeGenProgram(DecacCompiler compiler) {
         // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
-        main.codeGenMain(compiler);
+        compiler.codegenHelper.codeGenTSTO();
+        classes.codeGenListClassVTables(compiler); // Etape C, passe 1
+        main.codeGenMain(compiler); // Etape C, passe 2 pour le programme principal
+        compiler.codegenHelper.setMainInst();
         compiler.addInstruction(new HALT());
+        classes.codeGenListClassBody(compiler); // Etape C, passe 2 pour les classes
+        compiler.codegenHelper.codeGenListError();
     }
 
     @Override
