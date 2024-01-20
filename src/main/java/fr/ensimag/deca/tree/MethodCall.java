@@ -78,6 +78,9 @@ public class MethodCall extends AbstractExpr {
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
 
+        // obtain the index of the method in the class
+        int indexOfTheMethod = compiler.listVTable.getVTable
+
         // récupère adresse table méthodes
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
 
