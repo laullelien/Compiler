@@ -44,6 +44,7 @@ public class DecacCompiler {
      * ID of the first available Register for code generation
      */
     private int regId = 2;
+    private int maxReg = 2;
 
     public GPRegister getRegister() {
         return Register.getR(regId);
@@ -51,12 +52,23 @@ public class DecacCompiler {
 
     public void incrementRegister() {
         regId++;
+        if(regId > maxReg) {
+            maxReg = regId;
+        }
         Validate.isTrue(regId <= compilerOptions.getMaxRegisters());
     }
 
     public void decrementRegister() {
         regId--;
         Validate.isTrue(regId >= 2);
+    }
+
+    public void resetMaxReg() {
+        maxReg = 2;
+    }
+
+    public int getMaxReg() {
+        return maxReg;
     }
 
     public boolean isRegisterAvailable() {
@@ -182,7 +194,15 @@ public class DecacCompiler {
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
-    private final IMAProgram program = new IMAProgram();
+    private IMAProgram program = new IMAProgram();
+
+    public void setProgram(IMAProgram program) {
+        this.program = program;
+    }
+
+    public IMAProgram getProgram() {
+        return program;
+    }
 
     /** The global environment for types (and the symbolTable) */
     public final SymbolTable symbolTable = new SymbolTable();
