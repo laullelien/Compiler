@@ -33,8 +33,6 @@ public class VTable {
         return new RegisterOffset(addressGB, Register.GB);
     }
 
-    public List<String> getDeclaredMethod
-
     /**
      * Ajoute tous les labels hérités de la classe mère dans la VTable
      * @param parentVTable
