@@ -75,6 +75,11 @@ public class EnvironmentType {
         if (t1.isFloat() && t2.isInt() || t1 == t2) {
             return true;
         }
+        System.out.println("test si" + t2.getName().getName() + "est sous type de " + t1.getName().getName());
+        if (t2.isSubType(t1)){
+            return true;
+        }
+        System.out.println("réponse : non");
         return false;
     }
     public void declare(Symbol classSymbol, ClassDefinition classDefinition) throws DoubleDefException {

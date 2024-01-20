@@ -62,11 +62,11 @@ public abstract class Type {
     }
 
     public boolean isObject() {
-        return false;
+        return this.name.toString().equals("Object");
     }
 
     public boolean isNull() {
-        return false;
+        return this.name.toString().equals("null");
     }
 
     public boolean isClassOrNull() {
@@ -87,8 +87,11 @@ public abstract class Type {
 
     public boolean isSubType(Type potentialParentType){
         if (this.isClass() && potentialParentType.isClass()){
+            System.out.println("ya");
+
             return ((ClassType) this).isSubClassOf((ClassType) potentialParentType);
         }
+        System.out.println("yo");
         if (this.sameType(potentialParentType)){
             return true;
         }

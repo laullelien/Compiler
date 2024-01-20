@@ -49,6 +49,8 @@ public class Cast extends AbstractUnaryExpr {
                            ClassDefinition currentClass) throws ContextualError {
         Type typeCast = this.typeAfterCast.verifyType(compiler);
         Type typeBeforeCast = this.getOperand().verifyExpr(compiler, localEnv, currentClass);
+        System.out.println(typeCast.getName().getName());
+        System.out.println(typeBeforeCast.getName().getName());
         if (!compiler.environmentType.castCompatible(typeBeforeCast, typeCast)){
             throw new ContextualError("Le cast n'est pas valide et la règle 3.39 n'est pas respectée", this.getLocation());
         }

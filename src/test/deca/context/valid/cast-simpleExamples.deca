@@ -1,0 +1,21 @@
+class A {
+}
+
+class B extends A {
+}
+
+class C extends B {
+}
+
+class D extends A {
+}
+
+{
+    A a;
+    B b;
+    C c;
+    D d;
+    a = (A) (c);
+    d = (D) (a);
+    b = (B) (b);
+}

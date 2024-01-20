@@ -62,6 +62,9 @@ public class ClassType extends Type {
         if (this.isNull()) {
             return true;
         }
+        if (this.isObject() && !potentialSuperClass.isObject()){
+            return false;
+        }
         if (sameType(potentialSuperClass)){
             return true;
         }
