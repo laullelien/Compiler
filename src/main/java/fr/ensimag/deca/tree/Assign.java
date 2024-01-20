@@ -49,20 +49,20 @@ public class Assign extends AbstractBinaryExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         if(getRightOperand().getDval() != null) {
             compiler.addInstruction(new LOAD(getRightOperand().getDval(), compiler.getRegister()));
-            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
             return;
         }
         getRightOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
     }
 
     @Override
     protected void codeGenBinary(DecacCompiler compiler) {
         if(compiler.getDVal() instanceof  GPRegister) {
-            compiler.addInstruction(new STORE((GPRegister)compiler.getDVal(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+            compiler.addInstruction(new STORE((GPRegister)compiler.getDVal(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
             return;
         }
         compiler.addInstruction(new LOAD(compiler.getDVal(), compiler.getRegister()));
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
     }
 }

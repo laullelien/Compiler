@@ -30,7 +30,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public DVal getDval() {
-        return getVariableDefinition().getOperand();
+        return getExpDefinition().getOperand();
     }
 
     @Override
@@ -219,12 +219,12 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), compiler.getRegister()));
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), compiler.getRegister()));
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), Register.R1));
     }
 
     @Override
