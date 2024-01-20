@@ -48,16 +48,17 @@ public class MethodAsmBody extends AbstractMethodBody {
         String value = assemblyCode.getValue();
         String noQuote = value.substring(1, value.length() - 1);
         CharacterIterator it = new StringCharacterIterator(noQuote);
+        StringBuilder lineInstr = new StringBuilder();
         while (it.current() != CharacterIterator.DONE) {
-            StringBuilder lineInstr = new StringBuilder();
             lineInstr.append(it.current());
-            if (it.current() == '\n') {
-                compiler.add(new InlinePortion(lineInstr.substring(0, value.length() - 1)));
+            System.out.println(it.current());
+            if (it.current() == '\\' && it.next() == 'n') {
+                compiler.add(new InlinePortion(lineInstr.substring(0, lineInstr.length() - 1)));
                 lineInstr.delete(0, lineInstr.length());
             }
             it.next();
         }
-        System.out.println("no");
+        compiler.add(new InlinePortion(lineInstr.substring(0, lineInstr.length())));
     }
 
     @Override
