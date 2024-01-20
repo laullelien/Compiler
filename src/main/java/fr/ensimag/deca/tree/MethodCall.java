@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import com.sun.tools.javac.comp.Todo;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -67,8 +66,7 @@ public class MethodCall extends AbstractExpr {
         // empilement des paramètres (vérifier si ils sont dans le bon sens)
         int index = -1;
         for (AbstractExpr a : listArgs.getList()) {
-            compiler.addInstruction(new LOAD(a.getDval(), Register.R0));
-            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.SP)));
+            a.codeGenInst(compiler);
             index--;
         }
 
@@ -87,9 +85,6 @@ public class MethodCall extends AbstractExpr {
         compiler.addInstruction(new BSR(new RegisterOffset(1, Register.R0)));
 
         compiler.addInstruction(new SUBSP(paramNumber));
-
-
-
 
     }
 
