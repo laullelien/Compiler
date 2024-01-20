@@ -83,7 +83,9 @@ public class MethodCall extends AbstractExpr {
 
         compiler.addInstruction(new BSR(new RegisterOffset(1, Register.R2)));
 
-        // SUBSP à faire
+        compiler.addInstruction(new SUBSP(paramNumber));
+
+
 
 
     }
