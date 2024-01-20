@@ -1,0 +1,10 @@
+class A {
+    int a;
+
+    void bobo() asm("WINT #3\nWINT #4");
+}
+
+{
+    A coco = new A();
+    coco.bobo();
+}

@@ -6,8 +6,14 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.InlinePortion;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Line;
+import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 import java.io.PrintStream;
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 
 public class MethodAsmBody extends AbstractMethodBody {
     private StringLiteral assemblyCode;
@@ -39,7 +45,19 @@ public class MethodAsmBody extends AbstractMethodBody {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-
+        String value = assemblyCode.getValue();
+        String noQuote = value.substring(1, value.length() - 1);
+        CharacterIterator it = new StringCharacterIterator(noQuote);
+        while (it.current() != CharacterIterator.DONE) {
+            StringBuilder lineInstr = new StringBuilder();
+            lineInstr.append(it.current());
+            if (it.current() == '\n') {
+                compiler.add(new InlinePortion(lineInstr.substring(0, value.length() - 1)));
+                lineInstr.delete(0, lineInstr.length());
+            }
+            it.next();
+        }
+        System.out.println("no");
     }
 
     @Override
