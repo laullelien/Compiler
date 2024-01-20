@@ -33,7 +33,7 @@ public class DeclMethod extends AbstractDeclMethod{
         int nbDeclVar = getMethodBody().getVarNb();
         int maxReg = compiler.getMaxReg();
 
-        for(int i = maxReg; i >= 2; i--) {
+        for(int i = 2; i <= maxReg; i++) {
             methodProg.addFirst(new PUSH(Register.getR(i)));
         }
         if(nbDeclVar != 0) {
