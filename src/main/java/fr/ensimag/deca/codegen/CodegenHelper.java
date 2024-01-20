@@ -50,6 +50,11 @@ public class CodegenHelper {
         compiler.addInstruction(new WSTR("Une méthode de type de retour non void n'a rien retourné"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("dereferencement_null"));
+        compiler.addInstruction(new WSTR("Déréférencement de null"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
     }
 
     public int getMaxPushDepth() {

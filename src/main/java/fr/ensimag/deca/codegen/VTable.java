@@ -64,6 +64,10 @@ public class VTable {
         }
     }
 
+    public int indexOf(String methodName) {
+        return declaredMethod.indexOf(methodName);
+    }
+
     /**
      * Génére les instructions assembleur de la Virtual Table
      * @param compiler
