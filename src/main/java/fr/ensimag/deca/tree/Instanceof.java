@@ -14,7 +14,7 @@ public class Instanceof extends AbstractBinaryExpr{
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addComment("instanceof debut");
+        compiler.addComment("Debut instanceof");
         String labelString = "label_" + compiler.getLabelId();
         compiler.incrementLabelId();
         Label returnTrue = new Label(labelString + "return_true");
@@ -61,7 +61,7 @@ public class Instanceof extends AbstractBinaryExpr{
         compiler.addInstruction(new LOAD(1, compiler.getRegister()));
 
         compiler.addLabel(instanceofEnd);
-        compiler.addComment("instanceof fin");
+        compiler.addComment("Fin instanceof");
     }
 
     @Override
