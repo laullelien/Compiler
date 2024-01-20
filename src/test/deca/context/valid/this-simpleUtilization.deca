@@ -1,6 +1,0 @@
-class A {
-    int fouloulou;
-    float leChanteurImaginaire(int fouloulou){
-        this.fouloulou = 12;
-    }
-}

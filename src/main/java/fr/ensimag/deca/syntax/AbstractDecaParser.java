@@ -2,7 +2,10 @@ package fr.ensimag.deca.syntax;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
-import fr.ensimag.deca.tree.*;
+import fr.ensimag.deca.tree.AbstractProgram;
+import fr.ensimag.deca.tree.Location;
+import fr.ensimag.deca.tree.LocationException;
+import fr.ensimag.deca.tree.Tree;
 
 import java.io.PrintStream;
 
@@ -67,10 +70,6 @@ public abstract class AbstractDecaParser extends Parser {
      */
     protected void setLocation(Tree tree, Token token) {
         tree.setLocation(tokenLocation(token));
-    }
-
-    protected void setVisibility(AbstractDeclField tree, Visibility v) {
-        tree.setFieldVisibility(v);
     }
 
     /**

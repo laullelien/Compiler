@@ -2,13 +2,10 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  *
@@ -28,31 +25,17 @@ public class And extends AbstractOpBool {
 
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        DVal leftDVal = getLeftOperand().getDval();
-        if(leftDVal != null && leftDVal instanceof ImmediateInteger) {
-            // true && rightOperand = rightOperand
-            if(((ImmediateInteger)leftDVal).getValue() == 1) {
-                getRightOperand().codeGenInst(compiler);
-                return;
-            }
-            // false && rightOperand = false
-            compiler.addInstruction(new LOAD(0, compiler.getRegister()));
-            return;
-        }
-
+    protected void codeGenBool(DecacCompiler compiler, int n) {
         String labelString = "and_label_" + compiler.getLabelId();
         compiler.incrementLabelId();
         Label endLabel = new Label(labelString + "_fin");
 
-        getLeftOperand().codeGenInst(compiler);
+        codeExp(compiler, getLeftOperand(), n);
 
-        if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
-            compiler.addInstruction(new CMP(0, compiler.getRegister()));
-        }
+        compiler.addInstruction(new CMP(0, Register.getR(n)));
         compiler.addInstruction(new BEQ(endLabel));
 
-        getRightOperand().codeGenInst(compiler);
+        codeExp(compiler, getRightOperand(), n);
 
         compiler.addLabel(endLabel);
     }

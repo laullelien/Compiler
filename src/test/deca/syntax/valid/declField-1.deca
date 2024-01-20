@@ -1,3 +1,0 @@
-class A {
-	protected int kebab = 5, viande, poisson = 1;
-}

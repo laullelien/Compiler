@@ -40,7 +40,6 @@ public class Main extends AbstractMain {
         // regle (3.4), (3.18)
         EnvironmentExp localEnv = new EnvironmentExp();
         declVariables.verifyListDeclVariable(compiler, localEnv, null);
-        // ne pas oublier de changer currentClass
         insts.verifyListInst(compiler, localEnv.stackEnvironment(localEnv, localEnv.getParentEnvironment()), null, compiler.environmentType.VOID);
         LOG.debug("verify Main: end");
     }
@@ -52,7 +51,6 @@ public class Main extends AbstractMain {
         declVariables.setOperand(compiler);
         declVariables.codeGenListDeclVar(compiler);
         insts.codeGenListInst(compiler);
-        compiler.codegenHelper.setMainTSTO();
     }
     
     @Override

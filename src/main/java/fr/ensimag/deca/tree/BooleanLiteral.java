@@ -6,8 +6,6 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
@@ -30,14 +28,6 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
-    public DVal getDval() {
-        if(value) {
-            return new ImmediateInteger(1);
-        }
-        return new ImmediateInteger(0);
-    }
-
-    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         // regle (3.47)
@@ -48,9 +38,9 @@ public class BooleanLiteral extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         if (value) {
-            compiler.addInstruction(new LOAD(1, compiler.getRegister()));
+            compiler.addInstruction(new LOAD(1, Register.R2));
         } else {
-            compiler.addInstruction(new LOAD(0, compiler.getRegister()));
+            compiler.addInstruction(new LOAD(0, Register.R2));
         }
     }
 

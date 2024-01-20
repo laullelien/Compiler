@@ -1,8 +1,0 @@
-class A {
-    int coco;
-}
-
-class B extends A {
-    A coco(int a) {
-    }
-}

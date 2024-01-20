@@ -29,8 +29,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         setType(compiler.environmentType.BOOLEAN);
         return getType();
     }
-    @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        throw new RuntimeException("Cette fonction n'aurait pas dû être appelée");
-    }
+
+    abstract protected void codeGenBool(DecacCompiler compiler, int n);
+
 }

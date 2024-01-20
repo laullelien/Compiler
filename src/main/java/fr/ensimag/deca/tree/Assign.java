@@ -46,23 +46,8 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        if(getRightOperand().getDval() != null) {
-            compiler.addInstruction(new LOAD(getRightOperand().getDval(), compiler.getRegister()));
-            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-            return;
-        }
-        getRightOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-    }
-
-    @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        if(compiler.getDVal() instanceof  GPRegister) {
-            compiler.addInstruction(new STORE((GPRegister)compiler.getDVal(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-            return;
-        }
-        compiler.addInstruction(new LOAD(compiler.getDVal(), compiler.getRegister()));
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        compiler.addInstruction(new LOAD(value, target));
+        compiler.addInstruction(new STORE(target, ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
     }
 }

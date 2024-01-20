@@ -54,8 +54,6 @@ public class CompilerOptions {
 
     private boolean customRegister = false;
 
-    private boolean isOptim = false;
-
     // On choisit tous les registres par défault
     private int maxRegisters = 16;
 
@@ -99,12 +97,6 @@ public class CompilerOptions {
                     this.noCheck = true;
                 } else {
                     throw new CLIException("-n est écrit 2 fois");
-                }
-            } else if (s.equals("-optim")) {
-                if (!this.isOptim) {
-                    this.isOptim = true;
-                } else {
-                    throw new CLIException("-optim est écrit 2 fois");
                 }
             } else if (s.equals("-r")) {
                 if (!this.customRegister) {

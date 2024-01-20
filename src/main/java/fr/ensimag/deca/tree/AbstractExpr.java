@@ -142,7 +142,6 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
-
     /**
      * Generate code to print the expression
      *
@@ -162,6 +161,17 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
         s.print(";");
+    }
+
+    /**
+     * Permet de générer les instructions assembleur d'une expression en spécifiant les registres
+     * utilisés
+     * @param compiler
+     * @param value Position ou valeur à calculer
+     * @param target Position du résultat de l'expression
+     */
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        throw new DecacInternalError("Not yet implemented");
     }
 
     @Override

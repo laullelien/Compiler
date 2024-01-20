@@ -1,7 +1,15 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.Definition;
+import fr.ensimag.deca.context.FieldDefinition;
+import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.deca.context.ExpDefinition;
+import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.SymbolTable;
 
 /**
@@ -36,12 +44,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *             if the definition is not a field definition.
      */
     public abstract FieldDefinition getFieldDefinition();
-
-    public void verifyObjectClass(DecacCompiler compiler){
-        TypeDefinition objectClassDefinition = compiler.environmentType.defOfType(compiler.createSymbol("Object"));
-        this.setDefinition(objectClassDefinition);
-        this.setType(compiler.environmentType.OBJECT);
-    }
 
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
@@ -91,9 +93,4 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
-
-
-    public abstract ExpDefinition verifyField(DecacCompiler compiler, EnvironmentExp env) throws ContextualError;
-
-    public abstract ExpDefinition verifyMethod(DecacCompiler compiler, EnvironmentExp env) throws ContextualError;
 }
