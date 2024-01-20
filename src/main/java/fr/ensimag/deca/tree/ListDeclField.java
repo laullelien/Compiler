@@ -20,14 +20,16 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     public EnvironmentExp verifyListDeclField(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, ClassDefinition classDef) throws ContextualError {
         // rule 2.4
         EnvironmentExp env = new EnvironmentExp();
+        int superClassNumberOfFields = ((ClassDefinition) compiler.environmentType.defOfType(superClassSymbol)).getNumberOfFields();
+        classDef.setNumberOfFields(superClassNumberOfFields);
         for(AbstractDeclField decl: getList()) {
             try{
+                classDef.incNumberOfFields();
                 env.declare(decl.verifyDeclField(compiler, superClassSymbol, classDef));
             }
             catch (EnvironmentExp.DoubleDefException e){
                 throw new ContextualError("Double définition d'un champ : la règle (2.4) n'est pas respectée", this.getLocation());
             }
-            classDef.incNumberOfFields();
         }
         return env;
     }

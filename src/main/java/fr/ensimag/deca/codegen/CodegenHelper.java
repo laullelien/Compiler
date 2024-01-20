@@ -25,8 +25,14 @@ public class CodegenHelper {
 
     public void codeGenListError() {
         compiler.addComment("error handling");
+
         compiler.addLabel(new Label("stack_full"));
         compiler.addInstruction(new WSTR("La pile est pleine"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("heap_full"));
+        compiler.addInstruction(new WSTR("Le tas est pleine"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 

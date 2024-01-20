@@ -59,7 +59,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */    
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // règle 3.16 (EnvironmentExp non renvooyé mais localEnv modifié)
+        // règle 3.16 (EnvironmentExp non renvoyé mais localEnv modifié)
         for (AbstractDeclVar e : this.getList()) {
             e.verifyDeclVar(compiler, localEnv, currentClass);
         }
