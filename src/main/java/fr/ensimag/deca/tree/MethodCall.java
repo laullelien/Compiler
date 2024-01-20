@@ -60,28 +60,28 @@ public class MethodCall extends AbstractExpr {
         DAddr addrInstanceOfClass = compiler.listVTable.getVTable(expr.getType().getName().getName()).getDAddr();
 
         // empilement du paramètre implicite
-        compiler.addInstruction(new LOAD(addrInstanceOfClass, Register.R2));
-        compiler.addInstruction(new STORE(Register.R2, new RegisterOffset(0, Register.SP)));
+        compiler.addInstruction(new LOAD(addrInstanceOfClass, Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.SP)));
 
         // empilement des paramètres (vérifier si ils sont dans le bon sens)
         int index = -1;
         for (AbstractExpr a : listArgs.getList()) {
-            compiler.addInstruction(new LOAD(a.getDval(), Register.R2));
-            compiler.addInstruction(new STORE(Register.R2, new RegisterOffset(index, Register.SP)));
+            compiler.addInstruction(new LOAD(a.getDval(), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.SP)));
             index--;
         }
 
         // récupère le param implicite
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R2));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R0));
 
         // test s'il est égal à null
-        compiler.addInstruction(new CMP(new NullOperand(), Register.R2));
+        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
         compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
 
         // récupère adresse table méthodes
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R2), Register.R2));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
 
-        compiler.addInstruction(new BSR(new RegisterOffset(1, Register.R2)));
+        compiler.addInstruction(new BSR(new RegisterOffset(1, Register.R0)));
 
         compiler.addInstruction(new SUBSP(paramNumber));
 
