@@ -23,6 +23,8 @@ public class ListVTable {
 
     private Map<String, VTable> vTableMap;
 
+    public Map<String, VTable> getvTableMap() { return vTableMap;}
+
     public ListVTable() {
         vTableMap = new HashMap<>();
         // default offset

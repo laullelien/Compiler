@@ -91,6 +91,7 @@ public abstract class AbstractDeclMethod extends Tree {
         // règle 3.11
         Type returnType = methodReturnType.verifyType(compiler);
         EnvironmentExp envExpParam = methodParameters.verifyListDeclParamPass3(compiler);
+        currentClass.currentMethodNameForReturn = this.methodName.getName().getName();
         methodBody.verifyMethodBodyPass3(compiler, envExpParam, currentClass, returnType);
     }
 }

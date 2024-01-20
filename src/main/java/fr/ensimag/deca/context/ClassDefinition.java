@@ -42,6 +42,8 @@ public class ClassDefinition extends TypeDefinition {
 
     private int numberOfFields = 0;
     private int numberOfMethods = 0;
+
+    public String currentMethodNameForReturn;
     
     @Override
     public boolean isClass() {
