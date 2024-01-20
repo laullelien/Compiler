@@ -1,1 +1,2 @@
-LIGNE  1 -- erreur syntaxique
+passe
+5
