@@ -2,10 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.Objects;
@@ -17,6 +14,7 @@ public class Instanceof extends AbstractBinaryExpr{
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addComment("instanceof debut");
         String labelString = "label_" + compiler.getLabelId();
         compiler.incrementLabelId();
         Label returnTrue = new Label(labelString + "return_true");
@@ -28,17 +26,20 @@ public class Instanceof extends AbstractBinaryExpr{
         // une instance de classe se trouve dans compiler.gerRegister()
         String parentClassName = getRightOperand().getType().getName().getName();
 
-        DAddr nullClassDAddr = new RegisterOffset(1, Register.GB);
         DAddr parentClassDAddr = compiler.listVTable.getVTable(parentClassName).getDAddr();
 
-        // on enregistre l'adresse de null dans R0
-        compiler.addInstruction(new LEA(nullClassDAddr, Register.R0));
+        // on enregistre null dans R0
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
 
         // on enregistre l'adresse de la classe de leftOperand dans R1
         compiler.addInstruction(new LOAD(new RegisterOffset(0, compiler.getRegister()), Register.R1));
 
         // on enregistre l'adresse de la classe de rightOperand dans getRegister()
         compiler.addInstruction(new LEA(parentClassDAddr, compiler.getRegister()));
+
+        // rightOperand is Object
+        compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
+        compiler.addInstruction(new BEQ(returnTrue));
 
         compiler.addLabel(whileStart);
 
@@ -60,9 +61,10 @@ public class Instanceof extends AbstractBinaryExpr{
         compiler.addInstruction(new BRA(instanceofEnd));
 
         compiler.addLabel(returnTrue);
-        compiler.addInstruction(new LOAD(0, compiler.getRegister()));
+        compiler.addInstruction(new LOAD(1, compiler.getRegister()));
 
         compiler.addLabel(instanceofEnd);
+        compiler.addComment("instanceof fin");
     }
 
     @Override

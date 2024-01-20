@@ -93,7 +93,7 @@ public class DecacCompiler {
 
     public int generateDeclVarOffset() {
         nbDeclVar ++;
-        return nbDeclVar;
+        return listVTable.getOffset() + nbDeclVar;
     }
 
     public int getNbDeclVar() {
