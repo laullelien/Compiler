@@ -26,7 +26,7 @@ public class Return extends AbstractInst {
 
     public void setClassName(String className) {this.className = className;}
 
-    public void setMethodName(String className) {this.methodName = methodName;}
+    public void setMethodName(String methodName) {this.methodName = methodName;}
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass, Type expectedReturnType) throws ContextualError {
