@@ -37,4 +37,5 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             a.verifyMethodPass3(compiler, currentClass);
         }
     }
+
 }
