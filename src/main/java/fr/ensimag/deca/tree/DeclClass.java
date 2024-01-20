@@ -109,7 +109,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void codeGenClassBody(DecacCompiler compiler) {
-        // TO DO
+        // TODO
     }
 
     @Override
