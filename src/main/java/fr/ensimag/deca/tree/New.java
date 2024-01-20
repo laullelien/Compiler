@@ -21,6 +21,8 @@ public class New extends AbstractExpr{
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         int instanceSize = ((ClassType)this.getType()).getDefinition().getNumberOfFields() + 1;
+        compiler.addInstruction(new TSTO(3));
+        compiler.addInstruction(new BOV(new Label("stack_full")));
         compiler.addInstruction(new NEW(instanceSize, compiler.getRegister()));
         compiler.addInstruction(new BOV(new Label("heap_full")));
         compiler.addInstruction(new LEA(compiler.listVTable.getVTable(getType().getName().getName()).getDAddr(), Register.R0));
