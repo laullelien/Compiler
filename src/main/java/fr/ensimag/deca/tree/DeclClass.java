@@ -164,7 +164,7 @@ public class DeclClass extends AbstractDeclClass {
         //code qui se situe en première position. A lire a l'envers car on ajoute au début
         int maxReg = compiler.getMaxReg();
 
-        for (int i = maxReg; i >= 2; i--) {
+        for (int i = 2; i <= maxReg; i++) {
             methodProg.addFirst(new PUSH(Register.getR(i)));
         }
         methodProg.addFirst(new BOV(new Label("stack_full")));

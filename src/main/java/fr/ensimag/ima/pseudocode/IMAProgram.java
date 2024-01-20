@@ -30,6 +30,7 @@ public class IMAProgram {
     }
 
     public void addLabel(Label l) {
+        lastIsLoad = false;
         lines.add(new Line(l));
     }
 
