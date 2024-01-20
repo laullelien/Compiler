@@ -33,6 +33,11 @@ public class VTable {
         return new RegisterOffset(addressGB, Register.GB);
     }
 
+<<<<<<< HEAD
+=======
+    public List<String> getDeclaredMethod
+
+>>>>>>> 84-faire-etape-c-methodcall
     /**
      * Ajoute tous les labels hérités de la classe mère dans la VTable
      * @param parentVTable

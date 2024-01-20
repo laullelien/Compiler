@@ -29,8 +29,13 @@ public class ListVTable {
         offset = 0;
     }
 
+<<<<<<< HEAD
     public VTable getVTable(String className) {
         return vTableMap.get(className);
+=======
+    public VTable getVTable(String s) {
+        return vTableMap.get(s);
+>>>>>>> 84-faire-etape-c-methodcall
     }
 
     /**

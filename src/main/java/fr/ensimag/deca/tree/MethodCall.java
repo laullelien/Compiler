@@ -3,6 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 import java.util.Iterator;
@@ -48,6 +50,47 @@ public class MethodCall extends AbstractExpr {
         }
         setType(methodType);
         return methodType;
+    }
+
+    @Override
+    public void codeGenInst(DecacCompiler compiler) {
+        // reserve de la place pour les params
+        int paramNumber = 1 + listArgs.size();
+        compiler.addInstruction(new ADDSP(paramNumber));
+        DAddr addrInstanceOfClass = compiler.listVTable.getVTable(expr.getType().getName().getName()).getDAddr();
+
+        // empilement du paramètre implicite
+        compiler.addInstruction(new LOAD(addrInstanceOfClass, Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.SP)));
+
+        // empilement des paramètres (vérifier si ils sont dans le bon sens)
+        int index = -1;
+        for (AbstractExpr a : listArgs.getList()) {
+            compiler.addInstruction(new LOAD(a.getDval(), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(index, Register.SP)));
+            index--;
+        }
+
+        // récupère le param implicite
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R0));
+
+        // test s'il est égal à null
+        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+
+        // obtain the index of the method in the class
+        int indexOfTheMethod = compiler.listVTable.getVTable
+
+        // récupère adresse table méthodes
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
+
+        compiler.addInstruction(new BSR(new RegisterOffset(1, Register.R0)));
+
+        compiler.addInstruction(new SUBSP(paramNumber));
+
+
+
+
     }
 
     @Override
