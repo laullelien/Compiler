@@ -3,6 +3,10 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -39,6 +43,16 @@ public class Selection extends AbstractLValue {
         setType(fieldIdent.getType());
         return fieldIdent.getType();
     }
+
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler){
+        compiler.addComment("Debut selection");
+        thisExpr.codeGenInst(compiler);
+        compiler.addInstruction(new LOAD(new RegisterOffset(identifier.getFieldDefinition().getIndex(), compiler.getRegister()), compiler.getRegister()));
+        compiler.addComment("Fin Selection");
+    }
+
 
     @Override
     public void decompile(IndentPrintStream s) {
