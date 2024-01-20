@@ -46,10 +46,19 @@ public class CodegenHelper {
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 
-        compiler.addLabel(new Label("dereferencement.null"));
-        compiler.addInstruction(new WSTR("dereferencement de null"));
+        compiler.addLabel(new Label("return_error"));
+        compiler.addInstruction(new WSTR("Une méthode de type de retour non void n'a rien retourné"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("dereferencement_null"));
+        compiler.addInstruction(new WSTR("Déréférencement de null"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+    }
+
+    public int getMaxPushDepth() {
+        return maxPushDepth;
     }
 
     public void codeGenTSTO() {
@@ -67,17 +76,22 @@ public class CodegenHelper {
         mainADDSP.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + compiler.listVTable.getOffset()));
     }
 
-
-
-    public void setMainTSTO() {
-        mainTSTO.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + maxPushDepth + compiler.listVTable.getOffset()));
-    }
-
     public void incPushDepth() {
         pushDepth++;
         if(pushDepth > maxPushDepth) {
             maxPushDepth = pushDepth;
         }
+    }
+
+    public void addPushDepth(int i) {
+        pushDepth += i;
+        if(pushDepth > maxPushDepth) {
+            maxPushDepth = pushDepth;
+        }
+    }
+
+    public void decPushDepth(int i) {
+        pushDepth -= i;
     }
 
     public void decPushDepth() {
@@ -94,5 +108,10 @@ public class CodegenHelper {
         compiler.addInstruction(new CMP(Register.R0, Register.R1));
         compiler.addInstruction(new SEQ(Register.R0));
         compiler.addInstruction(new RTS());
+    }
+
+    public void reset() {
+        pushDepth = 0;
+        maxPushDepth = 0;
     }
 }

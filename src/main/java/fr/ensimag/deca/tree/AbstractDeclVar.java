@@ -32,4 +32,6 @@ public abstract class AbstractDeclVar extends Tree {
 
     abstract public void setOperand(DecacCompiler compiler);
     abstract public void codeGenDeclVar(DecacCompiler compiler);
+
+    public void setLocalOperand(int offset) {}
 }

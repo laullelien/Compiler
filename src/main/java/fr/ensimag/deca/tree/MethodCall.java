@@ -54,19 +54,21 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void codeGenInst(DecacCompiler compiler) {
+        compiler.addComment("Debut methodCall");
         // reserve de la place pour les params
         int paramNumber = 1 + listArgs.size();
+        compiler.codegenHelper.addPushDepth(paramNumber + 3);
         compiler.addInstruction(new ADDSP(paramNumber));
-        DAddr addrInstanceOfClass = compiler.listVTable.getVTable(expr.getType().getName().getName()).getDAddr();
 
         // empilement du paramètre implicite
-        compiler.addInstruction(new LOAD(addrInstanceOfClass, Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, Register.SP)));
+        expr.codeGenInst(compiler);
+        compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(0, Register.SP)));
 
         // empilement des paramètres (vérifier si ils sont dans le bon sens)
         int index = -1;
         for (AbstractExpr a : listArgs.getList()) {
             a.codeGenInst(compiler);
+            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(index, Register.SP)));
             index--;
         }
 
@@ -75,17 +77,19 @@ public class MethodCall extends AbstractExpr {
 
         // test s'il est égal à null
         compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-        compiler.addInstruction(new BEQ(new Label("dereferencement.null")));
+        compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
 
         // obtain the index of the method in the class
+        int methodIndex = compiler.listVTable.getVTable(expr.getType().getName().getName()).indexOf(identifier.getName().getName()) + 1;
 
         // récupère adresse table méthodes
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R0), Register.R0));
-
-        compiler.addInstruction(new BSR(new RegisterOffset(1, Register.R0)));
+        compiler.addInstruction(new BSR(new RegisterOffset(methodIndex, Register.R0)));
+        compiler.addInstruction(new LOAD(Register.R0, compiler.getRegister()));
 
         compiler.addInstruction(new SUBSP(paramNumber));
-
+        compiler.codegenHelper.decPushDepth(paramNumber + 3);
+        compiler.addComment("Fin methodCall");
     }
 
     @Override

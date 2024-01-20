@@ -1,0 +1,6 @@
+class A {
+    int invalidMethod(){
+        float b = 3.78;
+        return b;
+    }
+}

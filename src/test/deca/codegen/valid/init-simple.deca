@@ -1,0 +1,8 @@
+class A{
+	int a = 5 + 5 / 2;
+	float x = ((1 + 1) + (1 + 1)) + ((1 + 1) + (1 + 1));
+}
+
+class B extends A{
+	boolean b = true;
+}

@@ -37,4 +37,13 @@ public class MethodAsmBody extends AbstractMethodBody {
         this.assemblyCode.verifyExpr(compiler, envExpParam, currentClass);
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+
+    }
+
+    @Override
+    public int getVarNb() {
+        return 0;
+    }
 }
