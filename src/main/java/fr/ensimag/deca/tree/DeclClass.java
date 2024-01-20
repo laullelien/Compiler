@@ -9,6 +9,8 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
+import static java.lang.Math.max;
+
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
  * 
@@ -117,43 +119,65 @@ public class DeclClass extends AbstractDeclClass {
 
 
     protected void codeGenInit(DecacCompiler compiler) {
-        compiler.addLabel(new Label("init." + name.getName()));
+        //enregister le programme que l'on a utilisé jusque la
+        IMAProgram untilNowProg = compiler.getProgram();
+        // nouveau programme que l'on utilise seulement pour cette methode, pour les TSTO, ADDSP et enregistrement de registres
+        IMAProgram methodProg = new IMAProgram();
+
+        compiler.codegenHelper.reset();
+        compiler.resetMaxReg();
+
+        compiler.setProgram(methodProg);
 
         //object adress
         compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
 
         //init own fields to 0
-        for(AbstractDeclField field : fields.getList()) {
-            if(field.getFieldName().getType().isInt() || field.getFieldName().getType().isBoolean()) {
+        for (AbstractDeclField field : fields.getList()) {
+            if (field.getFieldName().getType().isInt() || field.getFieldName().getType().isBoolean()) {
                 compiler.addInstruction(new LOAD(0, Register.R1));
                 compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((field.getFieldName().getFieldDefinition())).getIndex(), Register.R0)));
             }
-            if(field.getFieldName().getType().isFloat()) {
+            if (field.getFieldName().getType().isFloat()) {
                 compiler.addInstruction(new LOAD(new ImmediateFloat(0), Register.R1));
                 compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((field.getFieldName().getFieldDefinition())).getIndex(), Register.R0)));
             }
-            if(field.getFieldName().getType().isClass()) {
+            if (field.getFieldName().getType().isClass()) {
                 compiler.addInstruction(new LOAD(new NullOperand(), Register.R1));
                 compiler.addInstruction(new STORE(Register.R1, new RegisterOffset(((field.getFieldName().getFieldDefinition())).getIndex(), Register.R0)));
             }
         }
 
+        Boolean hasSuper = nameSuperClass.getName() != compiler.environmentType.OBJECT.getName();
         //init inherited fields
-        if(nameSuperClass.getName() != compiler.environmentType.OBJECT.getName()) {
-            compiler.addInstruction(new TSTO(3));
-            compiler.addInstruction(new BOV(new Label("stack_full")));
+        if (hasSuper) {
             compiler.addInstruction(new PUSH(Register.R0));
             compiler.addInstruction(new BSR(new Label("init." + nameSuperClass.getName().getName())));
+            compiler.addInstruction(new SUBSP(1));
         }
 
-        compiler.addInstruction(new SUBSP(1));
-
         //init own fields
-        for(AbstractDeclField field: fields.getList()) {
+        for (AbstractDeclField field : fields.getList()) {
             field.codeGenInit(compiler);
         }
 
+        //code qui se situe en première position. A lire a l'envers car on ajoute au début
+        int maxReg = compiler.getMaxReg();
+
+        for (int i = maxReg; i >= 2; i--) {
+            methodProg.addFirst(new PUSH(Register.getR(i)));
+        }
+        methodProg.addFirst(new BOV(new Label("stack_full")));
+        methodProg.addFirst(new TSTO(max(compiler.codegenHelper.getMaxPushDepth(), hasSuper ? 3 : 0) + maxReg - 1)); // 3 for calling super init
+        methodProg.addFirstLabel(new Label("init." + name.getName()));
+
+        for (int i = 2; i <= maxReg; i++) {
+            compiler.addInstruction(new POP(Register.getR(i)));
+        }
         compiler.addInstruction(new RTS());
+
+        untilNowProg.append(methodProg);
+        compiler.setProgram(untilNowProg);
     }
 
     @Override
