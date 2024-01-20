@@ -19,9 +19,9 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        super.codeGenBinary(compiler);
-        compiler.addInstruction(new SEQ(compiler.getRegister()));
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        super.codeGenInstruction(compiler, value, target);
+        compiler.addInstruction(new SEQ(target));
     }
 
     @Override

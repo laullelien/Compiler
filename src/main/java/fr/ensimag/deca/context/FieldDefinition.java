@@ -15,15 +15,13 @@ public class FieldDefinition extends ExpDefinition {
     }
 
     private int index;
-
+    
     @Override
     public boolean isField() {
         return true;
     }
 
     private final Visibility visibility;
-
-
     private final ClassDefinition containingClass;
     
     public FieldDefinition(Type type, Location location, Visibility visibility,

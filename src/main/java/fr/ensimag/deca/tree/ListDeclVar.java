@@ -39,6 +39,9 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     }
 
     public void codeGenListDeclVar(DecacCompiler compiler){
+        compiler.addInstruction(new TSTO(compiler.getNbDeclVar()));
+        compiler.addInstruction(new BOV(new Label("stack_full")));
+        compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
         for (AbstractDeclVar declVar : this.getList()) {
             declVar.codeGenDeclVar(compiler);
         }
@@ -59,7 +62,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      */    
     void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        // règle 3.16 (EnvironmentExp non renvoyé mais localEnv modifié)
+        // règle 3.16 (EnvironmentExp non renvooyé mais localEnv modifié)
         for (AbstractDeclVar e : this.getList()) {
             e.verifyDeclVar(compiler, localEnv, currentClass);
         }

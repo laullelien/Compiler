@@ -18,9 +18,9 @@ public class LowerOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        super.codeGenBinary(compiler);
-        compiler.addInstruction(new SLE(compiler.getRegister()));
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        super.codeGenInstruction(compiler, value, target);
+        compiler.addInstruction(new SLE(target));
     }
 
     @Override

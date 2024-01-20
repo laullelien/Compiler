@@ -13,7 +13,6 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -64,9 +63,7 @@ public class IfThenElse extends AbstractInst {
 
         condition.codeGenInst(compiler);
 
-        if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
-            compiler.addInstruction(new CMP(0, compiler.getRegister()));
-        }
+        compiler.addInstruction(new CMP(0, Register.R2));
         compiler.addInstruction(new BEQ(elseLabel));
 
         thenBranch.codeGenListInst(compiler);

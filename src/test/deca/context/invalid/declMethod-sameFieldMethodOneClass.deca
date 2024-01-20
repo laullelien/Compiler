@@ -1,6 +1,0 @@
-class A {
-    int coco;
-
-    A coco() {
-    }
-}

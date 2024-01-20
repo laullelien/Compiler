@@ -1,9 +1,0 @@
-class A {
-    int bob;
-
-    void coco(){
-    }
-
-    int coco(){
-    }
-}

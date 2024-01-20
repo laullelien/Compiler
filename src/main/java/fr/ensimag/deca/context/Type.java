@@ -1,6 +1,5 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassType;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
@@ -61,10 +60,6 @@ public abstract class Type {
         return false;
     }
 
-    public boolean isObject() {
-        return false;
-    }
-
     public boolean isNull() {
         return false;
     }
@@ -85,13 +80,4 @@ public abstract class Type {
         throw new ContextualError(errorMessage, l);
     }
 
-    public boolean isSubType(Type potentialParentType){
-        if (this.isClass() && potentialParentType.isClass()){
-            return ((ClassType) this).isSubClassOf((ClassType) potentialParentType);
-        }
-        if (this.sameType(potentialParentType)){
-            return true;
-        }
-        return false;
-    }
 }

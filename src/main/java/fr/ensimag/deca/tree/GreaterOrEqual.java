@@ -20,9 +20,9 @@ public class GreaterOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        super.codeGenBinary(compiler);
-        compiler.addInstruction(new SGE(compiler.getRegister()));
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        super.codeGenInstruction(compiler, value, target);
+        compiler.addInstruction(new SGE(target));
     }
 
     @Override

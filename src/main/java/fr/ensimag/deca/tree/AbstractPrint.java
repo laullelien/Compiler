@@ -9,7 +9,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -47,25 +46,26 @@ public abstract class AbstractPrint extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         for (AbstractExpr a : getArguments().getList()) {
-            if(a.getType().isString()) {
+            if (a.getType().isString()) {
+                // les chaines de caractères ont un argument à leur instruction WSTR
+                // on les délègue donc la génération de leur instruction
                 a.codeGenPrint(compiler);
-                continue;
             }
-            if(a.getDval() != null) {
+            else {
+                // sinon on ne délègue pas l'appel final WXX
+                // on demande à l'expression de mettre leur résultat dans R1
                 a.codeGenPrint(compiler);
-            } else {
-                a.codeGenInst(compiler);
-                compiler.addInstruction(new LOAD(compiler.getRegister(), Register.R1));
+                // puis on génère l'affichage directement
+                // aucune autre appel à WINT ou WFLOAT ne doit etre fait autre part dans le code
+                if (a.getType().isInt())
+                    compiler.addInstruction(new WINT());
+                else {
+                    Validate.isTrue(a.getType().isFloat());
+                    if (printHex)
+                        compiler.addInstruction(new WFLOATX());
+                    else compiler.addInstruction(new WFLOAT());
+                }
             }
-            if(a.getType().isInt()) {
-                compiler.addInstruction(new WINT());
-                continue;
-            }
-            if(printHex) {
-                compiler.addInstruction(new WFLOATX());
-                continue;
-            }
-            compiler.addInstruction(new WFLOAT());
         }
     }
 

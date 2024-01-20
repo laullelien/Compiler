@@ -2,7 +2,9 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.DVal;
 
 /**
  * @author gl38
@@ -19,7 +21,7 @@ public class Plus extends AbstractOpArith {
     }
 
     @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        compiler.addInstruction(new ADD(compiler.getDVal(), compiler.getRegister()));
+    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
+        compiler.addInstruction(new ADD(value, target));
     }
 }
