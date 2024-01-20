@@ -28,9 +28,6 @@ public class Instanceof extends AbstractBinaryExpr{
 
         DAddr parentClassDAddr = compiler.listVTable.getVTable(parentClassName).getDAddr();
 
-        // on enregistre null dans R0
-        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
-
         // on enregistre l'adresse de la classe de leftOperand dans R1
         compiler.addInstruction(new LOAD(new RegisterOffset(0, compiler.getRegister()), Register.R1));
 
@@ -44,7 +41,7 @@ public class Instanceof extends AbstractBinaryExpr{
         compiler.addLabel(whileStart);
 
         //On a atteint null
-        compiler.addInstruction(new CMP(Register.R1, Register.R0));
+        compiler.addInstruction(new CMP(new NullOperand(), Register.R1));
 
         compiler.addInstruction(new BEQ(returnFalse));
 
