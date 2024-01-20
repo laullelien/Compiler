@@ -29,8 +29,8 @@ public class ListVTable {
         offset = 0;
     }
 
-    public VTable getVTable(String s) {
-        return vTableMap.get(s);
+    public VTable getVTable(String className) {
+        return vTableMap.get(className);
     }
 
     /**
