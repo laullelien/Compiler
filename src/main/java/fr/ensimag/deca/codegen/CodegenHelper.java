@@ -45,11 +45,6 @@ public class CodegenHelper {
         compiler.addInstruction(new WSTR("Depassement ou mauvais format"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
-
-        compiler.addLabel(new Label("dereferencement.null"));
-        compiler.addInstruction(new WSTR("dereferencement de null"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
     }
 
     public void codeGenTSTO() {
