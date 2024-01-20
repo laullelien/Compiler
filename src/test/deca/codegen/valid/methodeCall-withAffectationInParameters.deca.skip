@@ -1,0 +1,14 @@
+class A {
+    int try(int a, int y){
+        y = 2 + 2;
+    }
+    int method(float b){}
+}
+
+{
+    A a;
+    int i;
+    float b = 3.4;
+    a.try(i = 3 + 4 + (2 + 2) + (2 + 2) + ((4 + 6) + 9 + 12 * 13), 2);
+    a.method(b);
+}
