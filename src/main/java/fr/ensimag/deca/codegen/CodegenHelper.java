@@ -71,17 +71,22 @@ public class CodegenHelper {
         mainADDSP.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + compiler.listVTable.getOffset()));
     }
 
-
-
-    public void setMainTSTO() {
-        mainTSTO.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + maxPushDepth + compiler.listVTable.getOffset()));
-    }
-
     public void incPushDepth() {
         pushDepth++;
         if(pushDepth > maxPushDepth) {
             maxPushDepth = pushDepth;
         }
+    }
+
+    public void addPushDepth(int i) {
+        pushDepth += i;
+        if(pushDepth > maxPushDepth) {
+            maxPushDepth = pushDepth;
+        }
+    }
+
+    public void decPushDepth(int i) {
+        pushDepth -= i;
     }
 
     public void decPushDepth() {
