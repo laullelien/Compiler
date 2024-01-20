@@ -1,0 +1,17 @@
+ class A{
+    int x ;
+}
+
+class B extends A {
+    int y;
+
+}
+
+{ A a = new A();
+  B b = a;
+  boolean c;
+  c  = a.equals(b);
+  if (c){
+  println("Yes Mama");
+  }
+}
