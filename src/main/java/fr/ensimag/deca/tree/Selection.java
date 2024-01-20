@@ -6,6 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
+import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
@@ -71,5 +72,12 @@ public class Selection extends AbstractLValue {
     protected void iterChildren(TreeFunction f) {
         thisExpr.iter(f);
         identifier.iter(f);
+    }
+
+    public void codeGenAdress(DecacCompiler compiler) {
+        compiler.addComment("Debut calcul adresse field");
+        thisExpr.codeGenInst(compiler);
+        compiler.addInstruction(new LEA(new RegisterOffset(identifier.getFieldDefinition().getIndex(), compiler.getRegister()), compiler.getRegister()));
+        compiler.addComment("Fin calcul adresse field");
     }
 }
