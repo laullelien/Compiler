@@ -1,0 +1,25 @@
+class A{}
+class B extends A{}
+class C{}
+
+{
+	A a = new A();
+	B b = new B();
+	C c = new C();
+	if(a instanceof A) {
+		println("ok a");
+	} else {
+		println("no a");
+	}
+	if(b instanceof A) {
+		println("ok b");
+	} else {
+		println("no b");
+	}
+	if(c instanceof A) {
+		println("no c");
+	} else {
+		println("ok c");
+	}
+}
+

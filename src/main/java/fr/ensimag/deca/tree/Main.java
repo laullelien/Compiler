@@ -52,7 +52,6 @@ public class Main extends AbstractMain {
         declVariables.setOperand(compiler);
         declVariables.codeGenListDeclVar(compiler);
         insts.codeGenListInst(compiler);
-        compiler.codegenHelper.setMainTSTO();
     }
     
     @Override
