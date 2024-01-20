@@ -12,7 +12,7 @@ import org.apache.commons.lang.Validate;
  */
 public abstract class AbstractUnaryExpr extends AbstractExpr {
 
-    public void setOperand(AbstractExpr operand ) {this.operand = operand;}
+    public void setOperand(AbstractExpr operand) {this.operand = operand;}
 
     public AbstractExpr getOperand() {
         return operand;
