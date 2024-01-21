@@ -1,0 +1,92 @@
+; start main program
+; Main program
+	TSTO #10
+	BOV stack_full
+	ADDSP #6
+; Code de la table des méthodes de Object
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; Code de la table des méthodes de A
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+	LOAD code.A.method, R0
+	STORE R0, 5(GB)
+; Beginning of main instructions:
+; Debut new
+	NEW #1, R2
+	BOV heap_full
+	LEA 3(GB), R0
+	STORE R0, 0(R2)
+	PUSH R2
+	BSR init.A
+	POP R2
+; Fin new
+	STORE R2, 6(GB)
+; Debut methodCall
+	ADDSP #1
+	LOAD 6(GB), R2
+	STORE R2, 0(SP)
+	LOAD 0(SP), R0
+	CMP #null, R0
+	BEQ dereferencement_null
+	LOAD 0(R0), R0
+	BSR 2(R0)
+	LOAD R0, R2
+	SUBSP #1
+; Fin methodCall
+	HALT
+; Classe Object
+code.Object.equals:
+	LOAD -2(LB), R0
+	LOAD -3(LB), R1
+	CMP R0, R1
+	SEQ R0
+	RTS
+init.A:
+	TSTO #1
+	BOV stack_full
+	PUSH R2
+	LOAD -2(LB), R0
+	POP R2
+	RTS
+code.A.method:
+	TSTO #2
+	BOV stack_full
+	ADDSP #1
+	PUSH R2
+	LOAD #3, R2
+	STORE R2, 1(LB)
+	BRA return_error
+fin.A.method:
+	POP R2
+	RTS
+; error handling
+stack_full:
+	WSTR "La pile est pleine"
+	WNL
+	ERROR
+heap_full:
+	WSTR "Le tas est pleine"
+	WNL
+	ERROR
+division_by_0:
+	WSTR "Erreur de division par 0"
+	WNL
+	ERROR
+input_error:
+	WSTR "Depassement ou mauvais format"
+	WNL
+	ERROR
+return_error:
+	WSTR "Une méthode de type de retour non void n'a rien retourné"
+	WNL
+	ERROR
+dereferencement_null:
+	WSTR "Déréférencement de null"
+	WNL
+	ERROR
+; end main program
