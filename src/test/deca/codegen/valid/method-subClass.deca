@@ -1,0 +1,21 @@
+class A {
+	int jaj(){
+	return 9;
+}
+}
+
+class B extends A {
+	int jaj(){
+	return 7;
+	}
+
+}
+
+
+{ A a = new B();
+  if (a.jaj() == 7){
+  println("jej");
+}
+}
+
+
