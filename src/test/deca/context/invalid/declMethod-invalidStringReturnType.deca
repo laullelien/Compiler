@@ -1,0 +1,11 @@
+class A {
+    string konohamaru() {
+        return "le bg";
+    }
+}
+
+class B extends A {
+    string konohamaru() {
+        return "le super bg";
+    }
+}
