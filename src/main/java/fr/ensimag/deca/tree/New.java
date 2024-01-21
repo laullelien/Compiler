@@ -26,11 +26,13 @@ public class New extends AbstractExpr{
         compiler.addInstruction(new BOV(new Label("heap_full")));
         compiler.addInstruction(new LEA(compiler.listVTable.getVTable(getType().getName().getName()).getDAddr(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
-        compiler.codegenHelper.addPushDepth(3);
-        compiler.addInstruction(new PUSH(compiler.getRegister()));
-        compiler.addInstruction(new BSR(new Label("init." + getType().getName())));
-        compiler.addInstruction(new POP(compiler.getRegister()));
-        compiler.codegenHelper.decPushDepth(3);
+        if (!(nameClass.getName().getName().equals("Object"))) {
+            compiler.codegenHelper.addPushDepth(3);
+            compiler.addInstruction(new PUSH(compiler.getRegister()));
+            compiler.addInstruction(new BSR(new Label("init." + getType().getName())));
+            compiler.addInstruction(new POP(compiler.getRegister()));
+            compiler.codegenHelper.decPushDepth(3);
+        }
         compiler.addComment("Fin new");
     }
 

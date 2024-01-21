@@ -49,6 +49,7 @@ public class EnvironmentType {
         equalsSignature.add(OBJECT);
         MethodDefinition equalsMethodDefinition = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
         ClassDefinition objectDefinition = new ClassDefinition(OBJECT, Location.BUILTIN, equalSymbol,equalsMethodDefinition);
+        OBJECT.setDefinition(objectDefinition);
         envTypes.put(objectSymbol, objectDefinition);
         this.objectClassIdentifier = new Identifier(objectSymbol);
     }
