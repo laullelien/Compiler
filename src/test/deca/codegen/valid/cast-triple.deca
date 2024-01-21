@@ -1,0 +1,25 @@
+class A {
+	int jaj(){
+	return 4;
+	}
+}
+
+class B extends A {
+	int jaj(){
+	return 6;
+}
+}
+
+class C extends B {
+	int jaj(){
+	return 9;
+	}
+}
+
+
+{ C c = new C();
+ A z = (A)((B)(c));
+ println(z.jaj());
+ println(c.jaj());
+}
+
