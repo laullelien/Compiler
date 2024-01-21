@@ -53,8 +53,6 @@ public class Cast extends AbstractUnaryExpr {
         }
         if(typeOperand.isSubType(typeAfterCast)) {
             getOperand().codeGenInst(compiler);
-            compiler.addInstruction(new LEA(compiler.listVTable.getVTable(typeAfterCast.getName().getName()).getDAddr(), Register.R0));
-            compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
             return;
         }
         // On doit checker à partir du type dynamique
@@ -70,8 +68,6 @@ public class Cast extends AbstractUnaryExpr {
         compiler.addLabel(castPossible);
         // instanceof returned true
         getOperand().codeGenInst(compiler);
-        compiler.addInstruction(new LEA(compiler.listVTable.getVTable(typeAfterCast.getName().getName()).getDAddr(), Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
     }
 
 

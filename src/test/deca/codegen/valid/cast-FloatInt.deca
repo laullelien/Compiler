@@ -1,0 +1,5 @@
+{
+	float a = 3.9;
+	println((int)(a));
+	println((int)(3.9));
+}
