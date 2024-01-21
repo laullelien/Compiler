@@ -1,0 +1,3 @@
+class Sasuke extends Madara {}
+class Madara{}
+{} 
