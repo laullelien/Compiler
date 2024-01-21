@@ -32,7 +32,7 @@ public class CodegenHelper {
         compiler.addInstruction(new ERROR());
 
         compiler.addLabel(new Label("heap_full"));
-        compiler.addInstruction(new WSTR("Le tas est pleine"));
+        compiler.addInstruction(new WSTR("Le tas est plein"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 
@@ -53,6 +53,11 @@ public class CodegenHelper {
 
         compiler.addLabel(new Label("dereferencement_null"));
         compiler.addInstruction(new WSTR("Déréférencement de null"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("impossible_cast"));
+        compiler.addInstruction(new WSTR("Cast impossible"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
     }

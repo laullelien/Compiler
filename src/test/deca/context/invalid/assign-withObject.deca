@@ -10,13 +10,13 @@ class C extends B {
 class D extends A {
 }
 
+class E {}
+
 {
-    A a;
-    B b;
-    C c;
+    Object o;
     D d;
-    (A) (c);
-    (D) (a);
-    (B) (b);
-    (Object) (d);
+    C c;
+    E e;
+    d = (D) (o);
+    e = (Object) (c);
 }

@@ -62,11 +62,11 @@ public abstract class Type {
     }
 
     public boolean isObject() {
-        return false;
+        return this.name.toString().equals("Object");
     }
 
     public boolean isNull() {
-        return false;
+        return this.name.toString().equals("null");
     }
 
     public boolean isClassOrNull() {
