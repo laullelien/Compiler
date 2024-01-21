@@ -1,0 +1,10 @@
+class Konoha {
+    protected int habitants;
+}
+class SuperKonoha {
+    int habitants() {
+        Konoha Konoha2 = new Konoha();
+        return Konoha2.habitants;
+    }
+}
+{}
