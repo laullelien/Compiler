@@ -5,7 +5,6 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 
-import javax.naming.Context;
 import java.io.PrintStream;
 
 public abstract class AbstractDeclMethod extends Tree {
@@ -100,9 +99,9 @@ public abstract class AbstractDeclMethod extends Tree {
         methodBody.verifyMethodBodyPass3(compiler, envExpParam, currentClass, returnType);
     }
 
-    abstract protected void codeGenMethod(DecacCompiler compiler, String className);
-
     public AbstractMethodBody getMethodBody() {
         return methodBody;
     }
+
+    protected abstract void codeGenMethod(DecacCompiler compiler, String className);
 }
