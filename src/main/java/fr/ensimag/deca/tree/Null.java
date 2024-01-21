@@ -4,6 +4,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -13,6 +16,16 @@ public class Null extends AbstractExpr{
         SymbolTable.Symbol nullSymbol = compiler.createSymbol("null");
         setType(new NullType(nullSymbol));
         return getType();
+    }
+
+    @Override
+    public DVal getDval() {
+        return new NullOperand();
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new NullOperand(), compiler.getRegister()));
     }
 
     @Override
