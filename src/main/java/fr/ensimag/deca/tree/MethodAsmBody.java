@@ -51,10 +51,14 @@ public class MethodAsmBody extends AbstractMethodBody {
         StringBuilder lineInstr = new StringBuilder();
         while (it.current() != CharacterIterator.DONE) {
             lineInstr.append(it.current());
-            System.out.println(it.current());
-            if (it.current() == '\\' && it.next() == 'n') {
-                compiler.add(new InlinePortion(lineInstr.substring(0, lineInstr.length() - 1)));
-                lineInstr.delete(0, lineInstr.length());
+            if (it.current() == '\\') {
+                if (it.next() == 'n') {
+                    compiler.add(new InlinePortion(lineInstr.substring(0, lineInstr.length() - 1)));
+                    lineInstr.delete(0, lineInstr.length());
+                } else {
+                    lineInstr.delete(lineInstr.length() - 1, lineInstr.length());
+                    lineInstr.append(it.current());
+                }
             }
             it.next();
         }
