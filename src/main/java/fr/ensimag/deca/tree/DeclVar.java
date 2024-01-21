@@ -81,6 +81,11 @@ public class DeclVar extends AbstractDeclVar {
     }
 
     @Override
+    public void setLocalOperand(int offset) {
+        varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.LB));
+    }
+
+    @Override
     public void codeGenDeclVar(DecacCompiler compiler) {
         initialization.codeGenInst(compiler);
         if (initialization instanceof Initialization) {

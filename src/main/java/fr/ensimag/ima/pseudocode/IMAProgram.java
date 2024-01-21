@@ -33,6 +33,10 @@ public class IMAProgram {
         lines.add(new Line(l));
     }
 
+    public void addFirstLabel(Label l) {
+        lines.addFirst(new Line(l));
+    }
+
     public void addInstruction(Instruction i) {
         lines.add(new Line(i));
     }
