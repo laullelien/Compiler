@@ -21,11 +21,6 @@ public class MethodCall extends AbstractExpr {
         this.listArgs = listArgs;
     }
 
-    public MethodCall(AbstractIdentifier identifier, ListExpr listArgs) {
-        this.identifier = identifier;
-        this.listArgs = listArgs;
-    }
-
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type exprType = expr.verifyExpr(compiler, localEnv, currentClass);
