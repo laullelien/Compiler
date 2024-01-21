@@ -53,7 +53,7 @@ public class VTable {
     public void createLabel(String methodName) {
         Label label = new Label("code." + className + "." + methodName);
         int labelIndex = declaredMethod.indexOf(methodName);
-        if (labelIndex > 0) {
+        if (labelIndex >= 0) {
             // la méthode est redéfini
             labelsTable.remove(labelIndex);
             labelsTable.add(labelIndex, label);
