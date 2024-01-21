@@ -18,11 +18,6 @@ public class Null extends AbstractExpr{
     }
 
     @Override
-    public void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(new NullOperand(), compiler.getRegister()));
-    }
-
-    @Override
     public void decompile(IndentPrintStream s) {
         s.print(" null ");
     }
