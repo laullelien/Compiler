@@ -1,7 +1,7 @@
 class A {
     int a;
 
-    void bobo() asm("WSTR \"Hey\"\nLOAD #null, R0");
+    void bobo() asm("WSTR \"Hey\"\nLOAD #null, R0\nRTS");
 }
 
 {
