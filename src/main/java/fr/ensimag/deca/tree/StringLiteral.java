@@ -42,6 +42,8 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         String noQuote = value.substring(1, value.length() - 1);
+        noQuote = noQuote.replace("\\\"", "\"");
+        noQuote = noQuote.replace("\\\\", "\\");
         compiler.addInstruction(new WSTR(new ImmediateString(noQuote)));
     }
 
