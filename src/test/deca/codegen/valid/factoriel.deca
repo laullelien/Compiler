@@ -1,0 +1,16 @@
+class Factoriel {
+    int factoriel(int i){
+        if(i <= 1){  // On return 1 pour les facto negatives pour séparer la tache 
+            return 1;
+        }
+        return i * this.factoriel(i - 1);
+    }
+}
+
+{
+ Factoriel f = new Factoriel();
+ println(f.factoriel(3));   
+ println(f.factoriel(7));
+ println(f.factoriel(0));
+}
+
