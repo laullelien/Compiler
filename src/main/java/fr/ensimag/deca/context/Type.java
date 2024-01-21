@@ -86,6 +86,9 @@ public abstract class Type {
     }
 
     public boolean isSubType(Type potentialParentType){
+        if (this.isNull()) {
+            return true;
+        }
         if (this.isClass() && potentialParentType.isClass()){
             return (((ClassType) this).isSubClassOf((ClassType) potentialParentType));
         }

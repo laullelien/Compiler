@@ -1,0 +1,6 @@
+{
+	Object o = null;
+	if(o instanceof Object) {
+		print("no");
+	}
+}

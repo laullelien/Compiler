@@ -28,6 +28,10 @@ public class Instanceof extends AbstractBinaryExpr{
 
         DAddr parentClassDAddr = compiler.listVTable.getVTable(parentClassName).getDAddr();
 
+        // on a null en leftOperand, on return true
+        compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
+        compiler.addInstruction(new BEQ(returnTrue));
+
         // on enregistre l'adresse de la classe de leftOperand dans R1
         compiler.addInstruction(new LOAD(new RegisterOffset(0, compiler.getRegister()), Register.R1));
 
