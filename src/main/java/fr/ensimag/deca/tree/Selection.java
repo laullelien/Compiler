@@ -34,10 +34,13 @@ public class Selection extends AbstractLValue {
         EnvironmentExp envClass = ((ClassType) exprType).getDefinition().getMembers();
         FieldDefinition fieldIdent = (FieldDefinition) (this.identifier.verifyField(compiler, envClass));
         if (fieldIdent.getVisibility() == Visibility.PROTECTED) {
+            if (currentClass == null){
+                throw new ContextualError("Appel d'un champ protected dans le main : la règle 3.66 n'est pas respectée.", getLocation());
+            }
             if (!currentClass.getType().isSubType(exprType)) {
                 throw new ContextualError("Cela ne respecte pas 3.66. Le type de l'expression n'est pas un sous-type du type de la classe actuelle.", getLocation());
             }
-            if (!( currentClass.getType().isSubType(fieldIdent.getContainingClass().getType()))) {
+            if (!(currentClass.getType().isSubType(fieldIdent.getContainingClass().getType()))) {
                 throw new ContextualError("Cela ne respecte pas 3.66. Le type de la classe actuelle n'est pas un sous-type du type du field.", getLocation());
             }
         }
