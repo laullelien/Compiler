@@ -111,7 +111,7 @@ public class DeclClass extends AbstractDeclClass {
     protected void codeGenClassBody(DecacCompiler compiler) {
         codeGenInit(compiler);
         for(AbstractDeclMethod method: methods.getList()) {
-            method.codeGenMethod(compiler);
+            method.codeGenMethod(compiler, this.name.getName().getName());
         }
     }
 

@@ -15,7 +15,8 @@ class E {}
 {
     Object o;
     D d;
+    C c;
     E e;
-    d = (D) o;
-    e = (Object) c;
+    d = (D) (o);
+    e = (Object) (c);
 }
