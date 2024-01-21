@@ -42,7 +42,7 @@ public class ListDeclParam extends TreeList<AbstractDeclParam>{
             try {
                 environmentListParam.declare(envParam);
             } catch (EnvironmentExp.DoubleDefException e) {
-                throw new ContextualError("Paramètre déclaré deux fois : la règle (3.12) n'est pas respectée.", this.getLocation());
+                throw new ContextualError("Paramètre déclaré deux fois : la règle (3.12) n'est pas respectée.", a.getLocation());
             }
 
         }

@@ -24,7 +24,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             try {
                 envExpListMethods.declare(envExpMethod);
             } catch (EnvironmentExp.DoubleDefException e) {
-                throw new ContextualError("Des méthodes ont été déclarées avec le même nom, la règle (2.6) n'est pas respectée", this.getLocation());
+                throw new ContextualError("Des méthodes ont été déclarées avec le même nom, la règle (2.6) n'est pas respectée", a.getLocation());
             }
         }
         return envExpListMethods;

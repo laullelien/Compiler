@@ -28,7 +28,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
                 env.declare(decl.verifyDeclField(compiler, superClassSymbol, classDef));
             }
             catch (EnvironmentExp.DoubleDefException e){
-                throw new ContextualError("Double définition d'un champ : la règle (2.4) n'est pas respectée", this.getLocation());
+                throw new ContextualError("Double définition d'un champ : la règle (2.4) n'est pas respectée", decl.getLocation());
             }
         }
         return env;
