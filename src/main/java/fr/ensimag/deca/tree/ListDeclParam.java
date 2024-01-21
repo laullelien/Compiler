@@ -1,11 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Signature;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.util.Iterator;
 
@@ -35,8 +34,11 @@ public class ListDeclParam extends TreeList<AbstractDeclParam>{
 
     public EnvironmentExp verifyListDeclParamPass3(DecacCompiler compiler) throws ContextualError{
         EnvironmentExp environmentListParam = new EnvironmentExp();
+        int indexParam = -3;
         for (AbstractDeclParam a : this.getList()) {
             EnvironmentExp envParam = a.verifyDeclParamPass3(compiler);
+            ((ParamDefinition) a.getParamName().getDefinition()).setOperand(new RegisterOffset(indexParam, Register.LB));
+            indexParam--;
             try {
                 environmentListParam.declare(envParam);
             } catch (EnvironmentExp.DoubleDefException e) {

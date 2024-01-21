@@ -4,6 +4,11 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.deca.context.MethodDefinition;
+import fr.ensimag.ima.pseudocode.IMAProgram;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 public class DeclMethod extends AbstractDeclMethod{
@@ -13,6 +18,11 @@ public class DeclMethod extends AbstractDeclMethod{
 
     @Override
     protected void codeGenMethod(DecacCompiler compiler, String className) {
+        if(getMethodBody() instanceof MethodAsmBody) {
+            compiler.addLabel(new Label("code." + className + "." + getMethodName().getName().getName()));
+            getMethodBody().codeGenInst(compiler);
+            return;
+        }
         //enregister le programme que l'on a utilisé jusque la
         IMAProgram untilNowProg = compiler.getProgram();
         // nouveau programme que l'on utilise seulement pour cette methode, pour les TSTO, ADDSP et enregistrement de registres
@@ -31,7 +41,7 @@ public class DeclMethod extends AbstractDeclMethod{
         int nbDeclVar = getMethodBody().getVarNb();
         int maxReg = compiler.getMaxReg();
 
-        for(int i = maxReg; i >= 2; i--) {
+        for(int i = 2; i <= maxReg; i++) {
             methodProg.addFirst(new PUSH(Register.getR(i)));
         }
         if(nbDeclVar != 0) {

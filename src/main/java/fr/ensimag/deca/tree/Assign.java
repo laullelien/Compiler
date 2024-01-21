@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -47,22 +48,42 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        if(getLeftOperand() instanceof Selection) {
+            if (compiler.isRegisterAvailable()) {
+                GPRegister prevReg = compiler.getRegister();
+                ((Selection)getLeftOperand()).codeGenAdress(compiler);
+                compiler.incrementRegister();
+                getRightOperand().codeGenInst(compiler);
+                compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(0, prevReg)));
+                compiler.decrementRegister();
+            } else {
+                ((Selection)getLeftOperand()).codeGenAdress(compiler);
+                compiler.addInstruction(new PUSH(compiler.getRegister()));
+                compiler.codegenHelper.incPushDepth();
+                getRightOperand().codeGenInst(compiler);
+                compiler.addInstruction(new LOAD(compiler.getRegister(), Register.R0));
+                compiler.addInstruction(new POP(compiler.getRegister()));
+                compiler.codegenHelper.decPushDepth();
+                compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
+            }
+            return;
+        }
         if(getRightOperand().getDval() != null) {
             compiler.addInstruction(new LOAD(getRightOperand().getDval(), compiler.getRegister()));
-            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
             return;
         }
         getRightOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
     }
 
     @Override
     protected void codeGenBinary(DecacCompiler compiler) {
         if(compiler.getDVal() instanceof  GPRegister) {
-            compiler.addInstruction(new STORE((GPRegister)compiler.getDVal(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+            compiler.addInstruction(new STORE((GPRegister)compiler.getDVal(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
             return;
         }
         compiler.addInstruction(new LOAD(compiler.getDVal(), compiler.getRegister()));
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
     }
 }

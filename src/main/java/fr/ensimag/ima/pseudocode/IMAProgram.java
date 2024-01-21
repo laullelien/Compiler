@@ -30,6 +30,7 @@ public class IMAProgram {
     }
 
     public void addLabel(Label l) {
+        lastIsLoad = false;
         lines.add(new Line(l));
     }
 
@@ -38,6 +39,12 @@ public class IMAProgram {
     }
 
     public void addInstruction(Instruction i) {
+        if(i instanceof LOAD) {
+            lastIsLoad = true;
+        }
+        else {
+            lastIsLoad = false;
+        }
         lines.add(new Line(i));
     }
 

@@ -6,12 +6,18 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.ParamDefinition;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 import java.io.PrintStream;
 
 public class AbstractDeclParam extends Tree{
     private AbstractIdentifier paramType;
     private AbstractIdentifier paramName;
+
+    public AbstractIdentifier getParamName() {
+        return paramName;
+    }
 
     public AbstractDeclParam(AbstractIdentifier paramType, AbstractIdentifier paramName) {
         this.paramType = paramType;

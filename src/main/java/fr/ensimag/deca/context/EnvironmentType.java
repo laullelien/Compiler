@@ -44,11 +44,12 @@ public class EnvironmentType {
 
         Symbol objectSymbol = compiler.createSymbol("Object");
         Symbol equalSymbol = compiler.createSymbol("equals");
-        OBJECT = new ClassType(objectSymbol);
+        OBJECT = new ObjectType(objectSymbol);
         Signature equalsSignature = new Signature();
         equalsSignature.add(OBJECT);
         MethodDefinition equalsMethodDefinition = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
         ClassDefinition objectDefinition = new ClassDefinition(OBJECT, Location.BUILTIN, equalSymbol,equalsMethodDefinition);
+        OBJECT.setDefinition(objectDefinition);
         envTypes.put(objectSymbol, objectDefinition);
         this.objectClassIdentifier = new Identifier(objectSymbol);
     }
@@ -71,17 +72,13 @@ public class EnvironmentType {
     }
 
     public boolean assignCompatible(Type t1, Type t2) {
-        // gestion des sous-classes à implémenter
         if (t1.isFloat() && t2.isInt() || t1 == t2) {
             return true;
+        } else {
+            return t2.isSubType(t1);
         }
-        System.out.println("test si" + t2.getName().getName() + "est sous type de " + t1.getName().getName());
-        if (t2.isSubType(t1)){
-            return true;
-        }
-        System.out.println("réponse : non");
-        return false;
     }
+
     public void declare(Symbol classSymbol, ClassDefinition classDefinition) throws DoubleDefException {
         if (envTypes.containsKey(classSymbol)) {
             throw new DoubleDefException();
@@ -98,6 +95,6 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
-    public final ClassType OBJECT;
+    public final ObjectType OBJECT;
     public final AbstractIdentifier objectClassIdentifier;
 }

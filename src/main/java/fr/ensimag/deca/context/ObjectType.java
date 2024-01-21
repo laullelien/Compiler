@@ -9,7 +9,7 @@ import fr.ensimag.ima.pseudocode.ImmediateFloat;
  * @author Ensimag
  * @date 01/01/2024
  */
-public class ObjectType extends Type {
+public class ObjectType extends ClassType {
 
     public ObjectType(SymbolTable.Symbol name) {
         super(name);
@@ -26,4 +26,7 @@ public class ObjectType extends Type {
     }
 
 
+    public void setDefinition(ClassDefinition objectDefinition) {
+        this.definition = objectDefinition;
+    }
 }
