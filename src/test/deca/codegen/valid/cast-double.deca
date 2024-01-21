@@ -10,16 +10,10 @@ class B extends A {
 }
 }
 
-class C extends B {
-	int jaj(){
-	return 9;
-	}
-}
 
-
-{ C c = new C();
- A z = (A) (B) (c);
+{ B b = new B();
+ A z = (A) (b);
  println(z.jaj());
- println(c.jaj());
+ println(b.jaj());
 }
 
