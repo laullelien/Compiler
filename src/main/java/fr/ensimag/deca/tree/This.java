@@ -19,6 +19,10 @@ public class This extends AbstractExpr{
     public This(Boolean parsed) {
         this.parsed = parsed;
     }
+
+    public boolean isParsed() {
+        return parsed;
+    }
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         if(currentClass == null) {

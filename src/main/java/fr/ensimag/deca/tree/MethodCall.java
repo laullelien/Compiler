@@ -89,8 +89,13 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        if (expr != null) {
-            expr.decompile(s);
+        expr.decompile(s);
+        if(expr instanceof This) {
+            if(((This) expr).isParsed()) {
+                s.print(".");
+            }
+        }
+        else {
             s.print(".");
         }
         identifier.decompile(s);
@@ -101,18 +106,14 @@ public class MethodCall extends AbstractExpr {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        if (expr != null) {
-            expr.prettyPrint(s, prefix, false);
-        }
+        expr.prettyPrint(s, prefix, false);
         identifier.prettyPrint(s, prefix, false);
         listArgs.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        if (expr != null) {
-            expr.iter(f);
-        }
+        expr.iter(f);
         identifier.iter(f);
         listArgs.iter(f);
     }
