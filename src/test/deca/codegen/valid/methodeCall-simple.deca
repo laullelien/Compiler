@@ -3,9 +3,12 @@ class A{
 		println("passe");
 		return 5;
 	}
+	int quatre(){
+	    return cinq()-1;
+	}
 }
 
 {
 	A a = new A();
-	println(a.cinq());
+	println(a.quatre());
 }
