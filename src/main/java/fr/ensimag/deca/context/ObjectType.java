@@ -26,4 +26,7 @@ public class ObjectType extends ClassType {
     }
 
 
+    public void setDefinition(ClassDefinition objectDefinition) {
+        this.definition = objectDefinition;
+    }
 }
