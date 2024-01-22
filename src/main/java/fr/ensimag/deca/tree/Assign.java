@@ -5,10 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -70,11 +67,18 @@ public class Assign extends AbstractBinaryExpr {
         }
         if(getRightOperand().getDval() != null) {
             compiler.addInstruction(new LOAD(getRightOperand().getDval(), compiler.getRegister()));
-            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
-            return;
+        } else {
+            getRightOperand().codeGenInst(compiler);
         }
-        getRightOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
+        if(((Identifier) this.getLeftOperand()).getExpDefinition().getOperand() != null) {
+            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
+        }
+        else {
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((Identifier)getLeftOperand()).getFieldDefinition().getIndex(), Register.R0)));
+        }
     }
 
     @Override

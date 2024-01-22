@@ -101,7 +101,7 @@ public class DeclClass extends AbstractDeclClass {
         }
         // règle 3.5
         fields.verifyListDeclFieldPass3(compiler, this.name.getClassDefinition().getMembers(), this.name.getClassDefinition());
-        methods.verifyListDeclMethodPass3(compiler, this.name.getClassDefinition());
+        methods.verifyListDeclMethodPass3(compiler, this.name.getClassDefinition().getMembers(), this.name.getClassDefinition());
     }
 
     @Override

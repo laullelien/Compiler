@@ -91,12 +91,12 @@ public abstract class AbstractDeclMethod extends Tree {
         return methodEnvExp;
     }
 
-    public void verifyMethodPass3(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError{
+    public void verifyMethodPass3(DecacCompiler compiler, EnvironmentExp classEnv, ClassDefinition currentClass) throws ContextualError{
         // règle 3.11
         Type returnType = methodReturnType.verifyType(compiler);
         EnvironmentExp envExpParam = methodParameters.verifyListDeclParamPass3(compiler);
         currentClass.currentMethodNameForReturn = this.methodName.getName().getName();
-        methodBody.verifyMethodBodyPass3(compiler, envExpParam, currentClass, returnType);
+        methodBody.verifyMethodBodyPass3(compiler, classEnv, envExpParam, currentClass, returnType);
     }
 
     public AbstractMethodBody getMethodBody() {
