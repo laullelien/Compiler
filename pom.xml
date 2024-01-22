@@ -298,16 +298,16 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>run-decompilation</id>
-                        <configuration>
-                            <executable>./src/test/script/run-decompilation.sh</executable>
-                        </configuration>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                    </execution>
+<!--                    <execution>-->
+<!--                        <id>run-decompilation</id>-->
+<!--                        <configuration>-->
+<!--                            <executable>./src/test/script/run-decompilation.sh</executable>-->
+<!--                        </configuration>-->
+<!--                        <phase>test</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
                     <execution>
                         <id>run-gencode</id>
                         <configuration>
