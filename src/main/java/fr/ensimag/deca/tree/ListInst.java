@@ -8,12 +8,23 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
+import java.util.Map;
+
 /**
  * 
  * @author gl38
  * @date 01/01/2024
  */
 public class ListInst extends TreeList<AbstractInst> {
+
+    /**
+     * Implements current defining expression for variable in the list
+     */
+    private Map<AbstractDeclVar, AbstractExpr> currentDef;
+
+    public Map<AbstractDeclVar, AbstractExpr> getCurrentDef() {
+        return currentDef;
+    }
 
     /**
      * Implements non-terminal "list_inst" of [SyntaxeContextuelle] in pass 3

@@ -3,6 +3,7 @@ package fr.ensimag.deca;
 import fr.ensimag.deca.codegen.CodegenHelper;
 import fr.ensimag.deca.codegen.ListVTable;
 import fr.ensimag.deca.context.EnvironmentType;
+import fr.ensimag.deca.extension.SSAFormHelper;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -194,6 +195,9 @@ public class DecacCompiler {
 
     /** Helper class for code generation */
     public final CodegenHelper codegenHelper = new CodegenHelper(this);
+
+    /** Helper class for SSA-CFG */
+    public final SSAFormHelper ssaFormHelper = new SSAFormHelper();
 
     public Symbol createSymbol(String name) {
        // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
