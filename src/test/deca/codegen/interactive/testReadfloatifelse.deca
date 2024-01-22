@@ -8,10 +8,10 @@
 //    cree le 13/01/2024
 
 {
-if (ReadFloat() == 19.0){
-println("Tu as choisi 19.0")
+if (readFloat() == 19.0){
+println("Tu as choisi 19.0");
 }
 else {
-println("Tu as choisi un float different de 19.0")
+println("Tu as choisi un float different de 19.0");
 }
 }

@@ -9,10 +9,10 @@
 
 {
 int m = 5;
-if (ReadInt() >= m){
-println("Tu as choisi un nombre plus grand que 5")
+if (readInt() >= m){
+println("Tu as choisi un nombre plus grand que 5");
 }
 else {
-println(" Tu as choisi un nombre plus petit que 5")
+println(" Tu as choisi un nombre plus petit que 5");
 }
 }
