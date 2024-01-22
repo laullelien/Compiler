@@ -8,7 +8,6 @@ import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
 
-// A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
  * Environment containing types. Initially contains predefined identifiers, more
  * classes can be added with declareClass().
@@ -20,7 +19,7 @@ public class EnvironmentType {
 
     public EnvironmentType(DecacCompiler compiler) {
         
-        envTypes = new HashMap<Symbol, TypeDefinition>();
+        envTypes = new HashMap<>();
         
         Symbol intSymb = compiler.createSymbol("int");
         INT = new IntType(intSymb);

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * TODO impossible a tester comme les champs sont privés.
+ * Impossible de faire les tests comme les champs sont privés.
  * Recherche de fix en cours
  */
 public class TestVTable {
