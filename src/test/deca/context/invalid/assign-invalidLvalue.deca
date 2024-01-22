@@ -1,0 +1,11 @@
+class A {
+    void method() {
+    }
+}
+class B {
+}
+
+{
+    A a = new A();
+    a.method() = 3;
+}

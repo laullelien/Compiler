@@ -1,0 +1,16 @@
+class A{
+	void call() {
+		println("No");
+	}
+}
+
+class B extends A{
+	void call() {
+		println("Yes");
+
+}
+}
+
+{
+	(A)(new B()).call();
+}

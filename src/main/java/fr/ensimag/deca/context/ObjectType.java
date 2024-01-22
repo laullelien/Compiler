@@ -21,6 +21,9 @@ public class ObjectType extends ClassType {
     }
 
     @Override
+    public boolean isClass() {return true;}
+
+    @Override
     public boolean sameType(Type otherType) {
         return this.getName().equals(otherType.getName());
     }
