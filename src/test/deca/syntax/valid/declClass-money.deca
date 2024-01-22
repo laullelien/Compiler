@@ -1,0 +1,20 @@
+class $$$ {
+    int $$$;
+
+    int money() {
+        return $$$;
+    }
+
+    void noMoney() {
+    }
+}
+
+class Antoine {
+    $$$ $$$;
+}
+
+{
+    Antoine antoine = new Antoine();
+    $$$ money = antoine.$$$;
+    money.noMoney();
+}

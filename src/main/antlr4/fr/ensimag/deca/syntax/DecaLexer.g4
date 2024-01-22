@@ -76,7 +76,7 @@ INCLUDE: ('#include' (' ')* '"' FILENAME '"'){doInclude(getText());};
 
 // grammar for identifiers
 
-IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
+IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')* ;
 
 // Deca lexer rules for strings & println.
 fragment EOL: '\\n' ;
