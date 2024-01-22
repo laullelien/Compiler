@@ -1,0 +1,11 @@
+class A {
+    protected int a;
+}
+
+class B extends A {
+    void method() {
+    B b = new B();
+    b.a;
+    }
+}
+
