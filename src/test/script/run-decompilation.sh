@@ -6,4 +6,6 @@
 # répertoire d'où est lancé le script) :
 cd "$(dirname "$0")" || exit 1
 
+echo "Début tests décompilation (un peu long, veuillez patienter)"
 python3 'run-decompilation.py'
+echo "Fin tests décompilation"
