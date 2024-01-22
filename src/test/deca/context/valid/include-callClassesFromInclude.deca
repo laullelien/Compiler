@@ -1,0 +1,11 @@
+#include "includeFile-manyClasses.decah"
+
+{
+    #include "includeFile-withoutClasses.decah"
+    A a = new A();
+    B b = new B();
+    println(a.method());
+    println(b.jaiFaim());
+    println(3);
+    println(cookies);
+}

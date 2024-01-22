@@ -1,0 +1,2 @@
+int bedrooms = 3;
+print(bedrooms);
