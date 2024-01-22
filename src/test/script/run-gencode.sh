@@ -64,6 +64,28 @@ gencode_exec() {
             echo "    [ERREUR] Fichier $filename.$ext_output non généré."
             exit 1
         fi
+        # on vérifie si l'option -r N est spécifiée
+        nb_registers=$(echo "$decac_options_no_debug" | grep '\-r [0-9]' | cut -f2 -d ' ' 2> /dev/null)
+        # test si $nb_registers est bien un entier
+        expr "$nb_registers" + 0 > /dev/null 2> /dev/null
+        if [ "$?" -lt 2 ]
+        then
+            # si on a l'option -r N, on vérifie qu'on utilise bien QUE les registres R0 à RN
+            res_grep_invalid_registers="$(cat "$source_output" | grep "R$nb_registers")"
+            if [ "$?" -eq 0 ]
+            then
+                echo "    [ERREUR] Echec inattendu de decac -r $nb_registers"
+                echo "    [ERREUR] Le registre suivant a été utilisé: R$nb_registers"
+                echo "    [DEBUG] Lignes qui utilise R$nb_registers:"
+                echo "$res_grep_invalid_registers"
+                # décommenter pour afficher le fichier .ass généré par decac
+                # echo "    [DEBUG] Fichier $filename.$ext_output généré par decac:"
+                # cat "$source_output"
+                rm -f "$source_error"
+                rm -f "$source_output"
+                exit 1
+            fi
+        fi
         output_ima="${source%.deca}.out"
         ima $ima_options "$source_output" > "$output_ima" 2> "$source_error"
         rm -f "$source_output"
