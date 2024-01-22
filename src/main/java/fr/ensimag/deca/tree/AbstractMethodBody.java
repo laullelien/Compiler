@@ -10,7 +10,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 public abstract class AbstractMethodBody extends Tree {
-    public abstract void verifyMethodBodyPass3(DecacCompiler compiler, EnvironmentExp envExpParam, ClassDefinition currentClass, Type returnType) throws ContextualError;
+    public abstract void verifyMethodBodyPass3(DecacCompiler compiler, EnvironmentExp classEnv, EnvironmentExp envExpParam, ClassDefinition currentClass, Type returnType) throws ContextualError;
 
     abstract protected void codeGenInst(DecacCompiler compiler);
 

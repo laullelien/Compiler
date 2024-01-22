@@ -1,0 +1,18 @@
+class A {
+	int x = 5;
+	boolean b = true;
+	float y = 3;
+	int z = 2;
+	void call() {
+		if(b) {
+			println(x);
+		}
+		println(z + y);
+	}
+
+}
+
+{
+	A a = new A();
+	a.call();
+}

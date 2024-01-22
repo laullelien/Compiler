@@ -45,10 +45,10 @@ public class MethodBody extends AbstractMethodBody {
     }
 
     @Override
-    public void verifyMethodBodyPass3(DecacCompiler compiler, EnvironmentExp envExpParam, ClassDefinition currentClass, Type returnType)
+    public void verifyMethodBodyPass3(DecacCompiler compiler, EnvironmentExp classEnv, EnvironmentExp envExpParam, ClassDefinition currentClass, Type returnType)
                                         throws ContextualError {
         declVar.verifyListDeclVariable(compiler, envExpParam, currentClass);
-        inst.verifyListInst(compiler, envExpParam, currentClass, returnType);
+        inst.verifyListInst(compiler, envExpParam.stackEnvironment(envExpParam, classEnv), currentClass, returnType);
     }
 
     @Override

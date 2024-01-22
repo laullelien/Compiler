@@ -1,0 +1,5 @@
+class A {
+	boolean equals(Object o) {
+	}
+	void param(int a, float c, boolean w, Object o) {}
+}

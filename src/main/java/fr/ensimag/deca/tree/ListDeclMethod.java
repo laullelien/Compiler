@@ -31,10 +31,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     }
 
 
-    public void verifyListDeclMethodPass3(DecacCompiler compiler, ClassDefinition currentClass) throws ContextualError {
+    public void verifyListDeclMethodPass3(DecacCompiler compiler, EnvironmentExp classEnv, ClassDefinition currentClass) throws ContextualError {
         // règle 3.10
         for (AbstractDeclMethod a : this.getList()) {
-            a.verifyMethodPass3(compiler, currentClass);
+            a.verifyMethodPass3(compiler, classEnv, currentClass);
         }
     }
 

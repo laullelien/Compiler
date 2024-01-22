@@ -52,7 +52,7 @@ public class MethodCall extends AbstractExpr {
         compiler.addComment("Debut methodCall");
         // reserve de la place pour les params
         int paramNumber = 1 + listArgs.size();
-        compiler.codegenHelper.addPushDepth(paramNumber + 3);
+        compiler.codegenHelper.addPushDepth(paramNumber + 2);
         compiler.addInstruction(new ADDSP(paramNumber));
 
         // empilement du paramètre implicite
@@ -83,7 +83,7 @@ public class MethodCall extends AbstractExpr {
         compiler.addInstruction(new LOAD(Register.R0, compiler.getRegister()));
 
         compiler.addInstruction(new SUBSP(paramNumber));
-        compiler.codegenHelper.decPushDepth(paramNumber + 3);
+        compiler.codegenHelper.decPushDepth(paramNumber + 2);
         compiler.addComment("Fin methodCall");
     }
 

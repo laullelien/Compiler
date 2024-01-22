@@ -1,0 +1,7 @@
+class A{	
+	A call() {}
+}
+
+class B extends A{
+	Object call() {}
+}
