@@ -7,6 +7,7 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,10 +36,10 @@ public class MethodCall extends AbstractExpr {
         if (typeList.size() != listArgs.size()) {
             throw new ContextualError("La règle 3.71 n'est pas respectée, le nombre de paramètres ne correspond pas avec la signature", getLocation());
         }
-        Iterator<Type> typeIterator = typeList.iterator();
-        Iterator<AbstractExpr> argsIterator = listArgs.iterator();
-        while (typeIterator.hasNext()) {
-            try { argsIterator.next().verifyRValue(compiler, localEnv, currentClass, typeIterator.next());}
+        for (int i = 0; i < listArgs.size(); i++) {
+            try {
+                listArgs.set(i, listArgs.getList().get(i).verifyRValue(compiler, localEnv, currentClass, typeList.get(i)));
+            }
             catch (ContextualError e){
                 throw new ContextualError("La règle 3.71 n'est pas respectée, Un des paramètres n'a pas le bon type", getLocation());
             }
