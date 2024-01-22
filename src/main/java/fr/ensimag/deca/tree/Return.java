@@ -33,7 +33,7 @@ public class Return extends AbstractInst {
         if (expectedReturnType.isVoid()){
             throw new ContextualError("Le type retourné par la fonction est nulle : la règle (3.24) n'est pas respectée.", this.getLocation());
         }
-        this.getReturnExpr().verifyRValue(compiler, localEnv, currentClass, expectedReturnType);
+        returnExpr = this.getReturnExpr().verifyRValue(compiler, localEnv, currentClass, expectedReturnType);
         setClassName(currentClass.getType().getName().getName());
         setMethodName(currentClass.currentMethodNameForReturn);
     }
