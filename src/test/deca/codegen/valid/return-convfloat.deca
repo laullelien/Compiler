@@ -1,0 +1,9 @@
+class A{
+    float deux(){
+        return  2;
+    }
+}
+
+{
+    printlnx((new A()).deux());
+}
