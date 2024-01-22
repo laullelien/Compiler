@@ -1,0 +1,23 @@
+class Sarah{
+	boolean drole;
+
+}
+
+class Saraha{
+	int sum(int x, int y, Sarah Sarah) {
+		Sarah.drole = false;
+		return x + y;
+	}
+}
+
+{
+	Saraha s = new Saraha();
+	Sarah Sarah = new Sarah();
+	println(s.sum(3, 8, Sarah));
+	if(Sarah.drole){
+	println("Sarah est drôle");
+	}
+	else {
+	println("Sarah n'est pas drôle");
+	}
+}

@@ -3,3 +3,8 @@ class A {
         return 3;
     }
 }
+
+{
+A a = new A();
+println(a.method());
+}
