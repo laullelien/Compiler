@@ -1,0 +1,8 @@
+class A{
+}
+{
+    Object o;
+    A a;
+    (Object)(a);
+    (A)(o);
+}

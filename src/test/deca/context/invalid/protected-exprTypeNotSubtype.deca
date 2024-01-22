@@ -1,0 +1,12 @@
+class A{
+    protected C o;
+}
+
+class B extends A{
+    A a = new A();
+    void method(){
+        a.o;
+    }
+}
+
+class C extends B{}

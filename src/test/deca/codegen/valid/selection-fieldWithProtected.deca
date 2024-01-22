@@ -3,7 +3,7 @@ class Konoha {
 }
 class superKonoha extends Konoha {
     int habitants() {
-        Konoha Konoha2 = new Konoha();
+        superKonoha Konoha2 = new superKonoha();
         return Konoha2.Habitants;
     }
 }
