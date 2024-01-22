@@ -216,7 +216,6 @@ public class DecacCompiler {
     public final CodegenHelper codegenHelper = new CodegenHelper(this);
 
     public Symbol createSymbol(String name) {
-       // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
 
@@ -229,8 +228,6 @@ public class DecacCompiler {
         String sourceFile = source.getAbsolutePath();
         String destFile = sourceFile.substring(0, sourceFile.length() - 4);
         destFile += "ass";
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
@@ -287,8 +284,7 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
-        // TODO décommenter lorsque l'étape de deca objet terminé
-        // assert(prog.checkAllDecorations());
+        assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;
