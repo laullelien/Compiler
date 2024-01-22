@@ -1,0 +1,10 @@
+class S{
+	int sum(int x, int y) {
+		return x + y;
+	}
+}
+
+{
+	S s = new S();
+	print(s.sum(3, 8, 18));
+}

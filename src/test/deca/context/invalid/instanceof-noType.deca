@@ -1,0 +1,5 @@
+{
+    Object o;
+    Object a;
+    a instanceof o;
+}

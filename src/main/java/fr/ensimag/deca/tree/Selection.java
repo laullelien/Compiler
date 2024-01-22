@@ -37,11 +37,11 @@ public class Selection extends AbstractLValue {
             if (currentClass == null){
                 throw new ContextualError("Appel d'un champ protected dans le main : la règle 3.66 n'est pas respectée.", getLocation());
             }
-            if (!currentClass.getType().isSubType(exprType)) {
+            if (!exprType.isSubType(currentClass.getType())) {
                 throw new ContextualError("Cela ne respecte pas 3.66. Le type de l'expression n'est pas un sous-type du type de la classe actuelle.", getLocation());
             }
             if (!(currentClass.getType().isSubType(fieldIdent.getContainingClass().getType()))) {
-                throw new ContextualError("Cela ne respecte pas 3.66. Le type de la classe actuelle n'est pas un sous-type du type du field.", getLocation());
+                throw new ContextualError("Cela ne respecte pas 3.66. Le type de la classe actuelle n'est pas un sous-type de la class du field protected.", getLocation());
             }
         }
         setType(fieldIdent.getType());
