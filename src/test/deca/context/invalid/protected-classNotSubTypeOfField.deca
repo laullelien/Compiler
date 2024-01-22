@@ -1,0 +1,10 @@
+class fieldClass{
+    Class z;
+    void method() {
+        z.f;
+    }
+}
+
+class Class extends fieldClass{
+    protected int f;
+}

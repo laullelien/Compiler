@@ -1,5 +1,6 @@
 package fr.ensimag.deca.context;
 
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tree.Location;
 import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
@@ -41,6 +42,8 @@ public class ClassDefinition extends TypeDefinition {
 
     private int numberOfFields = 0;
     private int numberOfMethods = 0;
+
+    public String currentMethodNameForReturn;
     
     @Override
     public boolean isClass() {
@@ -63,6 +66,19 @@ public class ClassDefinition extends TypeDefinition {
 
     public EnvironmentExp getMembers() {
         return members;
+    }
+
+    public ClassDefinition(ClassType type, Location location, SymbolTable.Symbol equalsSymbol, MethodDefinition equalsMethodDefinition){
+        super(type, location);
+        EnvironmentExp environmentObject = new EnvironmentExp();
+        try {
+            environmentObject.declare(equalsSymbol, equalsMethodDefinition);
+        }
+        catch (EnvironmentExp.DoubleDefException e){
+            throw new RuntimeException("Double définition de la méthode equals : Big big problem in your code. Don't believe you did it.");
+        }
+        this.members = environmentObject;
+        this.superClass = null;
     }
 
     public ClassDefinition(ClassType type, Location location, ClassDefinition superClass) {

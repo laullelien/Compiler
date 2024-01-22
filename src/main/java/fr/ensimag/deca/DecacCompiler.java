@@ -1,5 +1,7 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.CodegenHelper;
+import fr.ensimag.deca.codegen.ListVTable;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -8,22 +10,16 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.ima.pseudocode.AbstractLine;
-import fr.ensimag.ima.pseudocode.IMAProgram;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.ImmediateString;
+import fr.ensimag.ima.pseudocode.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
 /**
@@ -44,11 +40,60 @@ import org.apache.log4j.Logger;
 public class DecacCompiler {
     private static final Logger LOG = Logger.getLogger(DecacCompiler.class);
 
+    /**
+     * ID of the first available Register for code generation
+     */
+    private int regId = 2;
+    private int maxReg = 2;
+
+    public GPRegister getRegister() {
+        return Register.getR(regId);
+    }
+
+    public void incrementRegister() {
+        regId++;
+        if(regId > maxReg) {
+            maxReg = regId;
+        }
+        Validate.isTrue(regId <= compilerOptions.getMaxRegisters());
+    }
+
+    public void decrementRegister() {
+        regId--;
+        Validate.isTrue(regId >= 2);
+    }
+
+    public void resetMaxReg() {
+        maxReg = 2;
+    }
+
+    public int getMaxReg() {
+        return maxReg;
+    }
+
+    public boolean isRegisterAvailable() {
+        return regId < compilerOptions.getMaxRegisters();
+    }
+
+    /**
+     * DVal used for binary operations, in code generation
+     */
+
+    private DVal dval;
+
+    public DVal getDVal() {
+        return dval;
+    }
+
+    public void setDval(DVal dval) {
+        this.dval = dval;
+    }
+
     private int nbDeclVar = 0;
 
     public int generateDeclVarOffset() {
         nbDeclVar ++;
-        return nbDeclVar;
+        return listVTable.getOffset() + nbDeclVar;
     }
 
     public int getNbDeclVar() {
@@ -109,6 +154,7 @@ public class DecacCompiler {
      * fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction)
      */
     public void addInstruction(Instruction instruction) {
+        lastInstruction = instruction;
         program.addInstruction(instruction);
     }
 
@@ -119,6 +165,20 @@ public class DecacCompiler {
      */
     public void addInstruction(Instruction instruction, String comment) {
         program.addInstruction(instruction, comment);
+    }
+
+    private Instruction lastInstruction;
+
+    public Instruction getLastInstruction() {
+        return lastInstruction;
+    }
+
+    /**
+     *
+     * @return true if and only if the last instruction is a load instruction
+     */
+    public Boolean lastIsLoad() {
+        return program.lastIsLoad();
     }
 
     /**
@@ -134,14 +194,28 @@ public class DecacCompiler {
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
-    private final IMAProgram program = new IMAProgram();
+    private IMAProgram program = new IMAProgram();
+
+    public void setProgram(IMAProgram program) {
+        this.program = program;
+    }
+
+    public IMAProgram getProgram() {
+        return program;
+    }
 
     /** The global environment for types (and the symbolTable) */
     public final SymbolTable symbolTable = new SymbolTable();
+
     public final EnvironmentType environmentType = new EnvironmentType(this);
 
+    /** The list of VTable for Etape C codegen */
+    public final ListVTable listVTable = new ListVTable();
+
+    /** Helper class for code generation */
+    public final CodegenHelper codegenHelper = new CodegenHelper(this);
+
     public Symbol createSymbol(String name) {
-       // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
 
@@ -154,8 +228,6 @@ public class DecacCompiler {
         String sourceFile = source.getAbsolutePath();
         String destFile = sourceFile.substring(0, sourceFile.length() - 4);
         destFile += "ass";
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
@@ -212,8 +284,7 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
-        // TODO a décommenter une fois qu'on applique le défensive programming et décoré l'arbre abstrait
-        // assert(prog.checkAllDecorations());
+        assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;
@@ -223,22 +294,6 @@ public class DecacCompiler {
         prog.codeGenProgram(this);
         addComment("end main program");
 
-        addComment("error handling");
-
-        addLabel(new Label("stack_full"));
-        addInstruction(new WSTR(new ImmediateString("La pile est pleine")));
-        addInstruction(new WNL());
-        addInstruction(new ERROR());
-
-        addLabel(new Label("division_by_0"));
-        addInstruction(new WSTR("Erreur de division par 0"));
-        addInstruction(new WNL());
-        addInstruction(new ERROR());
-
-        addLabel(new Label("input_error"));
-        addInstruction(new WSTR(new ImmediateString("Depassement ou mauvais format")));
-        addInstruction(new WNL());
-        addInstruction(new ERROR());
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

@@ -1,0 +1,10 @@
+class A{
+	void call() {
+		println("Yes");
+	}
+}
+
+{
+	A a;
+	(a = new A()).call();
+}

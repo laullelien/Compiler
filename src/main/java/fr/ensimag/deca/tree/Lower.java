@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.SLE;
 import fr.ensimag.ima.pseudocode.instructions.SLT;
 
 /**
@@ -19,9 +20,9 @@ public class Lower extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        super.codeGenInstruction(compiler, value, target);
-        compiler.addInstruction(new SLT(target));
+    protected void codeGenBinary(DecacCompiler compiler) {
+        super.codeGenBinary(compiler);
+        compiler.addInstruction(new SLT(compiler.getRegister()));
     }
 
     @Override

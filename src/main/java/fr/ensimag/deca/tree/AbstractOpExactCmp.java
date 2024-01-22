@@ -33,9 +33,9 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
                 }
             }
         } else if (!(leftOperandType.isBoolean() && rightOperandType.isBoolean())) {
-            //Plus tard ajouter la compatibilité avec les objets
-            // type_binary_op
-            throw new ContextualError("Les types des opérandes de la comparaison ne sont pas compatibles. Regle 3.33", this.getLocation());
+            if (!(leftOperandType.isClassOrNull() && rightOperandType.isClassOrNull())) {
+                throw new ContextualError("Les types des opérandes de la comparaison ne sont pas compatibles. Regle 3.33", this.getLocation());
+            }
         }
         setType(compiler.environmentType.BOOLEAN);
         return getType();

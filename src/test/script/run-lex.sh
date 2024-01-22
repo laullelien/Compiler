@@ -81,7 +81,7 @@ if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
             echo "$res_lex"
             exit 1
         else
-            echo "    [OK] Succès attendu pour $filename"
+            echo "    [OK] Succès attendu de $filename"
         fi
     done
 fi

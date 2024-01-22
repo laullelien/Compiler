@@ -1,0 +1,8 @@
+class Sasuke {
+    boolean Konoha(int i) {}
+}
+class Sakura extends Sasuke {
+     Sasuke Konoha(int i) {}
+}
+{}
+

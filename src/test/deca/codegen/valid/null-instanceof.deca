@@ -1,0 +1,6 @@
+{
+	if(null instanceof Object) {
+		println("no");
+	}
+	println("logical");
+}

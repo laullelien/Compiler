@@ -1,0 +1,5 @@
+{
+	int a = 3;
+	println((float)(3));
+	println((float)(a));
+}

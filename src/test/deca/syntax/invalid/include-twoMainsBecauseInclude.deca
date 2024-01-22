@@ -1,0 +1,4 @@
+{
+    #include "includeFile-withMain.decah"
+    print(thereAreTwoMains);
+}

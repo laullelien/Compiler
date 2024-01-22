@@ -19,6 +19,7 @@ public class InlinePortion extends AbstractLine {
     
     @Override
     void display(PrintStream s) {
+        s.print("\t");
         s.println(asmCode);
     }
 

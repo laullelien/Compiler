@@ -1,0 +1,50 @@
+class Trash {}
+
+class Sites {
+    protected int c = 10000;
+    protected Sites s;
+    int d;
+    float b = 2.0;
+    boolean r = true;
+    int mangerPointFr(int r, boolean laMort){
+        print(r);
+        return 5 + 10;
+    }
+    Trash sportPointFr(int r, boolean laMort){
+        return null;
+    }
+    int toPrint(){
+        return 3;
+    }
+}
+
+class Bloc extends Sites {
+    float m = 10;
+    protected Sites specialField;
+    Sites superSite = new Sites();
+
+    int accessOfProtected(int m){
+        println(m);
+        println(this.toPrint());
+        println(c);
+        if (c == this.c){
+            println("on est bon");
+        }
+        if (this.m == (m = 10)){
+            println("on est bon fois 2");
+        }
+        return -1;
+    }
+
+}
+
+{
+    Sites s = new Sites();
+    Bloc b = new Bloc();
+    Trash t1 = s.sportPointFr(3, true);
+    Trash t2 = s.sportPointFr(3, true);
+    if (t1 == t2) {
+        println("You are amazing <3");
+    }
+    b.accessOfProtected(100);
+}

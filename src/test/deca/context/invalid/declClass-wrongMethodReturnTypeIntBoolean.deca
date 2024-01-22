@@ -1,0 +1,10 @@
+class A {
+    int myMethod(float b){
+        b = 3;
+    }
+}
+class B extends A {
+    boolean myMethod(float b){
+        b = 10000;
+    }
+}

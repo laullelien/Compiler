@@ -1,0 +1,23 @@
+// Yooooooooooooooooooollllllllllllllllloooooooooooooooooooooooo
+
+class A {
+    int method(){
+        return 3;
+    }
+}
+
+class B extends A {
+    protected int d = 3;
+    float jaiFaim(){
+        return 3.0;
+    }
+}
+
+class C extends B {
+    boolean isTrue(){
+        print("I don't care about the name");
+        return true;
+    }
+}
+
+// Nobody will see this right ? :p

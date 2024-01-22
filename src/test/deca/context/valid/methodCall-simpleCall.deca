@@ -1,0 +1,7 @@
+class M{
+    void call(){}
+}
+{
+    M m;
+    m.call();
+}

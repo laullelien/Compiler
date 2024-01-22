@@ -1,0 +1,4 @@
+class A{
+	protected int a;
+	int a;
+}

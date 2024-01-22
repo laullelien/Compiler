@@ -1,0 +1,27 @@
+#include "includeFile-withMultipleClasses.decah"
+
+{
+    A animal = new A();
+    A a = new A();
+    B b = new B();
+    B bebe;
+    A pangolin = new B();
+    if (a.isTrue(3)){
+        bebe = new B();
+    }
+    bebe.nouille();
+    println(bebe.soupeAOignonYCrouton());
+    bebe.whileLoop(8);
+
+    if (bebe.isAPangolin(pangolin)){
+        println("Notre animal est un pangolin");
+    }
+    if (!bebe.isAPangolin(animal)){
+        println("Notre animal est un animal et on ne sait pas si c'est un pangolin");
+    }
+
+    if (bebe.isAPangolin((A) (bebe))){
+        println("Notre beb est un bebe");
+    }
+    println("bye");
+}

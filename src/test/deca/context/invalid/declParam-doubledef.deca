@@ -1,0 +1,5 @@
+class A {
+    int method(int x, float x){
+        return 3;
+    }
+}

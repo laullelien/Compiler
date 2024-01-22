@@ -1,0 +1,9 @@
+class Sasuke {}
+class Naruto {
+
+    int newUzumaki() {
+        Naruto Uzumaki = new Sakura();
+        return 18;
+    }
+}
+{}

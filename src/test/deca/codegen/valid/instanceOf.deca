@@ -1,0 +1,12 @@
+class A{
+    A getA() {
+        return new A();
+    }
+}
+
+{
+    A a = new A();
+    if(a.getA() instanceof A) {
+        println("success");
+    }
+}

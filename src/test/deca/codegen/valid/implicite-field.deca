@@ -1,0 +1,13 @@
+class A{
+    int x;
+    void f(){
+        x = 5;
+        println(x);
+        println((x + x) + ( x + x));
+    }
+}
+
+{
+    A a = new A();
+    a.f();
+}

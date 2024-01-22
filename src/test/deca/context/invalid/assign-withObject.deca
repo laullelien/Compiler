@@ -1,0 +1,22 @@
+class A {
+}
+
+class B extends A {
+}
+
+class C extends B {
+}
+
+class D extends A {
+}
+
+class E {}
+
+{
+    Object o;
+    D d;
+    C c;
+    E e;
+    d = (D) (o);
+    e = (Object) (c);
+}

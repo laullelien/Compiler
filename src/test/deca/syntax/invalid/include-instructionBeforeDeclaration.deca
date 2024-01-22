@@ -1,0 +1,4 @@
+{
+    #include "includeFile-withInstruction.decah"
+    int a = 3;
+}

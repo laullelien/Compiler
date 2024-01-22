@@ -1,0 +1,24 @@
+class A{
+    int x;
+    int y;
+    int z ;
+}
+
+class B extends A{
+    void init(){
+        this.x = 15;
+        this.y = 20;
+        this.z = 25;
+    }
+
+    int sum(){
+        this.z = 7;
+        return this.x + this.y + this.z;
+    }
+}
+
+{
+    B b = new B();
+    b.init();
+    println(b.sum());
+}

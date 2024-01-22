@@ -1,0 +1,12 @@
+class A {
+    int try(int a, int y){
+        return a + y;
+    }
+}
+
+{
+    A a = new A();
+    int i;
+    println(a.try(i = 3 + 4 + (2 + 2) + (2 + 2) + ((4 + 6) + 9 + 12 * 13), 2));
+    println(i);
+}

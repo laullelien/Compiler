@@ -5,9 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -46,8 +44,40 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenInstruction(DecacCompiler compiler, DVal value, GPRegister target) {
-        compiler.addInstruction(new LOAD(value, target));
-        compiler.addInstruction(new STORE(target, ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+    protected void codeGenInst(DecacCompiler compiler) {
+        if(getLeftOperand() instanceof Selection) {
+            if (compiler.isRegisterAvailable()) {
+                GPRegister prevReg = compiler.getRegister();
+                ((Selection)getLeftOperand()).codeGenAdress(compiler);
+                compiler.incrementRegister();
+                getRightOperand().codeGenInst(compiler);
+                compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(0, prevReg)));
+                compiler.decrementRegister();
+            } else {
+                ((Selection)getLeftOperand()).codeGenAdress(compiler);
+                compiler.addInstruction(new PUSH(compiler.getRegister()));
+                compiler.codegenHelper.incPushDepth();
+                getRightOperand().codeGenInst(compiler);
+                compiler.addInstruction(new LOAD(compiler.getRegister(), Register.R0));
+                compiler.addInstruction(new POP(compiler.getRegister()));
+                compiler.codegenHelper.decPushDepth();
+                compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
+            }
+            return;
+        }
+        if(getRightOperand().getDval() != null) {
+            compiler.addInstruction(new LOAD(getRightOperand().getDval(), compiler.getRegister()));
+        } else {
+            getRightOperand().codeGenInst(compiler);
+        }
+        if(((Identifier) this.getLeftOperand()).getExpDefinition().getOperand() != null) {
+            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
+        }
+        else {
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((Identifier)getLeftOperand()).getFieldDefinition().getIndex(), Register.R0)));
+        }
     }
 }

@@ -26,6 +26,10 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
      */
     void verifyListClass(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClass: start");
+        // To add decorations
+        compiler.environmentType.objectClassIdentifier.verifyObjectClass(compiler);
+        // rule 1.2
+
         for (AbstractDeclClass c : this.getList()) {
             c.verifyClass(compiler);
         }
@@ -42,17 +46,42 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         }
         LOG.debug("verify listClassMembers: end");
     }
-    
+
     /**
      * Pass 3 of [SyntaxeContextuelle]
      */
     public void verifyListClassBody(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify listClassBody: start");
+        // rule 3.5
         for (AbstractDeclClass c : this.getList()) {
             c.verifyClassBody(compiler);
         }
         LOG.debug("verify listClassBody: end");
     }
 
+    /**
+     * Pass 1 of [Gencode]
+     */
+    public void codeGenListClassVTables(DecacCompiler compiler) {
+        LOG.debug("codeGen listClassVTables: start");
+        // creation de la VTable de Object
+        compiler.listVTable.codeGenVTable(compiler, "Object", null, null);
+        for (AbstractDeclClass c : this.getList()) {
+            c.codeGenClassVTable(compiler);
+        }
+        LOG.debug("codeGen listClassVTables: end");
+    }
 
+    /**
+     * Pass 2 of [Gencode]
+     */
+    public void codeGenListClassBody(DecacCompiler compiler) {
+        LOG.debug("codeGen listClassBody: start");
+        // on commence par générer la méthode equals de Object
+        compiler.codegenHelper.codeGenObjectEquals();
+        for (AbstractDeclClass c : this.getList()) {
+            c.codeGenClassBody(compiler);
+        }
+        LOG.debug("codeGen listClassBody: end");
+    }
 }

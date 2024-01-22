@@ -1,0 +1,10 @@
+class A{
+    protected Object o;
+}
+
+class B{
+    A a = new A();
+    void method(){
+        a.o;
+    }
+}

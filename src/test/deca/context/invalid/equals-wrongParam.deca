@@ -1,0 +1,13 @@
+class A {
+	boolean equals(int jaj){
+	 return false;
+}
+}
+
+{ Object o = new A();
+  if (o.equals(o)){
+  println("jej");
+}
+}
+
+

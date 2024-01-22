@@ -7,8 +7,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
@@ -30,7 +29,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public DVal getDval() {
-        return getVariableDefinition().getOperand();
+        return getExpDefinition().getOperand();
     }
 
     @Override
@@ -190,8 +189,20 @@ public class Identifier extends AbstractIdentifier {
         }
         throw new ContextualError("Le type ne respecte pas la règle 0.2", this.getLocation());
     }
-    
-    
+
+    @Override
+    public ExpDefinition verifyField(DecacCompiler compiler, EnvironmentExp env) throws ContextualError {
+        this.verifyExpr(compiler,env,null);
+        return env.get(this.getName());
+    }
+
+    @Override
+    public ExpDefinition verifyMethod(DecacCompiler compiler, EnvironmentExp env) throws ContextualError {
+        this.verifyExpr(compiler,env,null);
+        return env.get(this.getName());
+    }
+
+
     private Definition definition;
 
 
@@ -207,12 +218,30 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R2));
+        if(getExpDefinition().getOperand() != null) {
+            compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), compiler.getRegister()));
+        }
+        else {
+            // this implicite
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), compiler.getRegister()));
+            compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), compiler.getRegister()), compiler.getRegister()));
+        }
     }
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(getVariableDefinition().getOperand(), Register.R1));
+        if(getExpDefinition().getOperand() != null) {
+            compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), Register.R1));
+        }
+        else {
+            // this implicite
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), Register.R0), Register.R1));
+        }
     }
 
     @Override

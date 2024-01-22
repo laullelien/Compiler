@@ -1,0 +1,14 @@
+class Konoha {
+    protected int Habitants = 7;
+}
+class superKonoha extends Konoha {
+    int habitants() {
+        superKonoha Konoha2 = new superKonoha();
+        return Konoha2.Habitants;
+    }
+}
+{
+superKonoha a =  new superKonoha();
+println(a.habitants());
+
+}
