@@ -1,0 +1,11 @@
+class A{
+
+}
+{
+    Object o = null;
+    A a = new A();
+    A b = null;
+    o != a;
+    a == a;
+    o != o;
+}
