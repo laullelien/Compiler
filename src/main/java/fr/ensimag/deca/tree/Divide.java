@@ -23,6 +23,31 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
+    protected void codegenCompute(DecacCompiler compiler) {
+        if (getType().isInt()) {
+            int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
+            int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
+            compiler.addInstruction(new LOAD(new ImmediateInteger(leftVal / rightVal), compiler.getRegister()));
+        } else {
+            if (getLeftOperand().getType().isInt()) {
+                int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
+                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
+                compiler.addInstruction(new LOAD(new ImmediateFloat(leftVal / rightVal), compiler.getRegister()));
+            }
+            else if (getRightOperand().getType().isInt()) {
+                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
+                int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
+                compiler.addInstruction(new LOAD(new ImmediateFloat(leftVal / rightVal), compiler.getRegister()));
+            }
+            else {
+                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
+                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
+                compiler.addInstruction(new LOAD(new ImmediateFloat(leftVal / rightVal), compiler.getRegister()));
+            }
+        }
+    }
+
+    @Override
     protected void codeGenBinary(DecacCompiler compiler) {
         if (getType().isInt()) {
             if (!compiler.getCompilerOptions().getNocheck() && !compiler.getCompilerOptions().getOptim()) {
