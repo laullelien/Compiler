@@ -35,5 +35,4 @@ public abstract class AbstractDeclVar extends Tree {
 
     abstract public void setOperand(DecacCompiler compiler);
     abstract public void codeGenDeclVar(DecacCompiler compiler);
-    abstract public Map<BasicBlock, AbstractInitialization> getCurrentDef();
 }

@@ -1,10 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -45,6 +45,19 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         Validate.isTrue(leftOperand != rightOperand, "Sharing subtrees is forbidden");
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
+    }
+
+    @Override
+    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
+//        if (getRightOperand().getDval() != null && getLeftOperand().getDval() != null) {
+//            return;
+//        }
+        if (getLeftOperand() instanceof AbstractIdentifier) {
+            setLeftOperand(compiler.ssaFormHelper.readVariable((AbstractIdentifier) getLeftOperand(), blocks.getCurrentBlock()));
+        }
+        if (getRightOperand() instanceof  AbstractIdentifier) {
+            setRightOperand(compiler.ssaFormHelper.readVariable((AbstractIdentifier) getRightOperand(), blocks.getCurrentBlock()));
+        }
     }
 
     protected void codeGenInst(DecacCompiler compiler) {

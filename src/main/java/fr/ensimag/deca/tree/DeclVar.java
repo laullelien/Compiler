@@ -24,13 +24,6 @@ public class DeclVar extends AbstractDeclVar {
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
 
-    private Map<BasicBlock, AbstractInitialization> currentDef;
-
-    @Override
-    public Map<BasicBlock, AbstractInitialization> getCurrentDef() {
-        return currentDef;
-    }
-
     public DeclVar(AbstractIdentifier type, AbstractIdentifier varName, AbstractInitialization initialization) {
         Validate.notNull(type);
         Validate.notNull(varName);
@@ -95,5 +88,10 @@ public class DeclVar extends AbstractDeclVar {
         if (initialization instanceof Initialization) {
             compiler.addInstruction(new STORE(Register.R2, varName.getVariableDefinition().getOperand()));
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
 }

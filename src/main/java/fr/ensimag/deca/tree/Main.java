@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.extension.tree.BasicBlock;
@@ -9,11 +8,6 @@ import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.ImmediateString;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.ERROR;
-import fr.ensimag.ima.pseudocode.instructions.WNL;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -51,10 +45,10 @@ public class Main extends AbstractMain {
     }
 
     @Override
-    protected void optimizeMain() {
+    protected void optimizeMain(DecacCompiler compiler) {
         BasicBlock entryBlock = new BasicBlock();
         blocks = new ListBasicBlock(entryBlock);
-        insts.constructBasicBlocks(blocks);
+        insts.constructBasicBlocks(compiler, blocks);
     }
 
     @Override
@@ -85,7 +79,8 @@ public class Main extends AbstractMain {
  
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // declVariables.prettyPrint(s, prefix, false);
+        // TODO remove
+        declVariables.prettyPrint(s, prefix, false);
         // insts.prettyPrint(s, prefix, true);
         blocks.prettyPrint(s, prefix, false);
     }

@@ -11,7 +11,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -62,11 +61,11 @@ public class While extends AbstractInst {
         compiler.addLabel(endWhileLabel);
     }
     @Override
-    public void appendToBlock(ListBasicBlock blocks) {
+    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
         // if (body.isEmpty())
             // return; // optimisation: ne pas compiler un While trivial
 
-        super.appendToBlock(blocks);
+        super.appendToBlock(compiler, blocks);
         BasicBlock exitBlock = new BasicBlock();
         BasicBlock entryBlock = blocks.getCurrentBlock();
         blocks.getCurrentBlock().addSucc(exitBlock);
@@ -75,7 +74,7 @@ public class While extends AbstractInst {
         BasicBlock bodyBlock = new BasicBlock();
         blocks.getCurrentBlock().addSucc(bodyBlock);
         blocks.add(bodyBlock);
-        body.constructBasicBlocks(blocks);
+        body.constructBasicBlocks(compiler, blocks);
         body = bodyBlock;
         blocks.getCurrentBlock().addSucc(entryBlock);
 
@@ -111,8 +110,9 @@ public class While extends AbstractInst {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        condition.prettyPrint(s, prefix, false);
-        body.prettyPrint(s, prefix, true);
+        // TODO remove
+        // condition.prettyPrint(s, prefix, false);
+        // body.prettyPrint(s, prefix, true);
     }
 
 }

@@ -3,29 +3,38 @@ package fr.ensimag.deca.extension;
 import fr.ensimag.deca.extension.tree.BasicBlock;
 import fr.ensimag.deca.tree.*;
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang.Validate;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SSAFormHelper {
 
-    Map<DeclVar, ListInst> currentDef;
+    Map<AbstractIdentifier, Map<BasicBlock, AbstractExpr>> currentDef;
     List<ListInst> sealedBlocks;
 
     public SSAFormHelper() {
+        currentDef = new HashMap<>();
     }
 
-    public void writeVariable(AbstractDeclVar variable, BasicBlock block, AbstractExpr value) {
-        variable.getCurrentDef().put(block, new Initialization(value));
+    public void writeVariable(AbstractIdentifier variable, BasicBlock block, AbstractExpr value) {
+        if (!currentDef.containsKey(variable)) {
+            currentDef.put(variable, new HashMap<>());
+        }
+        currentDef.get(variable).put(block, value);
+        System.out.println(variable.hashCode());
     }
 
-    public AbstractInitialization readVariable(AbstractDeclVar variable, BasicBlock block) {
-        if (variable.getCurrentDef().containsKey(block))
-            return variable.getCurrentDef().get(block);
+    public AbstractExpr readVariable(AbstractIdentifier variable, BasicBlock block) {
+        System.out.println(variable.hashCode());
+        Validate.isTrue(currentDef.containsKey(variable));
+        if (currentDef.get(variable).containsKey(block))
+            return currentDef.get(variable).get(block);
         return readVariableRecursive(variable, block);
     }
 
-    public AbstractInitialization readVariableRecursive(AbstractDeclVar variable, BasicBlock block) {
+    public AbstractExpr readVariableRecursive(AbstractIdentifier variable, BasicBlock block) {
         throw new NotImplementedException("not here yet");
     }
 }

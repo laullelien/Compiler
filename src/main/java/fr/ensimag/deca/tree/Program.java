@@ -3,7 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.*;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -47,7 +47,7 @@ public class Program extends AbstractProgram {
     @Override
     public void optimizeProgram(DecacCompiler compiler) {
         // TODO 1: Construction des Basics blocs
-        main.optimizeMain();
+        main.optimizeMain(compiler);
         // TODO 2: Construction du Control Flow Graph
         // TODO 3: CFG -> SSA form
         // TODO 4: Implémenter les algorithmes d'optimisation

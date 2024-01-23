@@ -24,7 +24,7 @@ public class EmptyMain extends AbstractMain {
     }
 
     @Override
-    protected void optimizeMain() {
+    protected void optimizeMain(DecacCompiler compiler) {
         // nothing
     }
 

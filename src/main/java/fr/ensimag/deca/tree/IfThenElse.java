@@ -11,7 +11,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -58,11 +57,11 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    public void appendToBlock(ListBasicBlock blocks) {
+    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
         // if (thenBranch.isEmpty() && elseBranch.isEmpty())
             // return; // optimisation: ne pas compiler un If trivial
 
-        super.appendToBlock(blocks);
+        super.appendToBlock(compiler, blocks);
         BasicBlock exitBlock = new BasicBlock();
 
         // Création des blocs Then et Else
@@ -73,13 +72,13 @@ public class IfThenElse extends AbstractInst {
 
         // Traitement du bloc Then
         blocks.add(thenBlock);
-        thenBranch.constructBasicBlocks(blocks);
+        thenBranch.constructBasicBlocks(compiler, blocks);
         thenBranch = thenBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
 
         // Traitement du bloc Else
         blocks.add(elseBlock);
-        elseBranch.constructBasicBlocks(blocks);
+        elseBranch.constructBasicBlocks(compiler, blocks);
         elseBranch = elseBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
 
@@ -138,8 +137,9 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        condition.prettyPrint(s, prefix, false);
-        thenBranch.prettyPrint(s, prefix, false);
-        elseBranch.prettyPrint(s, prefix, true);
+        // TODO remove
+        // condition.prettyPrint(s, prefix, false);
+        // thenBranch.prettyPrint(s, prefix, false);
+        // elseBranch.prettyPrint(s, prefix, true);
     }
 }

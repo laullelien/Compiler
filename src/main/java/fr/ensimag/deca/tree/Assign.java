@@ -5,9 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -43,6 +42,17 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected String getOperatorName() {
         return "=";
+    }
+
+    @Override
+    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
+        blocks.getCurrentBlock().addInst(this);
+        if (getRightOperand() instanceof AbstractIdentifier)
+            setRightOperand(compiler.ssaFormHelper.readVariable((AbstractIdentifier) getRightOperand(), blocks.getCurrentBlock()));
+        else if (!(getRightOperand() instanceof IntLiteral)) {
+            getRightOperand().appendToBlock(compiler, blocks);
+        }
+        compiler.ssaFormHelper.writeVariable((AbstractIdentifier) getLeftOperand(), blocks.getCurrentBlock(), getRightOperand());
     }
 
     @Override
