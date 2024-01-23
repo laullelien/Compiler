@@ -10,7 +10,7 @@
 {
     int a = 42;
     int b = a;
-    int c = a + c;
+    int c = a + b;
     a = c + 23;
-    c = a + d;
+    c = a + b;
 }

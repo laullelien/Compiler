@@ -68,13 +68,16 @@ public class While extends AbstractInst {
 
         super.appendToBlock(blocks);
         BasicBlock exitBlock = new BasicBlock();
+        BasicBlock entryBlock = blocks.getCurrentBlock();
+        blocks.getCurrentBlock().addSucc(exitBlock);
 
         // Traitement du bloc Body
         BasicBlock bodyBlock = new BasicBlock();
+        blocks.getCurrentBlock().addSucc(bodyBlock);
         blocks.add(bodyBlock);
         body.constructBasicBlocks(blocks);
-        body = bodyBlock.getListInst();
-        blocks.getCurrentBlock().addSucc(exitBlock);
+        body = bodyBlock;
+        blocks.getCurrentBlock().addSucc(entryBlock);
 
         // Rajout du prochain block pour les prochaines instructions
         blocks.add(exitBlock);

@@ -34,6 +34,7 @@ public class ListBasicBlock extends TreeList<BasicBlock> {
 
     @Override
     public void add(BasicBlock i) {
+        i.setId(size());
         super.add(i);
         currentBlock = i;
     }

@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class ManualTestCFG {
     public static void main(String[] args) throws IOException {
-        Logger.getRootLogger().setLevel(Level.DEBUG);
+        // Logger.getRootLogger().setLevel(Level.DEBUG);
         DecaLexer lex = AbstractDecaLexer.createLexerFromArgs(args);
         CommonTokenStream tokens = new CommonTokenStream(lex);
         DecaParser parser = new DecaParser(tokens);

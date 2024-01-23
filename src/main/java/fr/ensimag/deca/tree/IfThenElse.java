@@ -65,18 +65,22 @@ public class IfThenElse extends AbstractInst {
         super.appendToBlock(blocks);
         BasicBlock exitBlock = new BasicBlock();
 
-        // Traitement du bloc Then
+        // Création des blocs Then et Else
         BasicBlock thenBlock = new BasicBlock();
+        blocks.getCurrentBlock().addSucc(thenBlock);
+        BasicBlock elseBlock = new BasicBlock();
+        blocks.getCurrentBlock().addSucc(elseBlock);
+
+        // Traitement du bloc Then
         blocks.add(thenBlock);
         thenBranch.constructBasicBlocks(blocks);
-        thenBranch = thenBlock.getListInst();
+        thenBranch = thenBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
 
         // Traitement du bloc Else
-        BasicBlock elseBlock = new BasicBlock();
         blocks.add(elseBlock);
         elseBranch.constructBasicBlocks(blocks);
-        elseBranch = elseBlock.getListInst();
+        elseBranch = elseBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
 
         // Rajout du prochain block pour les prochaines instructions

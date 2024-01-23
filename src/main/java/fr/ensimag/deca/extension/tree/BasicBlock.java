@@ -7,46 +7,55 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BasicBlock extends TreeList<AbstractInst> {
+public class BasicBlock extends ListInst {
 
-    List<BasicBlock> preds;
-    List<BasicBlock> succs;
-    ListInst insts;
+    private List<BasicBlock> preds;
+    private List<BasicBlock> succs;
 
-    public ListInst getListInst() {
-        return insts;
+    private int id;
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public BasicBlock() {
+        super();
         preds = new LinkedList<>();
         succs = new LinkedList<>();
-        insts = new ListInst();
+    }
+
+    public BasicBlock(int id) {
+        super();
+        preds = new LinkedList<>();
+        succs = new LinkedList<>();
+        this.id = id;
     }
 
     public void addInst(AbstractInst inst) {
-        insts.add(inst);
+        super.add(inst);
     }
 
     public void addPred(BasicBlock block) {
         preds.add(block);
-        block.addSucc(this);
+        block.succs.add(this);
     }
 
     public void addSucc(BasicBlock block) {
         succs.add(block);
-        block.addPred(this);
+        block.preds.add(this);
     }
 
-    @Override
-    public void decompile(IndentPrintStream s) {
-        for (AbstractInst i : insts.getList()) {
-            i.decompile(s);
-            s.println();
+    private String prettyPrintSuccId() {
+        String s = "";
+        for (BasicBlock block : succs) {
+            s += " #" + block.id;
         }
+        return s;
     }
 
     @Override
-    protected void iterChildren(TreeFunction f) {
-        insts.iter(f);
+    protected String prettyPrintNode() {
+        return super.prettyPrintNode() +
+                " #" + id + " ->" + prettyPrintSuccId();
     }
 }
