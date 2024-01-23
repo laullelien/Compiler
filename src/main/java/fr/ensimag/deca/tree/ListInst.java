@@ -19,15 +19,6 @@ import java.util.Map;
 public class ListInst extends TreeList<AbstractInst> {
 
     /**
-     * Implements current defining expression for variable in the list
-     */
-    private Map<AbstractDeclVar, AbstractExpr> currentDef;
-
-    public Map<AbstractDeclVar, AbstractExpr> getCurrentDef() {
-        return currentDef;
-    }
-
-    /**
      * Implements non-terminal "list_inst" of [SyntaxeContextuelle] in pass 3
      * @param compiler contains "env_types" attribute
      * @param localEnv corresponds to "env_exp" attribute

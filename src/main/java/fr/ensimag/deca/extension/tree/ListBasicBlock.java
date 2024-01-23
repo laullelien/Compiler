@@ -40,6 +40,9 @@ public class ListBasicBlock extends TreeList<BasicBlock> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
+        for (BasicBlock i : getList()) {
+            i.decompile(s);
+            s.println();
+        }
     }
 }

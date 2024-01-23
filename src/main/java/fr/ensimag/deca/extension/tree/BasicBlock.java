@@ -7,7 +7,7 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BasicBlock extends Tree {
+public class BasicBlock extends TreeList<AbstractInst> {
 
     List<BasicBlock> preds;
     List<BasicBlock> succs;
@@ -39,16 +39,14 @@ public class BasicBlock extends Tree {
 
     @Override
     public void decompile(IndentPrintStream s) {
-
-    }
-
-    @Override
-    protected void prettyPrintChildren(PrintStream s, String prefix) {
-
+        for (AbstractInst i : insts.getList()) {
+            i.decompile(s);
+            s.println();
+        }
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
+        insts.iter(f);
     }
 }
