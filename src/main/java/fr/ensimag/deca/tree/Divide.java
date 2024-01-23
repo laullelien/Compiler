@@ -25,14 +25,14 @@ public class Divide extends AbstractOpArith {
     @Override
     protected void codeGenBinary(DecacCompiler compiler) {
         if (getType().isInt()) {
-            if (!compiler.getCompilerOptions().getNocheck()) {
+            if (!compiler.getCompilerOptions().getNocheck() || !compiler.getCompilerOptions().getOptim()) {
                 compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
                 compiler.addInstruction(new BEQ(new Label("division_by_0")));
             }
             compiler.addInstruction(new QUO(compiler.getDVal(), compiler.getRegister())); // division entière
         }
         else {
-            if (!compiler.getCompilerOptions().getNocheck()) {
+            if (!compiler.getCompilerOptions().getNocheck() || !compiler.getCompilerOptions().getOptim()) {
                 compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
                 compiler.addInstruction(new BEQ(new Label("division_by_0")));
             }
