@@ -1,5 +1,6 @@
 package fr.ensimag.deca.extension;
 
+import fr.ensimag.deca.extension.tree.BasicBlock;
 import fr.ensimag.deca.tree.*;
 import org.apache.commons.lang.NotImplementedException;
 
@@ -14,18 +15,17 @@ public class SSAFormHelper {
     public SSAFormHelper() {
     }
 
-    public void writeVariable(AbstractDeclVar variable, ListInst block, AbstractExpr value) {
-        block.getCurrentDef().put(variable, value);
+    public void writeVariable(AbstractDeclVar variable, BasicBlock block, AbstractExpr value) {
+        variable.getCurrentDef().put(block, new Initialization(value));
     }
 
-    public AbstractExpr readVariable(AbstractDeclVar variable, ListInst block) {
-        if (block.getCurrentDef().containsKey(variable))
-            return block.getCurrentDef().get(variable); // local value numbering
-        else return readVariableRecursive(variable, block); // global value numbering
+    public AbstractInitialization readVariable(AbstractDeclVar variable, BasicBlock block) {
+        if (variable.getCurrentDef().containsKey(block))
+            return variable.getCurrentDef().get(block);
+        return readVariableRecursive(variable, block);
     }
 
-    public AbstractExpr readVariableRecursive(AbstractDeclVar variable, ListInst block) {
+    public AbstractInitialization readVariableRecursive(AbstractDeclVar variable, BasicBlock block) {
         throw new NotImplementedException("not here yet");
     }
-
 }

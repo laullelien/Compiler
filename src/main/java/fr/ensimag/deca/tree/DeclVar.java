@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.extension.tree.BasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
@@ -10,6 +11,7 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
+import java.util.Map;
 
 /**
  * @author gl38
@@ -21,6 +23,13 @@ public class DeclVar extends AbstractDeclVar {
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
+
+    private Map<BasicBlock, AbstractInitialization> currentDef;
+
+    @Override
+    public Map<BasicBlock, AbstractInitialization> getCurrentDef() {
+        return currentDef;
+    }
 
     public DeclVar(AbstractIdentifier type, AbstractIdentifier varName, AbstractInitialization initialization) {
         Validate.notNull(type);

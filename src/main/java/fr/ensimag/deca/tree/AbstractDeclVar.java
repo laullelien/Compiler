@@ -5,6 +5,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.BasicBlock;
+
+import java.util.Map;
 
 /**
  * Variable declaration
@@ -32,4 +35,5 @@ public abstract class AbstractDeclVar extends Tree {
 
     abstract public void setOperand(DecacCompiler compiler);
     abstract public void codeGenDeclVar(DecacCompiler compiler);
+    abstract public Map<BasicBlock, AbstractInitialization> getCurrentDef();
 }

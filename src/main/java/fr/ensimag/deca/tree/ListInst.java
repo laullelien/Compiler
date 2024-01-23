@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 
@@ -54,6 +55,12 @@ public class ListInst extends TreeList<AbstractInst> {
         for (AbstractInst i : getList()) {
             i.decompileInst(s);
             s.println();
+        }
+    }
+
+    public void constructBasicBlocks(ListBasicBlock blocks) {
+        for (AbstractInst i : getList()) {
+            i.appendToBlock(blocks);
         }
     }
 }

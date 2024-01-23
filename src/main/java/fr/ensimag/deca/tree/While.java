@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.BasicBlock;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
@@ -58,6 +60,24 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(startWhileLabel));
 
         compiler.addLabel(endWhileLabel);
+    }
+    @Override
+    public void appendToBlock(ListBasicBlock blocks) {
+        // if (body.isEmpty())
+            // return; // optimisation: ne pas compiler un While trivial
+
+        super.appendToBlock(blocks);
+        BasicBlock exitBlock = new BasicBlock();
+
+        // Traitement du bloc Body
+        BasicBlock bodyBlock = new BasicBlock();
+        blocks.add(bodyBlock);
+        body.constructBasicBlocks(blocks);
+        body = bodyBlock.getListInst();
+        blocks.getCurrentBlock().addSucc(exitBlock);
+
+        // Rajout du prochain block pour les prochaines instructions
+        blocks.add(exitBlock);
     }
 
     @Override

@@ -5,6 +5,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.BasicBlock;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -25,7 +27,7 @@ import org.apache.commons.lang.Validate;
 public class IfThenElse extends AbstractInst {
     
     private final AbstractExpr condition; 
-    private final ListInst thenBranch;
+    private ListInst thenBranch;
     private ListInst elseBranch;
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
@@ -53,6 +55,32 @@ public class IfThenElse extends AbstractInst {
         condition.verifyCondition(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+    }
+
+    @Override
+    public void appendToBlock(ListBasicBlock blocks) {
+        // if (thenBranch.isEmpty() && elseBranch.isEmpty())
+            // return; // optimisation: ne pas compiler un If trivial
+
+        super.appendToBlock(blocks);
+        BasicBlock exitBlock = new BasicBlock();
+
+        // Traitement du bloc Then
+        BasicBlock thenBlock = new BasicBlock();
+        blocks.add(thenBlock);
+        thenBranch.constructBasicBlocks(blocks);
+        thenBranch = thenBlock.getListInst();
+        blocks.getCurrentBlock().addSucc(exitBlock);
+
+        // Traitement du bloc Else
+        BasicBlock elseBlock = new BasicBlock();
+        blocks.add(elseBlock);
+        elseBranch.constructBasicBlocks(blocks);
+        elseBranch = elseBlock.getListInst();
+        blocks.getCurrentBlock().addSucc(exitBlock);
+
+        // Rajout du prochain block pour les prochaines instructions
+        blocks.add(exitBlock);
     }
 
     @Override
