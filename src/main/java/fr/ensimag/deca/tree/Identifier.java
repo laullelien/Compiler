@@ -224,8 +224,6 @@ public class Identifier extends AbstractIdentifier {
         else {
             // this implicite
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), compiler.getRegister()));
-            compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
-            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
             compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), compiler.getRegister()), compiler.getRegister()));
         }
     }
@@ -238,8 +236,6 @@ public class Identifier extends AbstractIdentifier {
         else {
             // this implicite
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-            compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
             compiler.addInstruction(new LOAD(new RegisterOffset(getFieldDefinition().getIndex(), Register.R0), Register.R1));
         }
     }

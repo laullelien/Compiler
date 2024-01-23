@@ -42,6 +42,10 @@ public class CompilerOptions {
 
     public boolean getNocheck(){return noCheck;}
 
+    public boolean getOptim() {
+        return isOptim;
+    }
+
     private int debug = 0;
 
     private boolean noCheck = false;

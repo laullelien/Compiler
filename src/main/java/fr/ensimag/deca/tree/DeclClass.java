@@ -167,8 +167,10 @@ public class DeclClass extends AbstractDeclClass {
         for (int i = 2; i <= maxReg; i++) {
             methodProg.addFirst(new PUSH(Register.getR(i)));
         }
-        methodProg.addFirst(new BOV(new Label("stack_full")));
-        methodProg.addFirst(new TSTO(max(compiler.codegenHelper.getMaxPushDepth(), hasSuper ? 3 : 0) + maxReg - 1)); // 3 for calling super init
+        if(!compiler.getCompilerOptions().getOptim()) {
+            methodProg.addFirst(new BOV(new Label("stack_full")));
+            methodProg.addFirst(new TSTO(max(compiler.codegenHelper.getMaxPushDepth(), hasSuper ? 3 : 0) + maxReg - 1)); // 3 for calling super init
+        }
         methodProg.addFirstLabel(new Label("init." + name.getName()));
 
         for (int i = 2; i <= maxReg; i++) {

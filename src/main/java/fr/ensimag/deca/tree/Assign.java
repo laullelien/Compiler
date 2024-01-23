@@ -75,8 +75,10 @@ public class Assign extends AbstractBinaryExpr {
         }
         else {
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-            compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            if(!compiler.getCompilerOptions().getOptim()) {
+                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+                compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            }
             compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((Identifier)getLeftOperand()).getFieldDefinition().getIndex(), Register.R0)));
         }
     }

@@ -39,7 +39,7 @@ public class Modulo extends AbstractOpArith {
 
     @Override
     protected void codeGenBinary(DecacCompiler compiler) {
-        if (!compiler.getCompilerOptions().getNocheck()) {
+        if (!compiler.getCompilerOptions().getNocheck() && !compiler.getCompilerOptions().getOptim()) {
             compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
             compiler.addInstruction(new BEQ(new Label("division_by_0")));
         }
