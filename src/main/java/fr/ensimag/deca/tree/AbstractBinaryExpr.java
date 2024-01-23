@@ -4,6 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -47,7 +49,26 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
+    protected void codegenCompute(DecacCompiler compiler) {
+    }
+
+    private boolean isComputable() {
+        boolean leftIsInt = (leftOperand.getDval() instanceof ImmediateInteger);
+        boolean rightIsInt = (rightOperand.getDval() instanceof ImmediateInteger);
+        boolean leftIsFloat = (leftOperand.getDval() instanceof ImmediateFloat);
+        boolean rightIsFloat = (rightOperand.getDval() instanceof ImmediateFloat);
+        boolean rightIsNumber = rightIsInt || rightIsFloat;
+        boolean leftIsNumber = leftIsInt || leftIsFloat;
+        if(this instanceof AbstractOpArith) {
+            return leftIsNumber && rightIsNumber;
+        }
+        return false;
+    }
+
     protected void codeGenInst(DecacCompiler compiler) {
+        if(isComputable()) {
+            codegenCompute(compiler);
+        }
         if (getRightOperand().getDval() != null) {
             getLeftOperand().codeGenInst(compiler);
             compiler.setDval(getRightOperand().getDval());
