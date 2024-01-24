@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  *
@@ -33,4 +34,5 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     protected void codeGenBinary(DecacCompiler compiler) {
         throw new RuntimeException("Cette fonction n'aurait pas dû être appelée");
     }
+
 }

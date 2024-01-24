@@ -54,4 +54,18 @@ public class Or extends AbstractOpBool {
 
         compiler.addLabel(endLabel);
     }
+
+    @Override
+    public void codeGenCond(DecacCompiler compiler, boolean eq, Label jumpLabel) {
+        if(eq) {
+            getLeftOperand().codeGenCond(compiler, eq, jumpLabel);
+            getRightOperand().codeGenCond(compiler, eq, jumpLabel);
+        } else {
+            codeGenInst(compiler);
+            if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
+                compiler.addInstruction(new CMP(0, compiler.getRegister()));
+            }
+            compiler.addInstruction(new BEQ(jumpLabel));
+        }
+    }
 }

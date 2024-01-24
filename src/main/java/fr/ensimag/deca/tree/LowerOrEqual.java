@@ -4,8 +4,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.SLE;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -28,4 +28,15 @@ public class LowerOrEqual extends AbstractOpIneq {
         return "<=";
     }
 
+    @Override
+    public void codeGenCond(DecacCompiler compiler, boolean eq, Label jumpLabel) {
+        codeGenValues(compiler);
+        compiler.addInstruction(new CMP(compiler.getDVal(), compiler.getRegister()));
+        if(eq) {
+            compiler.addInstruction(new BLE(jumpLabel));
+        }
+        else {
+            compiler.addInstruction(new BGT(jumpLabel));
+        }
+    }
 }

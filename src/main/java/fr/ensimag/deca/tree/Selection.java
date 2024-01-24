@@ -87,4 +87,5 @@ public class Selection extends AbstractLValue {
         compiler.addInstruction(new LEA(new RegisterOffset(identifier.getFieldDefinition().getIndex(), compiler.getRegister()), compiler.getRegister()));
         compiler.addComment("Fin calcul adresse field");
     }
+
 }

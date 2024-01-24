@@ -23,31 +23,6 @@ public class Divide extends AbstractOpArith {
     }
 
     @Override
-    protected void codegenCompute(DecacCompiler compiler) {
-        if (getType().isInt()) {
-            int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
-            int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
-            compiler.addInstruction(new LOAD(new ImmediateInteger(leftVal / rightVal), compiler.getRegister()));
-        } else {
-            if (getLeftOperand().getType().isInt()) {
-                int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
-                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(new ImmediateFloat(leftVal / rightVal), compiler.getRegister()));
-            }
-            else if (getRightOperand().getType().isInt()) {
-                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
-                int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(new ImmediateFloat(leftVal / rightVal), compiler.getRegister()));
-            }
-            else {
-                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
-                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(new ImmediateFloat(leftVal / rightVal), compiler.getRegister()));
-            }
-        }
-    }
-
-    @Override
     protected void codeGenBinary(DecacCompiler compiler) {
         if (getType().isInt()) {
             if (!compiler.getCompilerOptions().getNocheck() && !compiler.getCompilerOptions().getOptim()) {
@@ -82,5 +57,25 @@ public class Divide extends AbstractOpArith {
             }
             compiler.addInstruction(new DIV(compiler.getDVal(), compiler.getRegister()));
         }
+    }
+
+    @Override
+    ImmediateInteger compute(int leftVal, int rightVal) {
+        return new ImmediateInteger(leftVal / rightVal);
+    }
+
+    @Override
+    ImmediateFloat compute(float leftVal, int rightVal) {
+        return new ImmediateFloat(leftVal / rightVal);
+    }
+
+    @Override
+    ImmediateFloat compute(int leftVal, float rightVal) {
+        return new ImmediateFloat(leftVal / rightVal);
+    }
+
+    @Override
+    ImmediateFloat compute(float leftVal, float rightVal) {
+        return new ImmediateFloat(leftVal / rightVal);
     }
 }

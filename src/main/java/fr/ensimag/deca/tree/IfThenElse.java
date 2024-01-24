@@ -62,12 +62,7 @@ public class IfThenElse extends AbstractInst {
         Label elseLabel = new Label(labelString + "_else");
         Label endLabel = new Label(labelString + "_fin");
 
-        condition.codeGenInst(compiler);
-
-        if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
-            compiler.addInstruction(new CMP(0, compiler.getRegister()));
-        }
-        compiler.addInstruction(new BEQ(elseLabel));
+        condition.codeGenCond(compiler, false, elseLabel);
 
         thenBranch.codeGenListInst(compiler);
         // We don't jump if there is no reason to

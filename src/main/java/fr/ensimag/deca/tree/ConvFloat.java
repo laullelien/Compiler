@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
@@ -17,6 +18,14 @@ import fr.ensimag.ima.pseudocode.instructions.OPP;
 public class ConvFloat extends AbstractUnaryExpr {
     public ConvFloat(AbstractExpr operand) {
         super(operand);
+    }
+
+    @Override
+    public DVal getDval() {
+        if(getOperand() instanceof IntLiteral) {
+            return new ImmediateFloat(((IntLiteral) getOperand()).getValue());
+        }
+        return null;
     }
 
     @Override

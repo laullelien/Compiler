@@ -1,0 +1,21 @@
+{
+	boolean a = true;
+	if(true) {
+		println("ok");
+	}
+	if(false) {
+		println("ko");
+	}
+	if(!false) {
+		println("ok");
+	}
+	if(!true) {
+		println("ko");
+	}
+	if(a) {
+		println("ok");
+	}
+	if(!a) {
+		println("ko");
+	}
+}
