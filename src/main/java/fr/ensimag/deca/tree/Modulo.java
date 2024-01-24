@@ -40,6 +40,21 @@ public class Modulo extends AbstractOpArith {
             compiler.addInstruction(new LOAD(compiler.getDVal(), Register.R1));
             compiler.addInstruction(new BEQ(new Label("division_by_0")));
         }
+        if(compiler.getDVal() instanceof ImmediateInteger) {
+            int val = (((ImmediateInteger) compiler.getDVal()).getValue());
+            if(val == 2) {
+                if (compiler.isRegisterAvailable()) {
+                    GPRegister currReg = compiler.getRegister();
+                    compiler.incrementRegister();
+                    compiler.addInstruction(new LOAD(currReg, compiler.getRegister()));
+                    compiler.addInstruction(new SHR(compiler.getRegister()));
+                    compiler.addInstruction(new SHL(compiler.getRegister()));
+                    compiler.addInstruction(new SUB(compiler.getRegister(), currReg));
+                    compiler.decrementRegister();
+                }
+                return;
+            }
+        }
         compiler.addInstruction(new REM(compiler.getDVal(), compiler.getRegister())); // division entière
     }
 
