@@ -68,6 +68,10 @@ public class DecacCompiler {
         }
     }
 
+    public void setRegister(GPRegister reg) {
+        regId = reg.getNumber();
+    }
+
     public GPRegister getRegister() {
         return Register.getR(regId);
     }
