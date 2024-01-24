@@ -1,0 +1,7 @@
+// erreur a la ligne 6 : la classe contient deja une declaration pour a
+
+class A {
+   int a ; 
+   void a() { } 
+}
+

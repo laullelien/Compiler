@@ -1,0 +1,18 @@
+class A {
+      A a1;
+      A a2;
+      A getA1() { return a1; }
+      A getA2() { return a2; }
+      int f2;
+      int f3;
+}
+
+{
+	A a = new A();
+	(a.a1 = a.a2 = a).f2 = (a.getA1().getA2()).f3 = 42;
+	if (a.f2 == 42 && a.f3 == 42){
+	   println("ok");
+	} else {
+	   println("error");
+	}
+}

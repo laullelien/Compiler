@@ -1,0 +1,16 @@
+class A {
+
+	int x = 0;
+
+	void f(int i){
+		println("1 -> ", i) ;
+		println("1 -> ", x) ;
+	}
+
+}
+
+{
+	A a = new A ();
+	a.f(a.x = 1) ;
+}
+
