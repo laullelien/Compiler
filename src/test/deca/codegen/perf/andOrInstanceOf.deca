@@ -1,0 +1,22 @@
+{
+	Object a = new Object();
+	boolean b = true;
+	if(true && false){
+		println("ko");
+	}
+	if(true && true) {
+		println("ok");
+	}
+	if(false || b) {
+		println("ok");
+	}
+	if(!b || b) {
+		println("ok");
+	}
+	if(a instanceof Object) {
+		println("ok");
+	}
+	if(!(a instanceof Object)) {
+		println("ko");
+	}
+}

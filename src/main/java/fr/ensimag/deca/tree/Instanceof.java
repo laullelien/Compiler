@@ -87,4 +87,63 @@ public class Instanceof extends AbstractBinaryExpr{
             throw new ContextualError("La regle 3.40 n'a pas ete respectee. Voir type_instance_of.", getLocation());
         }
     }
+
+    public void codeGenCond(DecacCompiler compiler, boolean eq, Label jumpLabel) {
+        compiler.addComment("Debut instanceof");
+        String labelString = "label_" + compiler.getLabelId();
+        compiler.incrementLabelId();
+        Label returnTrue = new Label(labelString + "return_true");
+        Label returnFalse = new Label(labelString + "return_false");
+        if(eq) {
+            returnTrue = jumpLabel;
+        } else {
+            returnFalse = jumpLabel;
+        }
+        Label whileStart = new Label(labelString + "while_start");
+        Label instanceofEnd = new Label(labelString + "end_instanceof");
+
+        getLeftOperand().codeGenInst(compiler);
+        // une instance de classe se trouve dans compiler.gerRegister()
+        String parentClassName = getRightOperand().getType().getName().getName();
+
+        DAddr parentClassDAddr = compiler.listVTable.getVTable(parentClassName).getDAddr();
+
+        // on a null en leftOperand, on return true
+        compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
+        compiler.addInstruction(new BEQ(returnTrue));
+
+        // on enregistre l'adresse de la classe de leftOperand dans R1
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, compiler.getRegister()), Register.R1));
+
+        // on enregistre l'adresse de la classe de rightOperand dans getRegister()
+        compiler.addInstruction(new LEA(parentClassDAddr, compiler.getRegister()));
+
+        // rightOperand is Object
+        compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
+        compiler.addInstruction(new BEQ(returnTrue));
+
+        compiler.addLabel(whileStart);
+
+        //On a atteint null
+        compiler.addInstruction(new CMP(new NullOperand(), Register.R1));
+
+        compiler.addInstruction(new BEQ(returnFalse));
+
+        compiler.addInstruction(new CMP(Register.R1, compiler.getRegister()));
+        compiler.addInstruction(new BEQ(returnTrue));
+
+        //leftOperand = *leftOperand
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.R1), Register.R1));
+
+        compiler.addInstruction(new BRA(whileStart));
+
+        if(eq) {
+            compiler.addLabel(returnFalse);
+        } else {
+            compiler.addLabel(returnTrue);
+        }
+
+        compiler.addLabel(instanceofEnd);
+        compiler.addComment("Fin instanceof");
+    }
 }

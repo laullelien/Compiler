@@ -85,6 +85,5 @@ public class DeclField extends AbstractDeclField {
         getFieldType().prettyPrint(s, prefix, false);
         getFieldName().prettyPrint(s, prefix, false);
         getFieldInitialization().prettyPrint(s, prefix, true);
-
     }
 }

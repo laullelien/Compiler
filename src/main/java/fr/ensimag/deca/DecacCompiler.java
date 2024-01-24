@@ -46,6 +46,32 @@ public class DecacCompiler {
     private int regId = 2;
     private int maxReg = 2;
 
+    private int regVar;
+
+    /**
+     * Represente le nombre maximal de variables affectees a des registres
+     */
+    public void setRegVar(int n) {
+        regVar = n;
+    }
+
+    private int allocatedReg = 0;
+
+    public DVal getVarDVal() {
+        if(allocatedReg < regVar) {
+            DVal reg = (Register.getR(compilerOptions.getMaxRegisters() - allocatedReg));
+            allocatedReg ++;
+            return reg;
+        } else {
+            nbDeclVar ++;
+            return new RegisterOffset(listVTable.getOffset() + nbDeclVar, Register.GB);
+        }
+    }
+
+    public void setRegister(GPRegister reg) {
+        regId = reg.getNumber();
+    }
+
     public GPRegister getRegister() {
         return Register.getR(regId);
     }

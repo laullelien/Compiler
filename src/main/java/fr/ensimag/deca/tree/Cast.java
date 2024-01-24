@@ -97,4 +97,7 @@ public class Cast extends AbstractUnaryExpr {
         s.print(")");
     }
 
+    public void codeGenCond(DecacCompiler compiler, boolean eq, Label jumpLabel) {
+        getOperand().codeGenCond(compiler, eq, jumpLabel);
+    }
 }

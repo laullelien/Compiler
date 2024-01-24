@@ -6,9 +6,7 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  *
@@ -55,5 +53,19 @@ public class And extends AbstractOpBool {
         getRightOperand().codeGenInst(compiler);
 
         compiler.addLabel(endLabel);
+    }
+
+    @Override
+    public void codeGenCond(DecacCompiler compiler, boolean eq, Label jumpLabel) {
+        if (!eq) {
+            getLeftOperand().codeGenCond(compiler, eq, jumpLabel);
+            getRightOperand().codeGenCond(compiler, eq, jumpLabel);
+        } else {
+            codeGenInst(compiler);
+            if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
+                compiler.addInstruction(new CMP(0, compiler.getRegister()));
+            }
+            compiler.addInstruction(new BNE(jumpLabel));
+        }
     }
 }
