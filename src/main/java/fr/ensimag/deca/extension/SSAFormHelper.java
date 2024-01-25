@@ -23,11 +23,9 @@ public class SSAFormHelper {
             currentDef.put(variable, new HashMap<>());
         }
         currentDef.get(variable).put(block, value);
-        System.out.println(variable.hashCode());
     }
 
     public AbstractExpr readVariable(AbstractIdentifier variable, BasicBlock block) {
-        System.out.println(variable.hashCode());
         Validate.isTrue(currentDef.containsKey(variable));
         if (currentDef.get(variable).containsKey(block))
             return currentDef.get(variable).get(block);

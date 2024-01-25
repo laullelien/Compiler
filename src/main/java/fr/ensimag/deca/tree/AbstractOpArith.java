@@ -5,11 +5,6 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.*;
-import org.apache.commons.lang.Validate;
 
 
 /**
@@ -50,8 +45,8 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         return getType();
     }
 
-    abstract ImmediateInteger compute(int leftVal, int rightVal);
-    abstract ImmediateFloat compute(float leftVal, int rightVal);
-    abstract ImmediateFloat compute(int leftVal, float rightVal);
-    abstract ImmediateFloat compute(float leftVal, float rightVal);
+    abstract IntLiteral compute(DecacCompiler compiler, int leftVal, int rightVal);
+    abstract FloatLiteral compute(DecacCompiler compiler, float leftVal, int rightVal);
+    abstract FloatLiteral compute(DecacCompiler compiler, int leftVal, float rightVal);
+    abstract FloatLiteral compute(DecacCompiler compiler, float leftVal, float rightVal);
 }

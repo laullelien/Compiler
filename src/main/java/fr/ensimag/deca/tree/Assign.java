@@ -47,11 +47,8 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
         blocks.getCurrentBlock().addInst(this);
-        if (getRightOperand() instanceof AbstractIdentifier)
-            setRightOperand(compiler.ssaFormHelper.readVariable((AbstractIdentifier) getRightOperand(), blocks.getCurrentBlock()));
-        else if (!(getRightOperand() instanceof IntLiteral)) {
-            getRightOperand().appendToBlock(compiler, blocks);
-        }
+        setRightOperand(getRightOperand().evaluate(compiler, blocks));
+        // local value numbering
         compiler.ssaFormHelper.writeVariable((AbstractIdentifier) getLeftOperand(), blocks.getCurrentBlock(), getRightOperand());
     }
 

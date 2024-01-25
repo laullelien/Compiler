@@ -10,10 +10,11 @@
 
 {
     int a;
-    int b;
-    int c;
+    float b;
+    float c;
     a = 42;
     b = a;
     c = a + b;
-    a = c + 23;
+    //a = c + 23;
+    println(c);
 }

@@ -8,7 +8,6 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -23,7 +22,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     private AbstractExpr leftOperand;
     private AbstractExpr rightOperand;
-
+    
     public AbstractBinaryExpr(AbstractExpr leftOperand,
                               AbstractExpr rightOperand) {
         Validate.notNull(leftOperand, "left operand cannot be null");
@@ -52,58 +51,40 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     }
 
     @Override
-    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
-//        if (getRightOperand().getDval() != null && getLeftOperand().getDval() != null) {
-//            return;
-//        }
-        if (getLeftOperand() instanceof AbstractIdentifier) {
-            setLeftOperand(compiler.ssaFormHelper.readVariable((AbstractIdentifier) getLeftOperand(), blocks.getCurrentBlock()));
-        }
-        if (getRightOperand() instanceof  AbstractIdentifier) {
-            setRightOperand(compiler.ssaFormHelper.readVariable((AbstractIdentifier) getRightOperand(), blocks.getCurrentBlock()));
-        }
-    }
-
-    protected void codegenCompute(DecacCompiler compiler) {
-        if (getType().isInt()) {
-            int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
-            int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
-            compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
-        } else {
+    protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
+        setLeftOperand(getLeftOperand().evaluate(compiler, blocks));
+        setRightOperand(getRightOperand().evaluate(compiler, blocks));
+        if (getLeftOperand().isConstant() && getRightOperand().isConstant()) {
             if (getLeftOperand().getType().isInt()) {
-                int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
-                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
-            } else if (getRightOperand().getType().isInt()) {
-                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
-                int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
+                Validate.isTrue(getLeftOperand() instanceof IntLiteral);
+                int leftVal = ((IntLiteral) (getLeftOperand())).getValue();
+                if (getRightOperand().getType().isInt()) {
+                    Validate.isTrue(getRightOperand() instanceof IntLiteral);
+                    int rightVal = ((IntLiteral) (getRightOperand())).getValue();
+                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
+                } else {
+                    Validate.isTrue(getRightOperand() instanceof FloatLiteral);
+                    float rightVal = ((FloatLiteral) (getRightOperand())).getValue();
+                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
+                }
             } else {
-                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
-                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
+                Validate.isTrue(getLeftOperand() instanceof FloatLiteral);
+                float leftVal = ((FloatLiteral) (getLeftOperand())).getValue();
+                if (getRightOperand().getType().isInt()) {
+                    Validate.isTrue(getRightOperand() instanceof IntLiteral);
+                    int rightVal = ((IntLiteral) (getRightOperand())).getValue();
+                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
+                } else {
+                    Validate.isTrue(getRightOperand() instanceof FloatLiteral);
+                    float rightVal = ((FloatLiteral) (getRightOperand())).getValue();
+                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
+                }
             }
         }
-    }
-
-    private boolean isComputable() {
-        boolean leftIsInt = (leftOperand.getDval() instanceof ImmediateInteger);
-        boolean rightIsInt = (rightOperand.getDval() instanceof ImmediateInteger);
-        boolean leftIsFloat = (leftOperand.getDval() instanceof ImmediateFloat);
-        boolean rightIsFloat = (rightOperand.getDval() instanceof ImmediateFloat);
-        boolean rightIsNumber = rightIsInt || rightIsFloat;
-        boolean leftIsNumber = leftIsInt || leftIsFloat;
-        if (this instanceof AbstractOpArith) {
-            return leftIsNumber && rightIsNumber;
-        }
-        return false;
+        return this;
     }
 
     protected void codeGenInst(DecacCompiler compiler) {
-        if (compiler.getCompilerOptions().getOptim() && this instanceof AbstractOpArith && isComputable()) {
-            codegenCompute(compiler);
-            return;
-        }
         if (getRightOperand().getDval() != null) {
             getLeftOperand().codeGenInst(compiler);
             compiler.setDval(getRightOperand().getDval());

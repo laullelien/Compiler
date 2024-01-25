@@ -2,7 +2,6 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -46,22 +45,22 @@ public class Multiply extends AbstractOpArith {
    }
 
     @Override
-    ImmediateInteger compute(int leftVal, int rightVal) {
-        return new ImmediateInteger(leftVal * rightVal);
+    IntLiteral compute(DecacCompiler compiler, int leftVal, int rightVal) {
+        return new IntLiteral(leftVal * rightVal, compiler);
     }
 
     @Override
-    ImmediateFloat compute(float leftVal, int rightVal) {
-        return new ImmediateFloat(leftVal * rightVal);
+    FloatLiteral compute(DecacCompiler compiler, float leftVal, int rightVal) {
+        return new FloatLiteral(leftVal * rightVal, compiler);
     }
 
     @Override
-    ImmediateFloat compute(int leftVal, float rightVal) {
-        return new ImmediateFloat(leftVal * rightVal);
+    FloatLiteral compute(DecacCompiler compiler, int leftVal, float rightVal) {
+        return new FloatLiteral(leftVal * rightVal, compiler);
     }
 
     @Override
-    ImmediateFloat compute(float leftVal, float rightVal) {
-        return new ImmediateFloat(leftVal * rightVal);
+    FloatLiteral compute(DecacCompiler compiler, float leftVal, float rightVal) {
+        return new FloatLiteral(leftVal * rightVal, compiler);
     }
 }

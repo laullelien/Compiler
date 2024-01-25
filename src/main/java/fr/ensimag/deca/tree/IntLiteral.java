@@ -10,7 +10,6 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
 
 import java.io.PrintStream;
 
@@ -29,6 +28,19 @@ public class IntLiteral extends AbstractExpr {
 
     public IntLiteral(int value) {
         this.value = value;
+    }
+
+    /**
+     * Constructeur qui ne peut etre utilise qu'avec l'option -optim
+     */
+    public IntLiteral(int value, DecacCompiler compiler) {
+        this.value = value;
+        setType(compiler.environmentType.INT);
+    }
+
+    @Override
+    public boolean isConstant() {
+        return true;
     }
 
     @Override

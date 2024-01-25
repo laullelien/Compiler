@@ -2,12 +2,11 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 import fr.ensimag.ima.pseudocode.instructions.OPP;
+import org.apache.commons.lang.Validate;
 
 /**
  * Conversion of an int into a float. Used for implicit conversions.
@@ -37,6 +36,15 @@ public class ConvFloat extends AbstractUnaryExpr {
         return compiler.environmentType.FLOAT;
     }
 
+    @Override
+    protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
+        setOperand(getOperand().evaluate(compiler, blocks));
+        if (getOperand().isConstant()) {
+            Validate.isTrue(getOperand() instanceof IntLiteral);
+            return new FloatLiteral(((IntLiteral) getOperand()).getValue(), compiler);
+        }
+        return this;
+    }
 
     @Override
     protected String getOperatorName() {
