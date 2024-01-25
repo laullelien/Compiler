@@ -28,7 +28,7 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     @Override
     public int hashCode() {
-        return 31 * getName().hashCode() + getType().hashCode();
+        return 31 * getName().hashCode();
     }
 
     @Override
@@ -36,7 +36,7 @@ public abstract class AbstractIdentifier extends AbstractLValue {
         if (!(obj instanceof AbstractIdentifier))
             return false;
         AbstractIdentifier ident = (AbstractIdentifier) obj;
-        return getName().getName().equals(ident.getName().getName()) && getType().getName().equals(ident.getType().getName());
+        return getName().getName().equals(ident.getName().getName());
     }
 
     /**
@@ -110,6 +110,9 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     @Override
     protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
-        return compiler.ssaFormHelper.readVariable(this, blocks.getCurrentBlock());
+        AbstractExpr localValue = compiler.ssaFormHelper.readVariable(this, blocks.getCurrentBlock());
+        if (localValue == null)
+            return this;
+        return localValue;
     }
 }

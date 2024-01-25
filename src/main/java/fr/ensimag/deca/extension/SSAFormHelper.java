@@ -29,7 +29,8 @@ public class SSAFormHelper {
         Validate.isTrue(currentDef.containsKey(variable));
         if (currentDef.get(variable).containsKey(block))
             return currentDef.get(variable).get(block);
-        return readVariableRecursive(variable, block);
+        // return readVariableRecursive(variable, block);
+        return null;
     }
 
     public AbstractExpr readVariableRecursive(AbstractIdentifier variable, BasicBlock block) {

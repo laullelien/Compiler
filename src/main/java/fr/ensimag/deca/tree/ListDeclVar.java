@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
@@ -63,6 +64,12 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         // règle 3.16 (EnvironmentExp non renvoyé mais localEnv modifié)
         for (AbstractDeclVar e : this.getList()) {
             e.verifyDeclVar(compiler, localEnv, currentClass);
+        }
+    }
+
+    void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
+        for (AbstractDeclVar e : this.getList()) {
+            e.appendToBlock(compiler, blocks);
         }
     }
 

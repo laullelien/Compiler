@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.extension.tree.BasicBlock;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 
 import java.util.Map;
 
@@ -37,4 +38,6 @@ public abstract class AbstractDeclVar extends Tree {
     abstract public void codeGenDeclVar(DecacCompiler compiler);
 
     public void setLocalOperand(int offset) {}
+
+    abstract public void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks);
 }

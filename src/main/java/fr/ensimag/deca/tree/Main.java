@@ -45,6 +45,7 @@ public class Main extends AbstractMain {
     protected void optimizeMain(DecacCompiler compiler) {
         BasicBlock entryBlock = new BasicBlock();
         blocks = new ListBasicBlock(entryBlock);
+        declVariables.appendToBlock(compiler, blocks);
         insts.constructBasicBlocks(compiler, blocks);
     }
 

@@ -155,7 +155,7 @@ public abstract class AbstractExpr extends AbstractInst {
      * Try to apply various local optimization to evaluate expression at compile time
      */
     protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
-        System.out.println("oops, to imp");
+        // TODO System.out.println("oops, to imp");
         return this;
     }
 
