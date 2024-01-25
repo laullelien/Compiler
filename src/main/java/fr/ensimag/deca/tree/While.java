@@ -47,12 +47,7 @@ public class While extends AbstractInst {
 
         compiler.addLabel(startWhileLabel);
 
-        condition.codeGenInst(compiler);
-
-        if(!(compiler.lastIsLoad() && ((LOAD)(compiler.getLastInstruction())).getReg() == compiler.getRegister())) {
-            compiler.addInstruction(new CMP(0, compiler.getRegister()));
-        }
-        compiler.addInstruction(new BEQ(endWhileLabel));
+        condition.codeGenCond(compiler, false, endWhileLabel);
 
         body.codeGenListInst(compiler);
 

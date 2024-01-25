@@ -1,0 +1,4 @@
+class A{
+	void a(int x, float x) {
+	}
+}

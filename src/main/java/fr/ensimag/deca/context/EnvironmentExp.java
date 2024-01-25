@@ -22,9 +22,6 @@ import java.util.HashMap;
  * @date 01/01/2024
  */
 public class EnvironmentExp {
-    // A FAIRE : implémenter la structure de donnée représentant un
-    // environnement (association nom -> définition, avec possibilité
-    // d'empilement).
     private HashMap<Symbol, ExpDefinition> environment = new HashMap<>();
 
     EnvironmentExp parentEnvironment;
@@ -101,5 +98,21 @@ public class EnvironmentExp {
         }
         return res;
     }
+
+    public void stackEnvironment(EnvironmentExp env) {
+        for (Symbol s : env.getEnvironment().keySet()){
+            if (!this.environment.containsKey(s)){
+                this.environment.put(s, env.getEnvironment().get(s));
+            }
+        }
+    }
+
+    public void declare(EnvironmentExp env) throws DoubleDefException {
+        for (Symbol s : env.getEnvironment().keySet()){
+            this.declare(s, env.get(s));
+        }
+    }
+
+
 
 }

@@ -1,0 +1,10 @@
+// Description:
+//    Programme testant un héritage d'un type non classe
+//
+// Resultats:
+//
+//
+// Historique:
+//    cree le 22/01/2024
+
+class B extends int {}

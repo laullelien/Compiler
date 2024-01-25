@@ -45,6 +45,33 @@ public class DecacCompiler {
      * ID of the first available Register for code generation
      */
     private int regId = 2;
+    private int maxReg = 2;
+
+    private int regVar;
+
+    /**
+     * Represente le nombre maximal de variables affectees a des registres
+     */
+    public void setRegVar(int n) {
+        regVar = n;
+    }
+
+    private int allocatedReg = 0;
+
+    public DVal getVarDVal() {
+        if(allocatedReg < regVar) {
+            DVal reg = (Register.getR(compilerOptions.getMaxRegisters() - allocatedReg));
+            allocatedReg ++;
+            return reg;
+        } else {
+            nbDeclVar ++;
+            return new RegisterOffset(listVTable.getOffset() + nbDeclVar, Register.GB);
+        }
+    }
+
+    public void setRegister(GPRegister reg) {
+        regId = reg.getNumber();
+    }
 
     public GPRegister getRegister() {
         return Register.getR(regId);
@@ -52,12 +79,23 @@ public class DecacCompiler {
 
     public void incrementRegister() {
         regId++;
+        if(regId > maxReg) {
+            maxReg = regId;
+        }
         Validate.isTrue(regId <= compilerOptions.getMaxRegisters());
     }
 
     public void decrementRegister() {
         regId--;
         Validate.isTrue(regId >= 2);
+    }
+
+    public void resetMaxReg() {
+        maxReg = 2;
+    }
+
+    public int getMaxReg() {
+        return maxReg;
     }
 
     public boolean isRegisterAvailable() {
@@ -82,7 +120,7 @@ public class DecacCompiler {
 
     public int generateDeclVarOffset() {
         nbDeclVar ++;
-        return nbDeclVar;
+        return listVTable.getOffset() + nbDeclVar;
     }
 
     public int getNbDeclVar() {
@@ -183,7 +221,15 @@ public class DecacCompiler {
     /**
      * The main program. Every instruction generated will eventually end up here.
      */
-    private final IMAProgram program = new IMAProgram();
+    private IMAProgram program = new IMAProgram();
+
+    public void setProgram(IMAProgram program) {
+        this.program = program;
+    }
+
+    public IMAProgram getProgram() {
+        return program;
+    }
 
     /** The global environment for types (and the symbolTable) */
     public final SymbolTable symbolTable = new SymbolTable();
@@ -200,7 +246,6 @@ public class DecacCompiler {
     public final SSAFormHelper ssaFormHelper = new SSAFormHelper();
 
     public Symbol createSymbol(String name) {
-       // return null; // A FAIRE: remplacer par la ligne en commentaire ci-dessous
         return symbolTable.create(name);
     }
 
@@ -213,8 +258,6 @@ public class DecacCompiler {
         String sourceFile = source.getAbsolutePath();
         String destFile = sourceFile.substring(0, sourceFile.length() - 4);
         destFile += "ass";
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
@@ -271,8 +314,7 @@ public class DecacCompiler {
         }
 
         prog.verifyProgram(this);
-        // TODO décommenter lorsque l'étape de deca objet terminé
-        // assert(prog.checkAllDecorations());
+        assert(prog.checkAllDecorations());
 
         if (this.compilerOptions.getVerification()){
             return false;

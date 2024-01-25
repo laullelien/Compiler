@@ -1,0 +1,81 @@
+// Programme de gestion universitaire en utilisant votre langage
+
+// Declaration des classes
+class Personne {
+    int age;
+
+    void afficherInfo() {
+        println("[Personne] ", "Age : ", age);
+    }
+}
+
+class Etudiant extends Personne {
+    int numEtudiant;
+    int moyenne;
+
+    void afficherInfo() {
+        println("[Etudiant] Numero : ", numEtudiant, ", Moyenne : ", moyenne, " Age : ", age);
+    }
+}
+
+class Professeur extends Personne {
+    protected boolean estGentil = true;
+
+    float noter(Personne personne) {
+        if (!(personne instanceof Etudiant)) {
+            println("Mais tu n'es pas un etudiant!");
+            return 0.0;
+        }
+        return noterEtudiant((Etudiant) (personne));
+    }
+
+    float noterEtudiant(Etudiant etudiant) {
+        if (etudiant.moyenne < 10 && estGentil) {
+            println("Tu n'as pas la moyenne mais je vais etre gentil aujourd'hui, si cela peut aider...");
+            return etudiant.moyenne * 1.1;
+        }
+        else {
+            println("Felicitation! Tu as passe la classe");
+            return etudiant.moyenne;
+        }
+    }
+
+    float moyenneClasse(float sommeNote, int nombreEtudiant) {
+        return sommeNote / nombreEtudiant;
+    }
+}
+
+// Programme principal
+{
+    // Creation d'objets
+    Personne squatteur = new Personne();
+    Etudiant azalee = new Etudiant();
+    Etudiant leocadie = new Etudiant();
+    Professeur gwendal = new Professeur();
+    float noteAzalee;
+    float noteLeocadie;
+
+    azalee.age = 20;
+    azalee.numEtudiant = 12345;
+    azalee.moyenne = 17;
+    azalee.afficherInfo();
+
+    leocadie.age = 22;
+    leocadie.numEtudiant = 54321;
+    leocadie.moyenne = 9;
+    leocadie.afficherInfo();
+
+    noteAzalee = gwendal.noter(azalee);
+    println("Nouvelle moyenne d'Azalee : ", noteAzalee);
+
+    gwendal.noter(squatteur);
+
+    squatteur = leocadie;
+    if (squatteur.equals(leocadie)) {
+        println("Leocadie est devenu un squatteur!");
+    }
+    noteLeocadie = gwendal.noter(squatteur);
+    println("Nouvelle moyenne de Leocadie : ", noteLeocadie);
+
+    println("Nouvelle moyenne de la promo : ", gwendal.moyenneClasse(noteAzalee + noteLeocadie, 0));
+}

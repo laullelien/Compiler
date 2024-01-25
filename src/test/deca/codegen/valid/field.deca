@@ -1,0 +1,6 @@
+class A {
+	int a;
+	protected boolean b = true;
+	Object o;
+	protected Object c;
+}

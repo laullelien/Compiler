@@ -1,0 +1,14 @@
+class A{
+	int cinq() {
+		println("passe");
+		return 5;
+	}
+	int quatre(){
+	    return cinq()-1;
+	}
+}
+
+{
+	A a = new A();
+	println(a.quatre());
+}

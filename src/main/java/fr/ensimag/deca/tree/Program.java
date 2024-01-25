@@ -1,9 +1,12 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
-
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.*;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -56,11 +59,11 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         compiler.codegenHelper.codeGenTSTO();
         classes.codeGenListClassVTables(compiler); // Etape C, passe 1
         main.codeGenMain(compiler); // Etape C, passe 2 pour le programme principal
+        compiler.codegenHelper.setMainInst();
         compiler.addInstruction(new HALT());
         classes.codeGenListClassBody(compiler); // Etape C, passe 2 pour les classes
         compiler.codegenHelper.codeGenListError();

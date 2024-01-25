@@ -1,14 +1,55 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 
 import java.io.PrintStream;
 
-public class AbstractDeclField extends Tree {
+public abstract class AbstractDeclField extends Tree {
     private Visibility fieldVisibility;
     private AbstractIdentifier fieldType;
     private AbstractIdentifier fieldName;
     private AbstractInitialization fieldInitialization;
+
+    @Override
+    String printNodeLine(PrintStream s, String prefix, boolean last,
+                         boolean inlist, String nodeName) {
+        s.print(prefix);
+        if (inlist) {
+            s.print("[]>");
+        } else if (last) {
+            s.print("`>");
+        } else {
+            s.print("+>");
+        }
+        if (getLocation() != null) {
+            s.print(" " + getLocation().toString());
+        }
+        if (getFieldVisibility() != null){
+            s.print(" " + getFieldVisibility().toString());
+        }
+        s.print(" ");
+        s.print(nodeName);
+        s.println();
+        String newPrefix;
+        if (last) {
+            if (inlist) {
+                newPrefix = prefix + "    ";
+            } else {
+                newPrefix = prefix + "   ";
+            }
+        } else {
+            if (inlist) {
+                newPrefix = prefix + "||  ";
+            } else {
+                newPrefix = prefix + "|  ";
+            }
+        }
+        prettyPrintType(s, newPrefix);
+        return newPrefix;
+    }
 
     public AbstractDeclField(Visibility fieldVisibility, AbstractIdentifier fieldType, AbstractIdentifier fieldName,
                              AbstractInitialization fieldInitialization) {
@@ -17,6 +58,26 @@ public class AbstractDeclField extends Tree {
         this.fieldName = fieldName;
         this.fieldInitialization = fieldInitialization;
     }
+
+    public Visibility getFieldVisibility() {
+        return fieldVisibility;
+    }
+
+    public AbstractIdentifier getFieldType() {
+        return fieldType;
+    }
+
+    public AbstractIdentifier getFieldName() {
+        return fieldName;
+    }
+
+    public AbstractInitialization getFieldInitialization() {
+        return fieldInitialization;
+    }
+
+    abstract public EnvironmentExp verifyDeclField(DecacCompiler compiler, SymbolTable.Symbol superClassSymbol, ClassDefinition classDef) throws ContextualError;
+
+    abstract public void verifyDeclFieldPass3(DecacCompiler compiler, EnvironmentExp env, ClassDefinition classDef) throws ContextualError;
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -32,4 +93,8 @@ public class AbstractDeclField extends Tree {
     protected void iterChildren(TreeFunction f) {
 
     }
+    public void setFieldVisibility(Visibility v) {this.fieldVisibility = v;}
+
+    //saves the result of the initialization in compiler.getRegister()
+    abstract void codeGenInit(DecacCompiler compiler);
 }

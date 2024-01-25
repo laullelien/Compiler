@@ -1,0 +1,13 @@
+class A{
+}
+
+class B extends A{
+}
+
+{
+	Object o = new B();
+	if(o instanceof A) {
+		println("normal");
+	}
+	(A)(o);
+}

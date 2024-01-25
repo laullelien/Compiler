@@ -9,7 +9,10 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
@@ -142,6 +145,7 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
+
     /**
      * Generate code to print the expression
      *
@@ -171,6 +175,21 @@ public abstract class AbstractExpr extends AbstractInst {
             s.print("type: ");
             s.print(t);
             s.println();
+        }
+    }
+
+    /**
+     * Genere le code pour les conditions. Si la condition a la meme valeur de verite que eq, alors on doit sauter a jumpLabel
+     * @param compiler
+     * @param eq
+     * @param jumpLabel
+     */
+    public void codeGenCond(DecacCompiler compiler, boolean eq, Label jumpLabel) {
+        codeGenInst(compiler);
+        if (eq) {
+            compiler.addInstruction(new BNE(jumpLabel));
+        } else {
+            compiler.addInstruction(new BEQ(jumpLabel));
         }
     }
 }

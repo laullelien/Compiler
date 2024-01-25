@@ -1,0 +1,10 @@
+class A{}
+class B{}
+
+{
+	A a = new A();
+	B b = new B();
+	if((((a instanceof A) && (a instanceof A)) || (a instanceof A) && (b instanceof A)) && ((a instanceof A) && (a instanceof A)) || (a instanceof A) && (b instanceof A)) {
+		println("ok");
+	}
+}

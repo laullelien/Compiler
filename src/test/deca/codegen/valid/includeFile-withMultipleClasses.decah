@@ -1,0 +1,35 @@
+class A {
+    protected float b = 3;
+    int method(){
+        return 3;
+    }
+    boolean isTrue(int b){
+        return b == 3;
+    }
+}
+
+class B extends A {
+    int nouille() {
+        println(b);
+        return 5;
+    }
+    float soupeAOignonYCrouton(){
+        println(4.888);
+        return 3.0;
+    }
+    int whileLoop(float i){
+        int j = (int) (i);
+        while (j > 0){
+            println(j);
+            j  = j - 1;
+        }
+        return 3;
+    }
+    boolean isAPangolin(A animal){
+        return animal instanceof B;
+    }
+
+}
+
+class Trash{}
+

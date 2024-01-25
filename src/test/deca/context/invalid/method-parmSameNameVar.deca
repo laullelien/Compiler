@@ -1,0 +1,5 @@
+class A{
+	void c(int a) {
+		boolean a;
+	}
+}

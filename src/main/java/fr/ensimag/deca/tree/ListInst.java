@@ -7,6 +7,10 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * 
@@ -34,6 +38,32 @@ public class ListInst extends TreeList<AbstractInst> {
 
     public void codeGenListInst(DecacCompiler compiler) {
         for (AbstractInst i : getList()) {
+            if(i instanceof Assign) {
+                Assign inst = (Assign) i;
+                if (inst.getLeftOperand().getDval() instanceof GPRegister) {
+                    GPRegister destReg = (GPRegister) (inst.getLeftOperand().getDval());
+                    if (inst.getRightOperand().getDval() != null) {
+                        compiler.addInstruction(new LOAD(inst.getRightOperand().getDval(), destReg));
+                        continue;
+                    } else if (inst.getRightOperand() instanceof AbstractOpArith) {
+                        AbstractOpArith rightOperand = (AbstractOpArith) inst.getRightOperand();
+                        AbstractExpr leftSon = rightOperand.getLeftOperand();
+                        AbstractExpr rightSon = rightOperand.getRightOperand();
+                        if(leftSon.getDval() != null && rightSon.getDval() != null && (leftSon.getDval() == destReg || rightSon.getDval() == destReg)) {
+                            if(leftSon.getDval() == destReg) {
+                                compiler.setDval(rightSon.getDval());
+                                compiler.setRegister(destReg);
+                            } else if (rightSon.getDval() == destReg) {
+                                compiler.setDval(leftSon.getDval());
+                                compiler.setRegister(destReg);
+                            }
+                            rightOperand.codeGenBinary(compiler);
+                            compiler.setRegister(Register.R2);
+                            continue;
+                        }
+                    }
+                }
+            }
             i.codeGenInst(compiler);
         }
     }

@@ -103,4 +103,9 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
+
+
+    public abstract ExpDefinition verifyField(DecacCompiler compiler, EnvironmentExp env) throws ContextualError;
+
+    public abstract ExpDefinition verifyMethod(DecacCompiler compiler, EnvironmentExp env) throws ContextualError;
 }

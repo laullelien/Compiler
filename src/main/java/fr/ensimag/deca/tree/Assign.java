@@ -6,7 +6,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.extension.tree.ListBasicBlock;
-import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -57,22 +57,46 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        if(getLeftOperand() instanceof Selection) {
+            if (compiler.isRegisterAvailable()) {
+                GPRegister prevReg = compiler.getRegister();
+                ((Selection)getLeftOperand()).codeGenAdress(compiler);
+                compiler.incrementRegister();
+                getRightOperand().codeGenInst(compiler);
+                compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(0, prevReg)));
+                compiler.decrementRegister();
+            } else {
+                ((Selection)getLeftOperand()).codeGenAdress(compiler);
+                compiler.addInstruction(new PUSH(compiler.getRegister()));
+                compiler.codegenHelper.incPushDepth();
+                getRightOperand().codeGenInst(compiler);
+                compiler.addInstruction(new LOAD(compiler.getRegister(), Register.R0));
+                compiler.addInstruction(new POP(compiler.getRegister()));
+                compiler.codegenHelper.decPushDepth();
+                compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
+            }
+            return;
+        }
         if(getRightOperand().getDval() != null) {
             compiler.addInstruction(new LOAD(getRightOperand().getDval(), compiler.getRegister()));
-            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-            return;
+        } else {
+            getRightOperand().codeGenInst(compiler);
         }
-        getRightOperand().codeGenInst(compiler);
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-    }
-
-    @Override
-    protected void codeGenBinary(DecacCompiler compiler) {
-        if(compiler.getDVal() instanceof  GPRegister) {
-            compiler.addInstruction(new STORE((GPRegister)compiler.getDVal(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
-            return;
+        if(((Identifier) this.getLeftOperand()).getExpDefinition().getOperand() != null) {
+            DVal operand = ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand();
+            if(operand instanceof GPRegister) {
+                compiler.addInstruction(new LOAD(compiler.getRegister(), (GPRegister) operand));
+            } else {
+                compiler.addInstruction(new STORE(compiler.getRegister(), (DAddr) operand));
+            }
         }
-        compiler.addInstruction(new LOAD(compiler.getDVal(), compiler.getRegister()));
-        compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getVariableDefinition().getOperand()));
+        else {
+            compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            if(!compiler.getCompilerOptions().getOptim()) {
+                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+                compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            }
+            compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((Identifier)getLeftOperand()).getFieldDefinition().getIndex(), Register.R0)));
+        }
     }
 }

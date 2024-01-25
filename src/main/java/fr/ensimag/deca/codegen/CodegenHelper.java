@@ -13,6 +13,8 @@ public class CodegenHelper {
 
     private TSTO mainTSTO;
 
+    private ADDSP mainADDSP;
+
     private int maxPushDepth;
 
     private int pushDepth;
@@ -23,8 +25,14 @@ public class CodegenHelper {
 
     public void codeGenListError() {
         compiler.addComment("error handling");
+
         compiler.addLabel(new Label("stack_full"));
         compiler.addInstruction(new WSTR("La pile est pleine"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("heap_full"));
+        compiler.addInstruction(new WSTR("Le tas est plein"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 
@@ -37,18 +45,42 @@ public class CodegenHelper {
         compiler.addInstruction(new WSTR("Depassement ou mauvais format"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("return_error"));
+        compiler.addInstruction(new WSTR("Une méthode de type de retour non void n'a rien retourné"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("dereferencement_null"));
+        compiler.addInstruction(new WSTR("Déréférencement de null"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
+        compiler.addLabel(new Label("impossible_cast"));
+        compiler.addInstruction(new WSTR("Cast impossible"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+    }
+
+    public int getMaxPushDepth() {
+        return maxPushDepth;
     }
 
     public void codeGenTSTO() {
         // The number for TSTO will be modified later
         mainTSTO = new TSTO(0);
-        compiler.addInstruction(mainTSTO);
-        compiler.addInstruction(new BOV(new Label("stack_full")));
-        compiler.addInstruction(new ADDSP(compiler.getNbDeclVar()));
+        mainADDSP = new ADDSP(0);
+        if(!compiler.getCompilerOptions().getOptim()) {
+            compiler.addInstruction(mainTSTO);
+            compiler.addInstruction(new BOV(new Label("stack_full")));
+        }
+        compiler.addInstruction(mainADDSP);
     }
 
-    public void setMainTSTO() {
+
+    public void setMainInst() {
         mainTSTO.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + maxPushDepth + compiler.listVTable.getOffset()));
+        mainADDSP.setOperand(new ImmediateInteger(compiler.getNbDeclVar() + compiler.listVTable.getOffset()));
     }
 
     public void incPushDepth() {
@@ -56,6 +88,17 @@ public class CodegenHelper {
         if(pushDepth > maxPushDepth) {
             maxPushDepth = pushDepth;
         }
+    }
+
+    public void addPushDepth(int i) {
+        pushDepth += i;
+        if(pushDepth > maxPushDepth) {
+            maxPushDepth = pushDepth;
+        }
+    }
+
+    public void decPushDepth(int i) {
+        pushDepth -= i;
     }
 
     public void decPushDepth() {
@@ -72,5 +115,10 @@ public class CodegenHelper {
         compiler.addInstruction(new CMP(Register.R0, Register.R1));
         compiler.addInstruction(new SEQ(Register.R0));
         compiler.addInstruction(new RTS());
+    }
+
+    public void reset() {
+        pushDepth = 0;
+        maxPushDepth = 0;
     }
 }

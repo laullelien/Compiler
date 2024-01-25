@@ -1,0 +1,19 @@
+class A {
+    int x;
+
+    A re() {
+        return new A();
+    }
+}
+
+{
+    A a = new A();
+    A aa =  a;
+    A aaa = aa.re();
+    if (aa == a) {
+        println("Yes Mama");
+    }
+    if (aaa == a) {
+        println("Noooooooooo Mama");
+    }
+}

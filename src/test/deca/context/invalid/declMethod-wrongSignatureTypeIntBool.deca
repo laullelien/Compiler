@@ -1,0 +1,11 @@
+class A {
+    int coco = 3;
+
+    void boobs(int m, float p) {
+    }
+}
+
+class B extends A {
+    void boobs(boolean a, float p) {
+    }
+}

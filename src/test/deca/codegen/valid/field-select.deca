@@ -1,0 +1,38 @@
+// Description:
+//    Programme testant la selection de champs d'une classe
+//
+// Resultats:
+//    2
+//    9
+//    5
+//    24
+//    7.3
+//    1
+//
+// Historique:
+//    cree le 01/01/2024
+
+class A {
+    int i = 2;
+    float f;
+    boolean b;
+}
+
+class B extends A {
+    int i = 5;
+    int j = 4;
+    float f = 7.3;
+    int b = 1;
+}
+
+{
+    A A = new A();
+    B B = new B();
+    println(A.i);
+    A.i = 9;
+    println(A.i);
+    println(B.i);
+    println(B.j * 6);
+    println(B.f);
+    println(B.b);
+}

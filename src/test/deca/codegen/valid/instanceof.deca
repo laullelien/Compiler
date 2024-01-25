@@ -1,0 +1,11 @@
+class Orochimaru{
+	boolean mechant;
+}
+
+{
+	Orochimaru Kabuto = new Orochimaru();
+	boolean isKabutoOrochimaru = Kabuto instanceof Orochimaru;
+	if (isKabutoOrochimaru){
+		println("Oui Kabuto, tu es le nouvel antagoniste");	
+	}
+}

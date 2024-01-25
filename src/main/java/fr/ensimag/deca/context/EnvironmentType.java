@@ -8,7 +8,6 @@ import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
 
-// A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
  * Environment containing types. Initially contains predefined identifiers, more
  * classes can be added with declareClass().
@@ -20,7 +19,7 @@ public class EnvironmentType {
 
     public EnvironmentType(DecacCompiler compiler) {
         
-        envTypes = new HashMap<Symbol, TypeDefinition>();
+        envTypes = new HashMap<>();
         
         Symbol intSymb = compiler.createSymbol("int");
         INT = new IntType(intSymb);
@@ -44,11 +43,12 @@ public class EnvironmentType {
 
         Symbol objectSymbol = compiler.createSymbol("Object");
         Symbol equalSymbol = compiler.createSymbol("equals");
-        OBJECT = new ClassType(objectSymbol);
+        OBJECT = new ObjectType(objectSymbol);
         Signature equalsSignature = new Signature();
         equalsSignature.add(OBJECT);
         MethodDefinition equalsMethodDefinition = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
         ClassDefinition objectDefinition = new ClassDefinition(OBJECT, Location.BUILTIN, equalSymbol,equalsMethodDefinition);
+        OBJECT.setDefinition(objectDefinition);
         envTypes.put(objectSymbol, objectDefinition);
         this.objectClassIdentifier = new Identifier(objectSymbol);
     }
@@ -71,12 +71,13 @@ public class EnvironmentType {
     }
 
     public boolean assignCompatible(Type t1, Type t2) {
-        // gestion des sous-classes à implémenter
         if (t1.isFloat() && t2.isInt() || t1 == t2) {
             return true;
+        } else {
+            return t2.isSubType(t1);
         }
-        return false;
     }
+
     public void declare(Symbol classSymbol, ClassDefinition classDefinition) throws DoubleDefException {
         if (envTypes.containsKey(classSymbol)) {
             throw new DoubleDefException();
@@ -84,11 +85,15 @@ public class EnvironmentType {
         envTypes.put(classSymbol, classDefinition);
     }
 
+    public void stackOneElement(Symbol symbol, ClassDefinition def){
+        this.envTypes.put(symbol, def);
+    }
+
     public final VoidType    VOID;
     public final IntType     INT;
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
-    public final ClassType OBJECT;
+    public final ObjectType OBJECT;
     public final AbstractIdentifier objectClassIdentifier;
 }

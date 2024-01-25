@@ -4,9 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.extension.tree.BasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
@@ -78,15 +77,24 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     public void setOperand(DecacCompiler compiler) {
-        int offset = compiler.generateDeclVarOffset();
-        varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.GB));
+        varName.getVariableDefinition().setOperand(compiler.getVarDVal());
+    }
+
+    @Override
+    public void setLocalOperand(int offset) {
+        varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.LB));
     }
 
     @Override
     public void codeGenDeclVar(DecacCompiler compiler) {
         initialization.codeGenInst(compiler);
         if (initialization instanceof Initialization) {
-            compiler.addInstruction(new STORE(Register.R2, varName.getVariableDefinition().getOperand()));
+            DVal operand = varName.getVariableDefinition().getOperand();
+            if(operand instanceof GPRegister) {
+                compiler.addInstruction(new LOAD(compiler.getRegister(), (GPRegister) operand));
+            } else {
+                compiler.addInstruction(new STORE(compiler.getRegister(), (DAddr) operand));
+            }
         }
     }
 

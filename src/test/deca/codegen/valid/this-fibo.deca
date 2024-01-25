@@ -1,0 +1,13 @@
+class Fibo{
+	int fibo(int i) {
+		if(i <= 1) {
+			return i;
+		}
+		return this.fibo(i - 1) + this.fibo(i - 2);
+	}
+}
+
+{
+	Fibo f = new Fibo();
+	println(f.fibo(10));
+}

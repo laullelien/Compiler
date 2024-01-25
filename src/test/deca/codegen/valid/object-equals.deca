@@ -1,0 +1,6 @@
+{
+	Object o = new Object();
+	if(o.equals(o)){
+		println("ok");
+	}
+}

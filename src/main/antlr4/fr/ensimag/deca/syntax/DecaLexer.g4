@@ -38,6 +38,14 @@ INT: '0' | POSITIVE_DIGIT DIGIT*;
 TRUE: 'true';
 FALSE: 'false';
 
+// grammar for null
+
+NULL: 'null';
+
+// grammar for return
+
+RETURN: 'return';
+
 // grammar for readInt
 
 READINT : 'readInt';
@@ -47,6 +55,15 @@ READFLOAT : 'readFloat';
 
 CLASS: 'class';
 EXTENDS: 'extends';
+INSTANCEOF: 'instanceof';
+NEW: 'new';
+PROTECTED: 'protected';
+THIS: 'this';
+DOT: '.';
+
+// grammar for asm instruction
+
+ASM: 'asm';
 
 // grammar for identifiers
 
@@ -59,13 +76,14 @@ INCLUDE: ('#include' (' ')* '"' FILENAME '"'){doInclude(getText());};
 
 // grammar for identifiers
 
-IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' + '_')* ;
+IDENT: (LETTER | '$' | '_')(LETTER | DIGIT | '$' | '_')* ;
 
 // Deca lexer rules for strings & println.
 fragment EOL: '\\n' ;
 fragment STRING_CAR: ~('"' | '\\' | '\n');
 STRING: '"' (STRING_CAR | '\\"' | '\\\\')*? '"';
 MULTI_LINE_STRING : '"' (STRING_CAR | EOL | '\\"' | '\\\\')* '"';
+CARRIAGE_RETURN: '\r'{skip();};
 COMMENT: '//' .*? '\n' {skip();};
 STARCOMMENT : '/*' .*? '*/' {skip();};
 SEMI: ';';

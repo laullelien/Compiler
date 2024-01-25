@@ -1,0 +1,4 @@
+{
+    Object a;
+    (a instanceof Object).coco;
+}

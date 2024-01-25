@@ -1,0 +1,5 @@
+class Toto {
+    boolean quiEstToto() {
+        return instanceof;
+    }
+}

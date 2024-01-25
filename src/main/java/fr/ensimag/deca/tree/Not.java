@@ -61,4 +61,9 @@ public class Not extends AbstractUnaryExpr {
         }
         compiler.addInstruction(new SEQ(compiler.getRegister()));
     }
+
+    @Override
+    public void codeGenCond(DecacCompiler compiler, boolean eq, Label jumpLabel) {
+        getOperand().codeGenCond(compiler, !eq, jumpLabel);
+    }
 }
