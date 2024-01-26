@@ -13,4 +13,5 @@
     int c = a + b;
     a = c + 23;
     c = a + b;
+    print(c);
 }
