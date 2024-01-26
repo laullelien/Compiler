@@ -169,6 +169,22 @@ then
     exit 0
 fi
 
+echo "Début tests codegen"
+for folder in 'invalid' 'valid'
+do
+    source_path="$DIR/$folder"
+    echo "Section $source_path"
+    if [ -z "$(ls $source_path/*.deca 2> /dev/null)" ]
+       then
+            echo "    [WARNING] Pas de fichier a tester"
+        else
+        for source in "$source_path"/*.deca
+        do
+            test_gencode_options "$source" "$folder"
+        done
+    fi
+done
+echo "Fin tests codegen"
 
 echo "Début tests OPTIM"
 for folder in 'valid' 'extension/valid' 'perf'
