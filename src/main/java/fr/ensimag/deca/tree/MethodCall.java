@@ -58,6 +58,13 @@ public class MethodCall extends AbstractExpr {
 
         // empilement du paramètre implicite
         expr.codeGenInst(compiler);
+
+        // test s'il est égal à null
+        if(!compiler.getCompilerOptions().getOptim()) {
+            compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+        }
+
         compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(0, Register.SP)));
 
         // empilement des paramètres (vérifier si ils sont dans le bon sens)
@@ -70,10 +77,6 @@ public class MethodCall extends AbstractExpr {
 
         // récupère le param implicite
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), Register.R0));
-
-        // test s'il est égal à null
-        compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-        compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
 
         // obtain the index of the method in the class
         int methodIndex = compiler.listVTable.getVTable(expr.getType().getName().getName()).indexOf(identifier.getName().getName()) + 1;
@@ -118,4 +121,5 @@ public class MethodCall extends AbstractExpr {
         identifier.iter(f);
         listArgs.iter(f);
     }
+
 }

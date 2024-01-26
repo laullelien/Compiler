@@ -71,12 +71,19 @@ public class Assign extends AbstractBinaryExpr {
             getRightOperand().codeGenInst(compiler);
         }
         if(((Identifier) this.getLeftOperand()).getExpDefinition().getOperand() != null) {
-            compiler.addInstruction(new STORE(compiler.getRegister(), ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand()));
+            DVal operand = ((Identifier) this.getLeftOperand()).getExpDefinition().getOperand();
+            if(operand instanceof GPRegister) {
+                compiler.addInstruction(new LOAD(compiler.getRegister(), (GPRegister) operand));
+            } else {
+                compiler.addInstruction(new STORE(compiler.getRegister(), (DAddr) operand));
+            }
         }
         else {
             compiler.addInstruction(new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-            compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            if(!compiler.getCompilerOptions().getOptim()) {
+                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+                compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+            }
             compiler.addInstruction(new STORE(compiler.getRegister(), new RegisterOffset(((Identifier)getLeftOperand()).getFieldDefinition().getIndex(), Register.R0)));
         }
     }

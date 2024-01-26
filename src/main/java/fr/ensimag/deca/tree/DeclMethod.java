@@ -47,8 +47,10 @@ public class DeclMethod extends AbstractDeclMethod{
         if(nbDeclVar != 0) {
             methodProg.addFirst(new ADDSP(nbDeclVar));
         }
-        methodProg.addFirst(new BOV(new Label("stack_full")));
-        methodProg.addFirst(new TSTO(nbDeclVar + compiler.codegenHelper.getMaxPushDepth() + maxReg - 1));
+        if(!compiler.getCompilerOptions().getOptim()) {
+            methodProg.addFirst(new BOV(new Label("stack_full")));
+            methodProg.addFirst(new TSTO(nbDeclVar + compiler.codegenHelper.getMaxPushDepth() + maxReg - 1));
+        }
         methodProg.addFirstLabel(new Label("code." + className + "." + getMethodName().getName().getName()));
 
         // on n'a pas croisé de return

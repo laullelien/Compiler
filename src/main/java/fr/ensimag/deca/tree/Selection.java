@@ -53,8 +53,10 @@ public class Selection extends AbstractLValue {
     protected void codeGenInst(DecacCompiler compiler){
         compiler.addComment("Debut selection");
         thisExpr.codeGenInst(compiler);
-        compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
-        compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+        if(!compiler.getCompilerOptions().getOptim()) {
+            compiler.addInstruction(new CMP(new NullOperand(), compiler.getRegister()));
+            compiler.addInstruction(new BEQ(new Label("dereferencement_null")));
+        }
         compiler.addInstruction(new LOAD(new RegisterOffset(identifier.getFieldDefinition().getIndex(), compiler.getRegister()), compiler.getRegister()));
         compiler.addComment("Fin Selection");
     }
@@ -85,4 +87,5 @@ public class Selection extends AbstractLValue {
         compiler.addInstruction(new LEA(new RegisterOffset(identifier.getFieldDefinition().getIndex(), compiler.getRegister()), compiler.getRegister()));
         compiler.addComment("Fin calcul adresse field");
     }
+
 }

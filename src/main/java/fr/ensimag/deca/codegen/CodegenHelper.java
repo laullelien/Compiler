@@ -70,8 +70,10 @@ public class CodegenHelper {
         // The number for TSTO will be modified later
         mainTSTO = new TSTO(0);
         mainADDSP = new ADDSP(0);
-        compiler.addInstruction(mainTSTO);
-        compiler.addInstruction(new BOV(new Label("stack_full")));
+        if(!compiler.getCompilerOptions().getOptim()) {
+            compiler.addInstruction(mainTSTO);
+            compiler.addInstruction(new BOV(new Label("stack_full")));
+        }
         compiler.addInstruction(mainADDSP);
     }
 

@@ -42,6 +42,10 @@ public class CompilerOptions {
 
     public boolean getNocheck(){return noCheck;}
 
+    public boolean getOptim() {
+        return isOptim;
+    }
+
     private int debug = 0;
 
     private boolean noCheck = false;
@@ -57,7 +61,7 @@ public class CompilerOptions {
     private boolean isOptim = false;
 
     // On choisit tous les registres par défault
-    private int maxRegisters = 16;
+    private int maxRegisters = 15;
 
     public int getMaxRegisters() {
         return maxRegisters;

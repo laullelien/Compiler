@@ -33,6 +33,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
     }
 
     public void setOperand(DecacCompiler compiler) {
+        compiler.setRegVar((compiler.getCompilerOptions().getMaxRegisters() - 2) / 2);
         for (AbstractDeclVar declVar : this.getList()) {
             declVar.setOperand(compiler);
         }

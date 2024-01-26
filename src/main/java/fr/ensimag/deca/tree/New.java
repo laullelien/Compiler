@@ -23,7 +23,9 @@ public class New extends AbstractExpr{
         compiler.addComment("Debut new");
         int instanceSize = ((ClassType)this.getType()).getDefinition().getNumberOfFields() + 1;
         compiler.addInstruction(new NEW(instanceSize, compiler.getRegister()));
-        compiler.addInstruction(new BOV(new Label("heap_full")));
+        if(!compiler.getCompilerOptions().getOptim()) {
+            compiler.addInstruction(new BOV(new Label("heap_full")));
+        }
         compiler.addInstruction(new LEA(compiler.listVTable.getVTable(getType().getName().getName()).getDAddr(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, new RegisterOffset(0, compiler.getRegister())));
         if (!(nameClass.getName().getName().equals("Object"))) {
