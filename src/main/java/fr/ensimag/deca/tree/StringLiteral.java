@@ -33,7 +33,7 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     public boolean isConstant() {
-        return true;
+        return false;
     }
 
     @Override

@@ -51,33 +51,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
         setLeftOperand(getLeftOperand().evaluate(compiler, blocks));
         setRightOperand(getRightOperand().evaluate(compiler, blocks));
-        if (getLeftOperand().isConstant() && getRightOperand().isConstant()) {
-            if (getLeftOperand().getType().isInt()) {
-                Validate.isTrue(getLeftOperand() instanceof IntLiteral);
-                int leftVal = ((IntLiteral) (getLeftOperand())).getValue();
-                if (getRightOperand().getType().isInt()) {
-                    Validate.isTrue(getRightOperand() instanceof IntLiteral);
-                    int rightVal = ((IntLiteral) (getRightOperand())).getValue();
-                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
-                } else {
-                    Validate.isTrue(getRightOperand() instanceof FloatLiteral);
-                    float rightVal = ((FloatLiteral) (getRightOperand())).getValue();
-                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
-                }
-            } else {
-                Validate.isTrue(getLeftOperand() instanceof FloatLiteral);
-                float leftVal = ((FloatLiteral) (getLeftOperand())).getValue();
-                if (getRightOperand().getType().isInt()) {
-                    Validate.isTrue(getRightOperand() instanceof IntLiteral);
-                    int rightVal = ((IntLiteral) (getRightOperand())).getValue();
-                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
-                } else {
-                    Validate.isTrue(getRightOperand() instanceof FloatLiteral);
-                    float rightVal = ((FloatLiteral) (getRightOperand())).getValue();
-                    return ((AbstractOpArith) this).compute(compiler, leftVal, rightVal);
-                }
-            }
-        }
         return this;
     }
 

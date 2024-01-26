@@ -87,6 +87,8 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     public void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
         if (initialization instanceof Initialization) {
+            ((Initialization) initialization).setExpression(((Initialization) initialization).getExpression().evaluate(compiler, blocks));
+            // local value numbering
             compiler.ssaFormHelper.writeVariable(varName, blocks.getCurrentBlock(), ((Initialization) initialization).getExpression());
         }
     }

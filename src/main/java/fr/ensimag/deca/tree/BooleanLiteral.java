@@ -41,7 +41,7 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     public boolean isConstant() {
-        return true;
+        return false;
     }
 
     @Override
