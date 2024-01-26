@@ -72,7 +72,7 @@ public class While extends AbstractInst {
         headerBlock.addSucc(exitBlock);
 
         // Seal entry
-        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Traitement du bloc Body
         blocks.add(bodyBlock);
@@ -81,11 +81,11 @@ public class While extends AbstractInst {
         // Add and seal Header block
         blocks.getCurrentBlock().addSucc(headerBlock);
         blocks.add(headerBlock);
-        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Rajout du prochain block pour les prochaines instructions
         blocks.add(exitBlock);
-        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
     }
 
     @Override

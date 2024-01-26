@@ -72,23 +72,23 @@ public class IfThenElse extends AbstractInst {
         blocks.getCurrentBlock().addSucc(elseBlock);
 
         // Seal entry
-        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Traitement du bloc Then
         blocks.add(thenBlock);
         thenBranch.constructBasicBlocks(compiler, blocks);
         blocks.getCurrentBlock().addSucc(exitBlock);
-        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Traitement du bloc Else
         blocks.add(elseBlock);
         elseBranch.constructBasicBlocks(compiler, blocks);
         blocks.getCurrentBlock().addSucc(exitBlock);
-        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Rajout du prochain block pour les prochaines instructions
         blocks.add(exitBlock);
-        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
     }
 
     @Override

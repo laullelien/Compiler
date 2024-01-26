@@ -4,7 +4,6 @@ import fr.ensimag.deca.extension.tree.BasicBlock;
 import fr.ensimag.deca.extension.tree.Phi;
 import fr.ensimag.deca.extension.tree.UndefPhi;
 import fr.ensimag.deca.tree.*;
-import org.apache.commons.lang.Validate;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,9 +16,8 @@ public class SSAFormHelper {
     List<ListInst> sealedBlocks;
 
     public void sealBlock(BasicBlock block) {
-        Validate.isTrue(incompletePhis.containsKey(block));
-        for (Map.Entry<AbstractIdentifier, Phi> entry : incompletePhis.get(block).entrySet()) {
-            AbstractIdentifier variable  = entry.getKey();
+        for (Map.Entry<AbstractLValue, Phi> entry : incompletePhis.get(block).entrySet()) {
+            AbstractLValue variable  = entry.getKey();
             addPhiOperands(variable, incompletePhis.get(block).get(variable));
         }
         sealedBlocks.add(block);

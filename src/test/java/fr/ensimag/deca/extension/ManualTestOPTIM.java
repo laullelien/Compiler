@@ -8,20 +8,13 @@ import fr.ensimag.deca.syntax.DecaParser;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Optional;
 
-public class ManualTestCFG {
+public class ManualTestOPTIM {
     public static void main(String[] args) throws IOException {
         // Logger.getRootLogger().setLevel(Level.DEBUG);
-        DecaLexer lex;
-        if (args.length == 0)
-            lex = AbstractDecaLexer.createLexerFromArgs(new String[]{"src/test/deca/codegen/extension/valid/assign.deca"});
-        else
-            lex = AbstractDecaLexer.createLexerFromArgs(args);
+        DecaLexer lex = AbstractDecaLexer.createLexerFromArgs(args);
         CommonTokenStream tokens = new CommonTokenStream(lex);
         DecaParser parser = new DecaParser(tokens);
         DecacCompiler compiler = new DecacCompiler(new CompilerOptions(), null);
