@@ -59,22 +59,34 @@ public class While extends AbstractInst {
     protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
         // if (body.isEmpty())
             // return; // optimisation: ne pas compiler un While trivial
-
         super.appendToBlock(compiler, blocks);
+
+        // Traitement du bloc Header
+        BasicBlock headerBlock = new BasicBlock();
+        blocks.getCurrentBlock().addSucc(headerBlock);
+
+        // Traitement des blocs Body et Exit
+        BasicBlock bodyBlock = new BasicBlock();
         BasicBlock exitBlock = new BasicBlock();
-        BasicBlock entryBlock = blocks.getCurrentBlock();
-        blocks.getCurrentBlock().addSucc(exitBlock);
+        headerBlock.addSucc(bodyBlock);
+        headerBlock.addSucc(exitBlock);
+
+        // Seal entry
+        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Traitement du bloc Body
-        BasicBlock bodyBlock = new BasicBlock();
-        blocks.getCurrentBlock().addSucc(bodyBlock);
         blocks.add(bodyBlock);
         body.constructBasicBlocks(compiler, blocks);
         body = bodyBlock;
-        blocks.getCurrentBlock().addSucc(entryBlock);
+
+        // Add and seal Header block
+        blocks.getCurrentBlock().addSucc(headerBlock);
+        blocks.add(headerBlock);
+        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Rajout du prochain block pour les prochaines instructions
         blocks.add(exitBlock);
+        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
     }
 
     @Override

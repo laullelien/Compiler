@@ -11,7 +11,16 @@ import java.util.Objects;
 public class BasicBlock extends ListInst {
 
     private List<BasicBlock> preds;
+
+    public List<BasicBlock> getPreds() {
+        return preds;
+    }
+
     private List<BasicBlock> succs;
+
+    public List<BasicBlock> getSuccs() {
+        return succs;
+    }
 
     private int id;
 

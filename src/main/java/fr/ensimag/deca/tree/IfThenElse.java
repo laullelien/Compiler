@@ -60,30 +60,37 @@ public class IfThenElse extends AbstractInst {
     protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
         // if (thenBranch.isEmpty() && elseBranch.isEmpty())
             // return; // optimisation: ne pas compiler un If trivial
-
         super.appendToBlock(compiler, blocks);
+
+        // Traitement du bloc Exit
         BasicBlock exitBlock = new BasicBlock();
 
         // Création des blocs Then et Else
         BasicBlock thenBlock = new BasicBlock();
-        blocks.getCurrentBlock().addSucc(thenBlock);
         BasicBlock elseBlock = new BasicBlock();
+        blocks.getCurrentBlock().addSucc(thenBlock);
         blocks.getCurrentBlock().addSucc(elseBlock);
+
+        // Seal entry
+        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Traitement du bloc Then
         blocks.add(thenBlock);
         thenBranch.constructBasicBlocks(compiler, blocks);
         thenBranch = thenBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
+        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Traitement du bloc Else
         blocks.add(elseBlock);
         elseBranch.constructBasicBlocks(compiler, blocks);
         elseBranch = elseBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
+        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Rajout du prochain block pour les prochaines instructions
         blocks.add(exitBlock);
+        compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
     }
 
     @Override
