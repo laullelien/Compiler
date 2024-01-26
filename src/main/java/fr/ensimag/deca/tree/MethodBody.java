@@ -5,6 +5,8 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.extension.tree.BasicBlock;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -12,6 +14,7 @@ import java.io.PrintStream;
 public class MethodBody extends AbstractMethodBody {
     private ListDeclVar declVar;
     private ListInst inst;
+    private ListBasicBlock blocks;
 
     public MethodBody(ListDeclVar declVar, ListInst inst) {
         this.declVar = declVar;
@@ -49,6 +52,14 @@ public class MethodBody extends AbstractMethodBody {
                                         throws ContextualError {
         declVar.verifyListDeclVariable(compiler, envExpParam, currentClass);
         inst.verifyListInst(compiler, envExpParam.stackEnvironment(envExpParam, classEnv), currentClass, returnType);
+    }
+
+    @Override
+    public void optimizeMethodBody(DecacCompiler compiler) {
+        BasicBlock entryBlock = new BasicBlock();
+        blocks = new ListBasicBlock(entryBlock);
+        declVar.appendToBlock(compiler, blocks);
+        inst.constructBasicBlocks(compiler, blocks);
     }
 
     @Override

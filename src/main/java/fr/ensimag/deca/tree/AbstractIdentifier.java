@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.SymbolTable;
 
 /**
@@ -24,6 +25,19 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     public abstract ClassDefinition getClassDefinition();
 
     public abstract Definition getDefinition();
+
+    @Override
+    public int hashCode() {
+        return 31 * getName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof AbstractIdentifier))
+            return false;
+        AbstractIdentifier ident = (AbstractIdentifier) obj;
+        return getName().getName().equals(ident.getName().getName());
+    }
 
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
@@ -82,8 +96,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract void setDefinition(Definition definition);
 
-
-
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
      * @param compiler contains "env_types" attribute
@@ -91,7 +103,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      *         (corresponds to the "type" attribute)
      */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
-
 
     public abstract ExpDefinition verifyField(DecacCompiler compiler, EnvironmentExp env) throws ContextualError;
 

@@ -5,11 +5,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.BasicBlock;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -25,7 +26,7 @@ import org.apache.commons.lang.Validate;
 public class IfThenElse extends AbstractInst {
     
     private final AbstractExpr condition; 
-    private final ListInst thenBranch;
+    private ListInst thenBranch;
     private ListInst elseBranch;
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
@@ -53,6 +54,41 @@ public class IfThenElse extends AbstractInst {
         condition.verifyCondition(compiler, localEnv, currentClass);
         thenBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
         elseBranch.verifyListInst(compiler, localEnv, currentClass, returnType);
+    }
+
+    @Override
+    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
+        // if (thenBranch.isEmpty() && elseBranch.isEmpty())
+            // return; // optimisation: ne pas compiler un If trivial
+        super.appendToBlock(compiler, blocks);
+
+        // Traitement du bloc Exit
+        BasicBlock exitBlock = new BasicBlock();
+
+        // Création des blocs Then et Else
+        BasicBlock thenBlock = new BasicBlock();
+        BasicBlock elseBlock = new BasicBlock();
+        blocks.getCurrentBlock().addSucc(thenBlock);
+        blocks.getCurrentBlock().addSucc(elseBlock);
+
+        // Seal entry
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+
+        // Traitement du bloc Then
+        blocks.add(thenBlock);
+        thenBranch.constructBasicBlocks(compiler, blocks);
+        blocks.getCurrentBlock().addSucc(exitBlock);
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+
+        // Traitement du bloc Else
+        blocks.add(elseBlock);
+        elseBranch.constructBasicBlocks(compiler, blocks);
+        blocks.getCurrentBlock().addSucc(exitBlock);
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+
+        // Rajout du prochain block pour les prochaines instructions
+        blocks.add(exitBlock);
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
     }
 
     @Override

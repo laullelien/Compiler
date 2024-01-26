@@ -123,6 +123,7 @@ test_gencode_options() {
     source="$1"
     type="$2"
     debug_options="$3"
+    optim_option="$4"
     source_options="${source%.deca}.options"
     if [ "$type" = "invalid" ]
     then
@@ -130,12 +131,12 @@ test_gencode_options() {
     else
         ext_expected="res"
     fi
-    gencode_exec "$source" "$ext_expected" "$debug_options"
+    gencode_exec "$source" "$ext_expected" "$debug_options" "$optim_option"
     if [ -f "$source_options" ] && [ -s "$source_options" ]
     then
         while read -r decac_opt; read -r ima_opt
         do
-            gencode_exec "$source" "$ext_expected" "$debug_options" "$decac_opt" "$ima_opt"
+            gencode_exec "$source" "$ext_expected" "$debug_options" "$optim_option $decac_opt" "$ima_opt"
         done < "$source_options"
     fi
 }
@@ -157,20 +158,20 @@ then
             fi
             dirname="${source%/*}"
             folder="${dirname##*/}"
-            echo "Section $source"
             if [ ! "$folder" = 'valid' ] && [ ! "$folder" = 'invalid' ]
             then
                 echo "    [WARNING] Impossible de déterminer si le test est valid ou invalid"
                 echo "    [WARNING] Test valid executé par défaut"
             fi
             test_gencode_options "$source" "$folder" "$debug_options"
-            exit 0
         fi
     done
+    exit 0
 fi
 
-echo "Début tests codegen"
-for folder in 'invalid' 'valid'
+
+echo "Début tests OPTIM"
+for folder in 'valid' 'extension/valid' 'perf'
 do
     source_path="$DIR/$folder"
     echo "Section $source_path"
@@ -180,8 +181,8 @@ do
         else
         for source in "$source_path"/*.deca
         do
-            test_gencode_options "$source" "$folder"
+            test_gencode_options "$source" "valid" "" "-optim"
         done
     fi
 done
-echo "Fin tests codegen"
+echo "Fin tests OPTIM"

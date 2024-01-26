@@ -18,4 +18,10 @@ public abstract class AbstractMain extends Tree {
      * Implements non-terminal "main" of [SyntaxeContextuelle] in pass 3 
      */
     protected abstract void verifyMain(DecacCompiler compiler) throws ContextualError;
+
+    /**
+     * Pass 2 of [Extension OPTIM]. Do local optimization to main instructions
+     * @param compiler
+     */
+    protected abstract void optimizeMain(DecacCompiler compiler);
 }

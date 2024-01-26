@@ -59,23 +59,23 @@ public class Modulo extends AbstractOpArith {
     }
 
     @Override
-    ImmediateInteger compute(int leftVal, int rightVal) {
-        return new ImmediateInteger(leftVal % rightVal);
+    IntLiteral compute(DecacCompiler compiler, int leftVal, int rightVal) {
+        return new IntLiteral(leftVal % rightVal, compiler);
     }
 
     // The 3 functions below will never be called
     @Override
-    ImmediateFloat compute(float leftVal, int rightVal) {
-        return new ImmediateFloat(leftVal % rightVal);
+    FloatLiteral compute(DecacCompiler compiler, float leftVal, int rightVal) {
+        return new FloatLiteral(leftVal % rightVal, compiler);
     }
 
     @Override
-    ImmediateFloat compute(int leftVal, float rightVal) {
-        return new ImmediateFloat(leftVal % rightVal);
+    FloatLiteral compute(DecacCompiler compiler, int leftVal, float rightVal) {
+        return new FloatLiteral(leftVal % rightVal, compiler);
     }
 
     @Override
-    ImmediateFloat compute(float leftVal, float rightVal) {
-        return new ImmediateFloat(leftVal % rightVal);
+    FloatLiteral compute(DecacCompiler compiler, float leftVal, float rightVal) {
+        return new FloatLiteral(leftVal % rightVal, compiler);
     }
 }

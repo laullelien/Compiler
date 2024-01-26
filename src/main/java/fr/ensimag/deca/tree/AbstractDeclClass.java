@@ -37,6 +37,12 @@ public abstract class AbstractDeclClass extends Tree {
             throws ContextualError;
 
     /**
+     * Pass 2 of [Extension OPTIM]. Do local optimization to class method instructions
+     * @param compiler
+     */
+    protected abstract void optimizeClassBody(DecacCompiler compiler);
+
+    /**
      * Pass 1 of [Codegen]. Generate the VTable of the class and append the instructions
      */
     protected abstract void codeGenClassVTable(DecacCompiler compiler);

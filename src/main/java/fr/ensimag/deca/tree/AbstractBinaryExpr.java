@@ -1,13 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
-
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -24,7 +21,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     private AbstractExpr rightOperand;
 
     public AbstractBinaryExpr(AbstractExpr leftOperand,
-                              AbstractExpr rightOperand) {
+            AbstractExpr rightOperand) {
         Validate.notNull(leftOperand, "left operand cannot be null");
         Validate.notNull(rightOperand, "right operand cannot be null");
         Validate.isTrue(leftOperand != rightOperand, "Sharing subtrees is forbidden");
@@ -50,46 +47,14 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         this.rightOperand = rightOperand;
     }
 
-    protected void codegenCompute(DecacCompiler compiler) {
-        if (getType().isInt()) {
-            int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
-            int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
-            compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
-        } else {
-            if (getLeftOperand().getType().isInt()) {
-                int leftVal = ((ImmediateInteger) (getLeftOperand().getDval())).getValue();
-                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
-            } else if (getRightOperand().getType().isInt()) {
-                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
-                int rightVal = ((ImmediateInteger) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
-            } else {
-                float leftVal = ((ImmediateFloat) (getLeftOperand().getDval())).getValue();
-                float rightVal = ((ImmediateFloat) (getRightOperand().getDval())).getValue();
-                compiler.addInstruction(new LOAD(((AbstractOpArith)this).compute(leftVal, rightVal), compiler.getRegister()));
-            }
-        }
-    }
-
-    private boolean isComputable() {
-        boolean leftIsInt = (leftOperand.getDval() instanceof ImmediateInteger);
-        boolean rightIsInt = (rightOperand.getDval() instanceof ImmediateInteger);
-        boolean leftIsFloat = (leftOperand.getDval() instanceof ImmediateFloat);
-        boolean rightIsFloat = (rightOperand.getDval() instanceof ImmediateFloat);
-        boolean rightIsNumber = rightIsInt || rightIsFloat;
-        boolean leftIsNumber = leftIsInt || leftIsFloat;
-        if (this instanceof AbstractOpArith) {
-            return leftIsNumber && rightIsNumber;
-        }
-        return false;
+    @Override
+    protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
+        setLeftOperand(getLeftOperand().evaluate(compiler, blocks));
+        setRightOperand(getRightOperand().evaluate(compiler, blocks));
+        return this;
     }
 
     protected void codeGenInst(DecacCompiler compiler) {
-        if (compiler.getCompilerOptions().getOptim() && this instanceof AbstractOpArith && isComputable()) {
-            codegenCompute(compiler);
-            return;
-        }
         if (getRightOperand().getDval() != null) {
             getLeftOperand().codeGenInst(compiler);
             compiler.setDval(getRightOperand().getDval());

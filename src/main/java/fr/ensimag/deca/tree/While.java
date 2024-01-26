@@ -5,11 +5,12 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.BasicBlock;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -53,6 +54,38 @@ public class While extends AbstractInst {
         compiler.addInstruction(new BRA(startWhileLabel));
 
         compiler.addLabel(endWhileLabel);
+    }
+    @Override
+    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
+        // if (body.isEmpty())
+            // return; // optimisation: ne pas compiler un While trivial
+        super.appendToBlock(compiler, blocks);
+
+        // Traitement du bloc Header
+        BasicBlock headerBlock = new BasicBlock();
+        blocks.getCurrentBlock().addSucc(headerBlock);
+
+        // Traitement des blocs Body et Exit
+        BasicBlock bodyBlock = new BasicBlock();
+        BasicBlock exitBlock = new BasicBlock();
+        headerBlock.addSucc(bodyBlock);
+        headerBlock.addSucc(exitBlock);
+
+        // Seal entry
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+
+        // Traitement du bloc Body
+        blocks.add(bodyBlock);
+        body.constructBasicBlocks(compiler, blocks);
+
+        // Add and seal Header block
+        blocks.getCurrentBlock().addSucc(headerBlock);
+        blocks.add(headerBlock);
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
+
+        // Rajout du prochain block pour les prochaines instructions
+        blocks.add(exitBlock);
+        // compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
     }
 
     @Override

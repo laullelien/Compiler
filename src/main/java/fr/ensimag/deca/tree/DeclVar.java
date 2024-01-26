@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -81,6 +82,15 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     public void setLocalOperand(int offset) {
         varName.getVariableDefinition().setOperand(new RegisterOffset(offset, Register.LB));
+    }
+
+    @Override
+    public void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
+        if (initialization instanceof Initialization) {
+            ((Initialization) initialization).setExpression(((Initialization) initialization).getExpression().evaluate(compiler, blocks));
+            // local value numbering
+            compiler.ssaFormHelper.writeVariable(varName, blocks.getCurrentBlock(), ((Initialization) initialization).getExpression());
+        }
     }
 
     @Override

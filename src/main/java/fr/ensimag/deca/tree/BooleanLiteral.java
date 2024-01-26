@@ -40,6 +40,11 @@ public class BooleanLiteral extends AbstractExpr {
     }
 
     @Override
+    public boolean isConstant() {
+        return false;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         // regle (3.47)

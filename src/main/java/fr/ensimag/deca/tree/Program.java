@@ -48,6 +48,13 @@ public class Program extends AbstractProgram {
     }
 
     @Override
+    public void optimizeProgram(DecacCompiler compiler) {
+        // on optimise les noeuds avec des ListInst
+        classes.optimizeListClassBody(compiler); // passe 1, optimisation des corps de méthode
+        main.optimizeMain(compiler); // passe 2, optimisation de main
+    }
+
+    @Override
     public void codeGenProgram(DecacCompiler compiler) {
         compiler.addComment("Main program");
         compiler.codegenHelper.codeGenTSTO();
