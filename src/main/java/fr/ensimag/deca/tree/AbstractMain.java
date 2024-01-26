@@ -19,5 +19,9 @@ public abstract class AbstractMain extends Tree {
      */
     protected abstract void verifyMain(DecacCompiler compiler) throws ContextualError;
 
+    /**
+     * Pass 2 of [Extension OPTIM]. Do local optimization to main instructions
+     * @param compiler
+     */
     protected abstract void optimizeMain(DecacCompiler compiler);
 }

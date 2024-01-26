@@ -59,6 +59,12 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         LOG.debug("verify listClassBody: end");
     }
 
+    public void optimizeListClassBody(DecacCompiler compiler) {
+        for (AbstractDeclClass c : this.getList()) {
+            c.optimizeClassBody(compiler);
+        }
+    }
+
     /**
      * Pass 1 of [Gencode]
      */

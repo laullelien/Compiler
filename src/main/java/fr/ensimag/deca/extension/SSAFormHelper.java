@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class SSAFormHelper {
 
-    Map<AbstractIdentifier, Map<BasicBlock, AbstractExpr>> currentDef;
-    Map<BasicBlock, Map<AbstractIdentifier, Phi>> incompletePhis;
+    Map<AbstractLValue, Map<BasicBlock, AbstractExpr>> currentDef;
+    Map<BasicBlock, Map<AbstractLValue, Phi>> incompletePhis;
     List<ListInst> sealedBlocks;
 
     public void sealBlock(BasicBlock block) {
@@ -30,23 +30,29 @@ public class SSAFormHelper {
         incompletePhis = new LinkedHashMap<>();
     }
 
-    public void writeVariable(AbstractIdentifier variable, BasicBlock block, AbstractExpr value) {
+    public void writeVariable(AbstractLValue variable, BasicBlock block, AbstractExpr value) {
+        if (!value.isConstant()) {
+            return;
+        }
         if (!currentDef.containsKey(variable)) {
             currentDef.put(variable, new LinkedHashMap<>());
         }
         currentDef.get(variable).put(block, value);
-        System.out.println(variable.hashCode());
     }
 
-    public AbstractExpr readVariable(AbstractIdentifier variable, BasicBlock block) {
-        if (currentDef.get(variable).containsKey(block)) {
-            AbstractExpr val = currentDef.get(variable).get(block);
-            return val;
+    public AbstractExpr readVariable(AbstractLValue variable, BasicBlock block) {
+        if (currentDef.containsKey(variable)) {
+            if (currentDef.get(variable).containsKey(block)) {
+                AbstractExpr val = currentDef.get(variable).get(block);
+                return val;
+            }
         }
-        return readVariableRecursive(variable, block);
+        return null;
+        // global value numbering, non stable/operationnel
+        // return readVariableRecursive(variable, block);
     }
 
-    public AbstractExpr readVariableRecursive(AbstractIdentifier variable, BasicBlock block) {
+    public AbstractExpr readVariableRecursive(AbstractLValue variable, BasicBlock block) {
         AbstractExpr val;
         if (!(sealedBlocks.contains(block))) {
             // Incomplete CFG
@@ -68,7 +74,7 @@ public class SSAFormHelper {
         return val;
     }
 
-    private AbstractExpr addPhiOperands(AbstractIdentifier variable, Phi phi) {
+    private AbstractExpr addPhiOperands(AbstractLValue variable, Phi phi) {
         // Determine operands from predecessors
         for (BasicBlock pred : phi.getBlockLocation().getPreds()) {
             AbstractExpr val = readVariable(variable, pred);

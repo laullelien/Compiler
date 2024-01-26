@@ -77,7 +77,6 @@ public class While extends AbstractInst {
         // Traitement du bloc Body
         blocks.add(bodyBlock);
         body.constructBasicBlocks(compiler, blocks);
-        body = bodyBlock;
 
         // Add and seal Header block
         blocks.getCurrentBlock().addSucc(headerBlock);
@@ -117,9 +116,8 @@ public class While extends AbstractInst {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO remove
-        // condition.prettyPrint(s, prefix, false);
-        // body.prettyPrint(s, prefix, true);
+        condition.prettyPrint(s, prefix, false);
+        body.prettyPrint(s, prefix, true);
     }
 
 }

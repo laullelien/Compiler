@@ -103,5 +103,9 @@ public abstract class AbstractDeclMethod extends Tree {
         return methodBody;
     }
 
+    public void optimizeMethod(DecacCompiler compiler) {
+        methodBody.optimizeMethodBody(compiler);
+    }
+
     protected abstract void codeGenMethod(DecacCompiler compiler, String className);
 }

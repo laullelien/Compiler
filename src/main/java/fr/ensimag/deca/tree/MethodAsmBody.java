@@ -66,6 +66,11 @@ public class MethodAsmBody extends AbstractMethodBody {
     }
 
     @Override
+    public void optimizeMethodBody(DecacCompiler compiler) {
+        // no optimization for arbitrary code
+    }
+
+    @Override
     public int getVarNb() {
         return 0;
     }

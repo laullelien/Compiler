@@ -107,12 +107,4 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     public abstract ExpDefinition verifyField(DecacCompiler compiler, EnvironmentExp env) throws ContextualError;
 
     public abstract ExpDefinition verifyMethod(DecacCompiler compiler, EnvironmentExp env) throws ContextualError;
-
-    @Override
-    protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
-        AbstractExpr localValue = compiler.ssaFormHelper.readVariable(this, blocks.getCurrentBlock());
-        if (localValue == null)
-            return this;
-        return localValue;
-    }
 }

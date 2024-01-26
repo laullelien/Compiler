@@ -45,11 +45,19 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
+    protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
+        setRightOperand(getRightOperand().evaluate(compiler, blocks));
+        // local value numbering
+        compiler.ssaFormHelper.writeVariable(getLeftOperand(), blocks.getCurrentBlock(), getRightOperand());
+        return this;
+    }
+
+    @Override
     protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
         blocks.getCurrentBlock().addInst(this);
         setRightOperand(getRightOperand().evaluate(compiler, blocks));
         // local value numbering
-        compiler.ssaFormHelper.writeVariable((AbstractIdentifier) getLeftOperand(), blocks.getCurrentBlock(), getRightOperand());
+        compiler.ssaFormHelper.writeVariable(getLeftOperand(), blocks.getCurrentBlock(), getRightOperand());
     }
 
     @Override

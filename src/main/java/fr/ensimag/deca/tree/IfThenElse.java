@@ -77,14 +77,12 @@ public class IfThenElse extends AbstractInst {
         // Traitement du bloc Then
         blocks.add(thenBlock);
         thenBranch.constructBasicBlocks(compiler, blocks);
-        thenBranch = thenBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
         compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
         // Traitement du bloc Else
         blocks.add(elseBlock);
         elseBranch.constructBasicBlocks(compiler, blocks);
-        elseBranch = elseBlock;
         blocks.getCurrentBlock().addSucc(exitBlock);
         compiler.ssaFormHelper.sealBlock(blocks.getCurrentBlock());
 
@@ -139,9 +137,8 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO remove
-        // condition.prettyPrint(s, prefix, false);
-        // thenBranch.prettyPrint(s, prefix, false);
-        // elseBranch.prettyPrint(s, prefix, true);
+        condition.prettyPrint(s, prefix, false);
+        thenBranch.prettyPrint(s, prefix, false);
+        elseBranch.prettyPrint(s, prefix, true);
     }
 }

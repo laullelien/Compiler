@@ -49,12 +49,9 @@ public class Program extends AbstractProgram {
 
     @Override
     public void optimizeProgram(DecacCompiler compiler) {
-        // TODO 1: Construction des Basics blocs
-        main.optimizeMain(compiler);
-        // TODO 2: Construction du Control Flow Graph
-        // TODO 3: CFG -> SSA form
-        // TODO 4: Implémenter les algorithmes d'optimisation
-        // TODO 5: unSSA
+        // on optimise les noeuds avec des ListInst
+        classes.optimizeListClassBody(compiler); // passe 1, optimisation des corps de méthode
+        main.optimizeMain(compiler); // passe 2, optimisation de main
     }
 
     @Override

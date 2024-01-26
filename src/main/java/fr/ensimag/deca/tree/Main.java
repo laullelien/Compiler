@@ -75,9 +75,8 @@ public class Main extends AbstractMain {
  
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO remove
         declVariables.prettyPrint(s, prefix, false);
-        // insts.prettyPrint(s, prefix, true);
-        blocks.prettyPrint(s, prefix, false);
+        insts.prettyPrint(s, prefix, true);
+        // blocks.prettyPrint(s, prefix, false);
     }
 }
