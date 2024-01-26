@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -21,6 +23,12 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     public AbstractUnaryExpr(AbstractExpr operand) {
         Validate.notNull(operand);
         this.operand = operand;
+    }
+
+    @Override
+    protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
+        setOperand(getOperand().evaluate(compiler, blocks));
+        return this;
     }
 
     protected abstract String getOperatorName();

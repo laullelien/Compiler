@@ -5,6 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
@@ -49,6 +50,10 @@ public abstract class AbstractExpr extends AbstractInst {
 
     public DVal getDval() {
         return dval;
+    }
+
+    public boolean isConstant() {
+        return false;
     }
 
     @Override
@@ -145,6 +150,14 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
+
+    /**
+     * Try to apply various local optimization to evaluate expression at compile time
+     */
+    protected AbstractExpr evaluate(DecacCompiler compiler, ListBasicBlock blocks) {
+        // TODO System.out.println("oops, to imp");
+        return this;
+    }
 
     /**
      * Generate code to print the expression

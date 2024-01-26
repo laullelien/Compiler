@@ -105,6 +105,13 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
+    protected void optimizeClassBody(DecacCompiler compiler) {
+        for (AbstractDeclMethod method : methods.getList()) {
+            method.optimizeMethod(compiler);
+        }
+    }
+
+    @Override
     protected void codeGenClassVTable(DecacCompiler compiler) {
         compiler.listVTable.codeGenVTable(compiler, name.getName().getName(), nameSuperClass.getName().getName(), methods);
     }

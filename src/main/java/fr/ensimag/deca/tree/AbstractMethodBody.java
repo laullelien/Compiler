@@ -18,5 +18,7 @@ public abstract class AbstractMethodBody extends Tree {
 
     void setLocalOperand() {}
 
+    abstract public void optimizeMethodBody(DecacCompiler compiler);
+
     public void codeGenDecl(DecacCompiler compiler) {}
 }

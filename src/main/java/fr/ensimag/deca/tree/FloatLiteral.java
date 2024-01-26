@@ -39,9 +39,22 @@ public class FloatLiteral extends AbstractExpr {
         this.value = value;
     }
 
+    /**
+     * Constructeur qui ne peut etre utilise qu'avec l'option -optim
+     */
+    public FloatLiteral(float value, DecacCompiler compiler) {
+        this.value = value;
+        setType(compiler.environmentType.FLOAT);
+    }
+
     @Override
     public DVal getDval(){
         return new ImmediateFloat(value);
+    }
+
+    @Override
+    public boolean isConstant() {
+        return true;
     }
 
     @Override

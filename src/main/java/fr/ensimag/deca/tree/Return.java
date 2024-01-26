@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.extension.tree.ListBasicBlock;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.Instruction;
@@ -36,6 +37,12 @@ public class Return extends AbstractInst {
         returnExpr = this.getReturnExpr().verifyRValue(compiler, localEnv, currentClass, expectedReturnType);
         setClassName(currentClass.getType().getName().getName());
         setMethodName(currentClass.currentMethodNameForReturn);
+    }
+
+    @Override
+    protected void appendToBlock(DecacCompiler compiler, ListBasicBlock blocks) {
+        blocks.getCurrentBlock().addInst(this);
+        returnExpr = returnExpr.evaluate(compiler, blocks);
     }
 
     @Override

@@ -1,0 +1,16 @@
+// Description:
+//    Test d'affichage d'un CFG avec seulement des déclarations de variables
+//
+// Resultats:
+//    5
+//
+// Historique:
+//    cree le 18/01/2024
+
+{
+    int a = 42;
+    int b = a;
+    int c = a + b;
+    a = c + 23;
+    c = a + b;
+}

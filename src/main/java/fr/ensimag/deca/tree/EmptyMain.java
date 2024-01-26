@@ -23,6 +23,11 @@ public class EmptyMain extends AbstractMain {
         // nothing
     }
 
+    @Override
+    protected void optimizeMain(DecacCompiler compiler) {
+        // nothing
+    }
+
     /**
      * Contains no real information => nothing to check.
      */

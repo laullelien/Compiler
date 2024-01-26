@@ -10,11 +10,25 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
+import java.util.Objects;
 
 public class Selection extends AbstractLValue {
 
     private AbstractExpr thisExpr;
     private AbstractIdentifier identifier;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(thisExpr, identifier);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Selection))
+            return false;
+        Selection select = (Selection) obj;
+        return identifier.equals(select.identifier) && thisExpr.equals(select.thisExpr);
+    }
 
     public Selection(AbstractExpr thisExpr, AbstractIdentifier identifier){
         this.thisExpr = thisExpr;
